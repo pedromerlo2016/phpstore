@@ -1,0 +1,17 @@
+{
+    "name": "pedro/phpstore",
+    "description": "Loja online em php",
+    "type": "projetc",
+    "authors": [
+        {
+            "name": "pedromerlo2016",
+            "email": "pedro_merlo@globo.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "core\\":"core/"
+        }
+    }
+}
