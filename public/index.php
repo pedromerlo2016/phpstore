@@ -12,6 +12,11 @@ require_once('../config.php');
 // carega todas as classes do projeto
 require_once('../vendor/autoload.php');
 
+$db =  new Database();
+$clientes = $db->select("SELECT * FROM clientes");
+echo '<pre>';
+print_r($clientes);
+
 /*
  carregar o config
  carregar classes

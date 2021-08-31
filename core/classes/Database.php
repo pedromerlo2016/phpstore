@@ -11,13 +11,12 @@ class Database
     private $ligacao;
 
     //============================================================
+    //$conn = new PDO('mysql:host=localhost;dbname=meuBancoDeDados', $username, $password);
     private function ligar()
     {
-        $this->ligacao = new PDO(
-            'mysql:' . MYSQL_SERVER . ';' .
-                'host=' . MYSQL_DATABASE,
-            ';' .
-                'charset' . MYSQL_CHARSET,
+        $this->ligacao = new PDO('mysql:host='.MYSQL_SERVER.';'.
+            'dbname='.MYSQL_DATABASE.';' .
+            'charset' . MYSQL_CHARSET,
             MYSQL_USER,
             MYSQL_PASS,
             array(PDO::ATTR_PERSISTENT => true)
