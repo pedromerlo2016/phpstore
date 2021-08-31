@@ -1,5 +1,8 @@
 #MATERIAL   -> Arquivos em geral
 core        -> classes -> classes do sistema
+            -> controladores
+                        ->Main.php
+            -> rotas.php (sistemas de rotas)
 public      -> assets 
                         -> css 
                         -> js
