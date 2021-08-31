@@ -2,6 +2,8 @@
 core        -> classes -> classes do sistema
             -> controladores
                         ->Main.php
+            -> views (arquivos da views)
+                        ->layouts (arquivos de base do layout)
             -> rotas.php (sistemas de rotas)
 public      -> assets 
                         -> css 
