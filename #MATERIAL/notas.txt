@@ -1,0 +1,15 @@
+#MATERIAL   -> Arquivos em geral
+core        -> classes -> classes do sistema
+public      -> assets 
+                        -> css 
+                        -> js
+                        -> images
+            -> index.php (todas as solicitações passam por este arquivo)
+vendor      -> arquivos de terceiros e autoload
+config.php  -> definições de variaveis globais
+composer.json -> configurações e dependências do projeto
+
+==========================================================================================
+string de conexão do db
+$conn = new PDO('mysql:host=localhost;dbname=meuBancoDeDados', $username, $password);
+==========================================================================================

@@ -2,6 +2,7 @@
 
 namespace core\classes;
 
+use Exception;
 use PDO;
 use PDOException;
 
@@ -37,7 +38,13 @@ class Database
     //============================================================
     public function select($sql, $parametros = null)
     {
-        // executa a função de pesquisa SQL
+      
+        // verifica se é uma instrução select
+        if(!preg_match("/^SELECT/i", $sql)){
+            throw new Exception('Base de dados -> não é uma instrução SELECT.');
+        }
+
+        // liga ao db
         $this->ligar();
 
         $resultados = null;
@@ -63,6 +70,141 @@ class Database
         $this->desligar();
         return $resultados;
     }
+    //============================================================
+    public function insert($sql, $parametros = null)
+    {
+      
+        // verifica se é uma instrução select
+        if(!preg_match("/^INSERT/i", $sql)){
+            throw new Exception('Base de dados -> não é uma instrução INSERT.');
+        }
+
+        // Ligar ao db
+        $this->ligar();
+
+        $resultados = null;
+
+        try {
+            // comunicação com o db
+            if (!empty($parametros)) {
+                $executar = $this->ligacao->prepare($sql);
+                $executar->execute($parametros);
+            } else {
+                $executar = $this->ligacao->prepare($sql);
+                $executar->execute();
+            }
+        } catch (PDOException $e) {
+            // caso exista erro
+            return false;
+        }
+
+
+        // desliga-se do db
+        $this->desligar();
+      
+    }
+    //============================================================
+    public function update($sql, $parametros = null)
+    {
+      
+        // verifica se é uma instrução select
+        if(!preg_match("/^UPDATE/i", $sql)){
+            throw new Exception('Base de dados -> não é uma instrução UPDATE.');
+        }
+
+        // Ligar ao db
+        $this->ligar();
+
+        $resultados = null;
+
+        try {
+            // comunicação com o db
+            if (!empty($parametros)) {
+                $executar = $this->ligacao->prepare($sql);
+                $executar->execute($parametros);
+            } else {
+                $executar = $this->ligacao->prepare($sql);
+                $executar->execute();
+            }
+        } catch (PDOException $e) {
+            // caso exista erro
+            return false;
+        }
+
+
+        // desliga-se do db
+        $this->desligar();
+      
+    }
+    //============================================================
+    public function delete($sql, $parametros = null)
+    {
+      
+        // verifica se é uma instrução select
+        if(!preg_match("/^DELETE/i", $sql)){
+            throw new Exception('Base de dados -> não é uma instrução DELETE.');
+        }
+
+        // Ligar ao db
+        $this->ligar();
+
+        $resultados = null;
+
+        try {
+            // comunicação com o db
+            if (!empty($parametros)) {
+                $executar = $this->ligacao->prepare($sql);
+                $executar->execute($parametros);
+            } else {
+                $executar = $this->ligacao->prepare($sql);
+                $executar->execute();
+            }
+        } catch (PDOException $e) {
+            // caso exista erro
+            return false;
+        }
+
+
+        // desliga-se do db
+        $this->desligar();
+      
+    }
+
+    //============================================================
+    // Genérica
+    //============================================================
+    public function statement($sql, $parametros = null)
+     {
+       
+         // verifica se é uma instrução diferente da anteriores
+         if(preg_match("/^DELETE|INSERT|UPDATE|DELETE/i", $sql)){
+             throw new Exception('Base de dados -> instrução invàlida.');
+         }
+ 
+         // Ligar ao db
+         $this->ligar();
+ 
+         $resultados = null;
+ 
+         try {
+             // comunicação com o db
+             if (!empty($parametros)) {
+                 $executar = $this->ligacao->prepare($sql);
+                 $executar->execute($parametros);
+             } else {
+                 $executar = $this->ligacao->prepare($sql);
+                 $executar->execute();
+             }
+         } catch (PDOException $e) {
+             // caso exista erro
+             return false;
+         }
+ 
+ 
+         // desliga-se do db
+         $this->desligar();
+       
+     }
 }
 
 /*
