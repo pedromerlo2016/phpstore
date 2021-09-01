@@ -2,21 +2,20 @@
 
 namespace core\controladores;
 
-use core\classes\Functions;
+use core\classes\Store;
 
 class Main{
     //============================================================
     public function index(){
-        $clientes  =  ['Pedro', 'Paulo', 'Ana','João'];
-        
         $dados=[
-            'titulo'=>'Este é título da minha página',
-            'clientes'  =>  ['Pedro', 'Paulo', 'Ana','João']
+            'titulo'=>APP_NAME." ".APP_VERSION ,
         ];
 
-        Functions::Layout([
+        Store::Layout([
             'layouts/html_header',
-            'pagina_inicial',
+            'header',
+            'inicio',
+            'footer',
             'layouts/html_footer',
         ], $dados);
 

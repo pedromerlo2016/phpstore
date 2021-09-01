@@ -4,7 +4,7 @@ namespace core\classes;
 
 use Exception;
 
-class Functions{
+class Store{
 
     //============================================================
     public static function Layout($estruturas , $dados=null){
@@ -22,5 +22,12 @@ class Functions{
             include("../core/views/$estrutura.php");
         }
     }
+    
+    //============================================================
+    public static function clienteLogado(){
+        // verifica se existe um cliente com sessão
+        return(isset($_SESSION['cliente']));
+    }
+
 
 }

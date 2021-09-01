@@ -1,7 +1,7 @@
 <?php
 
 define('APP_NAME',          'PHPSTORE');
-define('APP_VERSIOn',       '1.0.0');
+define('APP_VERSION',       '1.0.0');
 
 //MySql
 define('MYSQL_SERVER',      'localhost');

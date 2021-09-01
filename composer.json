@@ -11,7 +11,10 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "core\\":"core/"
-        }
+            "core\\": "core/"
+        },
+        "files": [
+            "config.php"
+        ]
     }
 }

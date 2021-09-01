@@ -1,13 +1,10 @@
 <?php
 
 use core\classes\Database;
-use core\classes\Functions;
+use core\classes\Store;
 
 // Abrir ação
 session_start();
-
-// carregar o config
-require_once('../config.php');
 
 // carega todas as classes do projeto
 require_once('../vendor/autoload.php');
