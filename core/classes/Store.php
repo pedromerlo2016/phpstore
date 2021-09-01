@@ -1,7 +1,6 @@
 <?php
 
 namespace core\classes;
-
 use Exception;
 
 class Store{
