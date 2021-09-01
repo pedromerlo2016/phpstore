@@ -8,3 +8,14 @@
     background-color: rgb(60,74,82);
     color: white;
  }
+
+ .nav-item{
+     text-decoration:none;
+     color:white;
+     margin: 0px 5px;
+ }
+
+ .nav-item:hover{
+    text-decoration:underline;
+    color:white;
+}

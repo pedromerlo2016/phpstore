@@ -18,3 +18,18 @@ composer.json -> configurações e dependências do projeto
 string de conexão do db
 $conn = new PDO('mysql:host=localhost;dbname=meuBancoDeDados', $username, $password);
 ==========================================================================================
+
+tabela clientes
+---------------
+  id_cliente
+  email
+  senha
+  nome_completo
+  endereco
+  cidade
+  telefone
+  purl
+  ativo
+  created_at
+  updated_at
+  deleted_at
