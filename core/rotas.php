@@ -10,6 +10,7 @@ $rotas = [
 
     // cliente
     'novo_cliente'=>'main@novo_cliente',
+    'criar_cliente'=>'main@criar_cliente',
 
     'carrinho'=>'main@carrinho',
 ];
@@ -26,6 +27,18 @@ if(isset($_GET['a'])){
          $acao = $_GET['a'];   
     }
 }
+
+
+if(count($_POST) > 0){
+    $a = $_SERVER['REQUEST_URI'];
+    $b[] = explode('=',$a);
+    if(!key_exists( $b[0][1], $rotas)){
+        $acao = 'inicio';
+    }else{
+        $acao =  $b[0][1];
+    }
+}
+
 
 // trata a definição da rota
 $partes= explode('@',$rotas[$acao]);

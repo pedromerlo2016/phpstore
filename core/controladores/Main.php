@@ -31,11 +31,12 @@ class Main
         ]);
     }
     //============================================================
-    public function novo_cliente(){
+    public function novo_cliente()
+    {
         // apresenta a pagina para novo cliente
 
         // verifica se existe um cliente logado
-        if(Store::clienteLogado()){
+        if (Store::clienteLogado()) {
             $this->index();
             return;
         }
@@ -43,10 +44,31 @@ class Main
         Store::Layout([
             'layouts/html_header',
             'header',
-            'novo_cliente',
+            'criar_cliente',
             'footer',
             'layouts/html_footer',
         ]);
+    }
+
+    public function criar_cliente()
+    {
+
+        // verifica se existe um cliente logado
+        if (Store::clienteLogado()) {
+            $this->index();
+            return;
+        }
+
+        // verifica ocorreu um submit
+        if($_SERVER['REQUEST_METHOD']!='POST'){
+            $this->index();
+            return;
+        }
+        // apresenta a pagina para criar novo cliente
+
+
+
+        var_dump($_POST);
     }
 
     //============================================================

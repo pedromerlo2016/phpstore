@@ -33,3 +33,12 @@ tabela clientes
   created_at
   updated_at
   deleted_at
+
+
+text_email' => string 'pedro@gdf.com.br' (length=16)
+text_senha_1' => string '123456' (length=6)
+text_senha_2' => string '123456' (length=6)
+text_nome_completo' => string 'Pedro Merlo Junior' (length=18)
+text_endereco' => string 'Rua Apiacás' (length=12)
+text_cidade' => string 'Praia Grande' (length=12)
+text_telefone' => string '13991681307' (length=11)
