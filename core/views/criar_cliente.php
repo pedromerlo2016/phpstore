@@ -38,10 +38,16 @@
                     <label class="form-label" for="text_telefone">Telefone</label>
                     <input class="form-control" type="text" name="text_telefone" placeholder="Telefone">
                 </div>
-               <div class="my-4">
+                <div class="my-4">
                     <!-- submit -->
                     <input type="submit" value="Criar conta" class="btn btn-primary">
                 </div>
+                <?php if (isset($_SESSION['erro'])) : ?>
+                    <div class="alert alert-danger text-center p-2">
+                        <?= $_SESSION['erro']  ?>
+                        <?php unset($_SESSION['erro']); ?>
+                    </div>
+                <?php endif; ?>
             </form>
         </div>
     </div>
