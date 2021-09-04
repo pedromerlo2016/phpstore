@@ -27,6 +27,12 @@ class Store{
         // verifica se existe um cliente com sessão
         return(isset($_SESSION['cliente']));
     }
+    //============================================================
+    public static function criarHash($num_caracteres=12){
+        // criar hashes
+        $chars = 'ancdefghijklnmoprrstuvwxyzancdefghijklnmoprrstuvwxyzANCDEFGHIJKLNMOPRRSTUVWXYZANCDEFGHIJKLNMOPRRSTUVWXYZ12345678901234567890';
+        return substr( str_shuffle($chars) ,0, $num_caracteres);
+    }
 
 
 }

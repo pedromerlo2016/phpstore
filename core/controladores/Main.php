@@ -94,8 +94,27 @@ class Main
 
         // registro do novo cliente
 
-        // criar um purl
+        // criação do purl
+        $purl =  Store::criarHash();
+        echo $purl;
+       
         // gravar dados na tabela
+        $parametros =[
+            ':email'=> strtolower(trim($_POST['text_email'])),
+            ':senha'=> password_hash(trim($_POST['text_senha_1']), PASSWORD_DEFAULT),
+            ':nome_completo'=>trim($_POST['text_nome_completo']),
+            ':endereco' =>trim($_POST['text_endereco']),
+            ':cidade' =>trim($_POST['text_cidade']),
+            ':telefone' =>trim($_POST['text_telefone']),
+            ':purl'=> $purl,
+            ':ativo'=>0
+        ];
+
+        $db->insert('INSERT INTO clientes (email, senha, nome_completo,endereco, cidade, telefone, purl, ativo) VALUES(:email,:senha,:nome_completo,:endereco,:cidade,:telefone,:purl,:ativo)' , $parametros);
+        
+        // criar um link purl
+        $link_purl="http://localhost:8000/phpstore/public/?a=confirmar_email&purl=$purl";
+
         // enviar um email para o cliente
         // apresentar uma mensagem indicando para validar seu e-mail
 
