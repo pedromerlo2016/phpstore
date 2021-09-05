@@ -1,9 +1,10 @@
 <?php
 
-namespace core\controladores;
+namespace core\controllers;
 
 use core\classes\Database;
 use core\classes\Store;
+use core\models\Clientes;
 
 class Main
 {
@@ -76,50 +77,22 @@ class Main
             return;
         }
 
-
-        // Verifica na db se exite cliente com mesmo e-mail
-        $db = new Database();
-        $parametros=[
-            ':email'=>strtolower(trim($_POST['text_email'])),
-        ];
-
-        $resultado = $db->select("SELECT email FROM clientes WHERE email=:email", $parametros);
-
-        // se o email já existe
-        if(count($resultado)){
+        $cliente = new Clientes;
+        if($cliente->verificar_email_registrado($_POST['text_email'])){
             $_SESSION['erro']= 'O já existe um cliente com este e-mail.';
             $this->novo_cliente();
-            return;
         }
 
-        // registro do novo cliente
-
-        // criação do purl
-        $purl =  Store::criarHash();
-        echo $purl;
-       
-        // gravar dados na tabela
-        $parametros =[
-            ':email'=> strtolower(trim($_POST['text_email'])),
-            ':senha'=> password_hash(trim($_POST['text_senha_1']), PASSWORD_DEFAULT),
-            ':nome_completo'=>trim($_POST['text_nome_completo']),
-            ':endereco' =>trim($_POST['text_endereco']),
-            ':cidade' =>trim($_POST['text_cidade']),
-            ':telefone' =>trim($_POST['text_telefone']),
-            ':purl'=> $purl,
-            ':ativo'=>0
-        ];
-
-        $db->insert('INSERT INTO clientes (email, senha, nome_completo,endereco, cidade, telefone, purl, ativo) VALUES(:email,:senha,:nome_completo,:endereco,:cidade,:telefone,:purl,:ativo)' , $parametros);
-        
+        $purl = $cliente->registar_cliente();
         // criar um link purl
         $link_purl="http://localhost:8000/phpstore/public/?a=confirmar_email&purl=$purl";
-
         // enviar um email para o cliente
+       
+       
         // apresentar uma mensagem indicando para validar seu e-mail
 
 
-        var_dump($_POST);
+       
     }
 
     //============================================================

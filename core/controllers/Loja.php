@@ -1,6 +1,6 @@
 <?php
 
-namespace core\controladores;
+namespace core\controlllers;
 
 class Loja
 {
