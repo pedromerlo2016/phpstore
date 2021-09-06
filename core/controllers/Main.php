@@ -12,6 +12,7 @@ class Main
     //============================================================
     public function index()
     {
+
         // apresenta a pagina inicial
         Store::Layout([
             'layouts/html_header',
@@ -20,6 +21,8 @@ class Main
             'footer',
             'layouts/html_footer',
         ]);
+
+
     }
     //============================================================
     public function loja()
@@ -86,14 +89,18 @@ class Main
 
         $purl = $cliente->registar_cliente();
         // criar um link purl
-        $link_purl="http://localhost:8000/phpstore/public/?a=confirmar_email&purl=$purl";
+     
         // enviar um email para o cliente
        
        
         // apresentar uma mensagem indicando para validar seu e-mail
         $enviarEmail =  new EnviarEmail;
-        $enviarEmail->enviar_email_confirmacao_novo_cliente();
-
+        $reultado =  $enviarEmail->enviar_email_confirmacao_novo_cliente(strtolower(trim($_POST['text_email'])), $purl);
+        if($reultado){
+            echo 'Email Enviado';
+        }else{
+            echo 'Ocorreu um erro';
+        }
        
     }
 
