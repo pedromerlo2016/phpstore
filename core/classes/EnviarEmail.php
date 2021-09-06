@@ -23,6 +23,7 @@ class EnviarEmail
             $mail->Username   = EMAIL_USER;
             $mail->Password   = EMAIL_PASS;
             $mail->Port       = EMAIL_PORT;
+            $mail->CharSet    ='UTF-8'; 
 
             //Emissor e receptor
             $mail->setFrom(EMAIL_FROM, APP_NAME);

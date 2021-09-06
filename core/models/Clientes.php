@@ -7,6 +7,7 @@ use core\classes\Store;
 
 class Clientes
 {
+    //============================================================
     public function verificar_email_registrado($email)
     {
         //============================================================
@@ -25,7 +26,7 @@ class Clientes
             return false;
         }
     }
-
+    //============================================================
     public function registar_cliente()
     {
         // registro do novo cliente
@@ -51,4 +52,27 @@ class Clientes
         // retorna p purl criado
         return $purl;
     }
+    //============================================================
+    public function validar_email($purl){
+        // registro do novo cliente
+        $db = new Database;
+        $parametros  = [
+            'purl' => $purl,
+        ];
+        $resultados = $db->select('SELECT * FROM clientes WHERE purl = :purl', $parametros);
+        // Verifica se foi encontrado o cliente
+        if(count($resultados)!=1){
+            return false;
+        }
+
+        $id_cliente  = $resultados[0]->id_cliente;
+        // Atualiza dados do cliente
+        $parametros =[
+            ':id_cliente'=>$id_cliente,
+        ];
+        $db->update('UPDATE clientes SET purl= null, ativo=1 , updated_at=NOW() WHERE id_cliente  = :id_cliente' , $parametros);
+
+        return true;
+    }
+
 }
