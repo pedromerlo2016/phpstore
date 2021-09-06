@@ -8,7 +8,9 @@
             "email": "pedro_merlo@globo.com"
         }
     ],
-    "require": {},
+    "require": {
+        "phpmailer/phpmailer": "^6.5"
+    },
     "autoload": {
         "psr-4": {
             "core\\": "core/"

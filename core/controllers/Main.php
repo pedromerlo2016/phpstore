@@ -3,6 +3,7 @@
 namespace core\controllers;
 
 use core\classes\Database;
+use core\classes\EnviarEmail;
 use core\classes\Store;
 use core\models\Clientes;
 
@@ -90,7 +91,8 @@ class Main
        
        
         // apresentar uma mensagem indicando para validar seu e-mail
-
+        $enviarEmail =  new EnviarEmail;
+        $enviarEmail->enviar_email_confirmacao_novo_cliente();
 
        
     }
