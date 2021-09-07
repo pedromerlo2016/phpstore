@@ -34,12 +34,12 @@ class EnviarEmail
             $mail->Subject = APP_NAME.' - Confirmação de e-mail.';
              //Mensagens
             $html = '<p>Seja  bem vindo a nossa loja '.APP_NAME .'.</p>';
-            $html.= '<p>Para pode aceesar nosssa loja, é nmecessário confirmar seu e-mail.</p>';
-            $html.= '<p>Para confirma o e-mail, click no link abaixao: </p>';
+            $html.= '<p>Para pode acessar nosssa loja, é necessário confirmar seu e-mail.</p>';
+            $html.= '<p>Para confirmar o e-mail, click no link abaixo: </p>';
             $html.= '<p><a href="'.BASE_URL.'?a=confirmar_email&purl='.$purl.'" >Confirmar E-mail</a></p>';
             $html.= '<p><i><small>'.APP_NAME.'</small></i></p>';
             $mail->Body    = $html;
-            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+            //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
             $mail->send();
             return true;

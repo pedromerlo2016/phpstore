@@ -95,7 +95,15 @@ class Main
         $enviarEmail =  new EnviarEmail;
         $reultado =  $enviarEmail->enviar_email_confirmacao_novo_cliente(strtolower(trim($_POST['text_email'])), $purl);
         if ($reultado) {
-            echo 'Email Enviado';
+              // apresenta a pagina do cliente criado com sucesso
+        Store::Layout([
+            'layouts/html_header',
+            'header',
+            'criar_cliente_sucesso',
+            'footer',
+            'layouts/html_footer',
+        ]);
+        return;
         } else {
             echo 'Ocorreu um erro';
         }
@@ -123,12 +131,24 @@ class Main
 
         $cliente = new Clientes;
         $resultado = $cliente->validar_email($purl);
+         // apresentar o layout para informar que a conta foi validada
         if($resultado){
-            echo 'Conta validada com sucesso.';
+            Store::Layout([
+                'layouts/html_header',
+                'header',
+                'conta_confirmada',
+                'footer',
+                'layouts/html_footer',
+            ]);
         }else{
-            echo 'Erro.';
+            // Redirecionar para a pagina inicial
+            Store::redirect();
         }
 
+    }
+    //============================================================
+    public function login(){
+        echo "Formulário de login";
     }
 
     //============================================================
