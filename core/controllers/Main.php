@@ -95,15 +95,15 @@ class Main
         $enviarEmail =  new EnviarEmail;
         $reultado =  $enviarEmail->enviar_email_confirmacao_novo_cliente(strtolower(trim($_POST['text_email'])), $purl);
         if ($reultado) {
-              // apresenta a pagina do cliente criado com sucesso
-        Store::Layout([
-            'layouts/html_header',
-            'header',
-            'criar_cliente_sucesso',
-            'footer',
-            'layouts/html_footer',
-        ]);
-        return;
+            // apresenta a pagina do cliente criado com sucesso
+            Store::Layout([
+                'layouts/html_header',
+                'header',
+                'criar_cliente_sucesso',
+                'footer',
+                'layouts/html_footer',
+            ]);
+            return;
         } else {
             echo 'Ocorreu um erro';
         }
@@ -112,27 +112,27 @@ class Main
     public function confirmar_email()
     {
         // verifica se existe um cliente logado
-         if (Store::clienteLogado()) {
+        if (Store::clienteLogado()) {
             $this->index();
             return;
         }
 
         // Verificar se exite na query string um purl
-        if(!isset($_GET['purl'])){
+        if (!isset($_GET['purl'])) {
             $this->index();
             return;
         }
         $purl  = $_GET['purl'];
         // verifica se o purl válido
-        if(strlen($purl)!= 12){
+        if (strlen($purl) != 12) {
             $this->index();
             return;
         }
 
         $cliente = new Clientes;
         $resultado = $cliente->validar_email($purl);
-         // apresentar o layout para informar que a conta foi validada
-        if($resultado){
+        // apresentar o layout para informar que a conta foi validada
+        if ($resultado) {
             Store::Layout([
                 'layouts/html_header',
                 'header',
@@ -140,15 +140,57 @@ class Main
                 'footer',
                 'layouts/html_footer',
             ]);
-        }else{
+        } else {
             // Redirecionar para a pagina inicial
             Store::redirect();
         }
-
     }
     //============================================================
-    public function login(){
-        echo "Formulário de login";
+    public function login()
+    {
+        // verifica se existe um cliente logado
+        if (Store::clienteLogado()) {
+            Store::redirect();
+            return;
+        }
+        // Apresenta o formulario de login
+        Store::Layout([
+            'layouts/html_header',
+            'header',
+            'login_frm',
+            'footer',
+            'layouts/html_footer',
+        ]);
+    }
+    //============================================================
+    public function login_submit()
+    {
+        // verifica se já exite um cliente logado
+        if (Store::clienteLogado()) {
+            Store::redirect();
+            return;
+        }
+        // verifica se foi efetuado um post do formulario de login
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            Store::redirect();
+            return;
+        }
+        // Verifica se o login é válido
+        // Validar se os campos vieram corretamente preenchidos
+        if (
+            !isset($_POST['text_usuario']) ||
+            !isset($_POST['text_senha']) ||
+            !filter_var(trim($_POST['text_usuario']), FILTER_VALIDATE_EMAIL)
+        ) {
+            // erro de preenchimento de formulario
+            $_SESSION['erro']='Login inválido';
+            Store::redirect('login');
+            return;
+        }
+        echo "OK";
+        // Consultar ao DB
+        // Criar sessão de cliente
+
     }
 
     //============================================================
