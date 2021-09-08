@@ -183,11 +183,11 @@ class Main
             !filter_var(trim($_POST['text_usuario']), FILTER_VALIDATE_EMAIL)
         ) {
             // erro de preenchimento de formulario
-            $_SESSION['erro']='Login inválido';
+            $_SESSION['erro'] = 'Login inválido';
             Store::redirect('login');
             return;
         }
-       
+
         // Consultar ao DB
         // prepara os dados para o modelo
         $email = trim(strtolower($_POST['text_usuario']));
@@ -197,17 +197,29 @@ class Main
         $resultado = $cliente->validar_login($email, $senha);
         // analisa o resultado
 
-        if( is_bool($resultado)){
+        if (is_bool($resultado)) {
             // Login Inválido
             Store::redirect('login');
             return;
-        }else{
+        } else {
             // Criar sessão de cliente
-            $_SESSION['cliente']= $resultado;
+            $_SESSION['cliente'] = $resultado->id_cliente;
+            $_SESSION['usuario'] = $resultado->email;
+            $_SESSION['nome_cliente'] = $resultado->nome_completo;
+            // redireciona para a loja
             Store::redirect();
         }
-        
+    }
 
+    //============================================================
+    public function logout()
+    {
+        // remove as variaveis de sessão
+        // Criar sessão de cliente
+        unset($_SESSION['cliente']); 
+        unset($_SESSION['usuario']); 
+        unset($_SESSION['nome_cliente'] );
+        Store::redirect();
     }
 
     //============================================================
