@@ -75,4 +75,33 @@ class Clientes
         return true;
     }
 
+     //============================================================
+     public function validar_login($email, $senha)
+     {
+        $db= new Database();
+        // verifica se o usuario e login são válidos
+        $parametros=[
+            ':email'=> $email,
+        ];
+        $resultado = $db->select("SELECT * FROM clientes WHERE 
+        email = :email AND ativo = 1 AND deleted_at IS NULL", $parametros);
+
+        if(count($resultado)!= 1){
+            // usuário não existe
+            $_SESSION['erro']="Login Inválido";
+            return false;
+        }else{
+            // temos um usuário
+            $usuario = $resultado[0];
+            // verificar a senha
+            if(!password_verify($senha , $usuario->senha)){
+                // senha inválida
+                $_SESSION['erro']="Login Inválido";
+                return false;
+            }else{
+                // login válido
+                return $usuario;
+            }
+        }
+     }
 }

@@ -187,9 +187,26 @@ class Main
             Store::redirect('login');
             return;
         }
-        echo "OK";
+       
         // Consultar ao DB
-        // Criar sessão de cliente
+        // prepara os dados para o modelo
+        $email = trim(strtolower($_POST['text_usuario']));
+        $senha = trim(strtolower($_POST['text_senha']));
+        // carrega o model e verifica se o login é válido
+        $cliente  = new Clientes();
+        $resultado = $cliente->validar_login($email, $senha);
+        // analisa o resultado
+
+        if( is_bool($resultado)){
+            // Login Inválido
+            Store::redirect('login');
+            return;
+        }else{
+            // Criar sessão de cliente
+            $_SESSION['cliente']= $resultado;
+            Store::redirect();
+        }
+        
 
     }
 
