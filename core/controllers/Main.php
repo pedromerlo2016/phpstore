@@ -6,6 +6,7 @@ use core\classes\Database;
 use core\classes\EnviarEmail;
 use core\classes\Store;
 use core\models\Clientes;
+use core\models\Produtos;
 
 class Main
 {
@@ -26,13 +27,26 @@ class Main
     public function loja()
     {
         // apresenta a pagina da loja
+
+        // buscar a lista de produtos disponíveis
+        $produtos = new Produtos();
+        // analisa que categoria ira mostrar
+
+        $c="todos";
+        if(isset($_GET['c'])){
+            $c=$_GET['c'];
+        };
+
+        $lista_produtos = $produtos->lista_produtos_disponiveis($c);
+
+        //Store::printData($lista_produtos);
         Store::Layout([
             'layouts/html_header',
             'header',
             'loja',
             'footer',
             'layouts/html_footer',
-        ]);
+        ], ['produtos'=> $lista_produtos]);
     }
     //============================================================
     public function novo_cliente()
