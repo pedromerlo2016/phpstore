@@ -38,6 +38,16 @@ class Store{
         // Faz o redirecionamento para rota desejada
         header("Location: ".BASE_URL."?a=$rota");
     }
+    //============================================================
+    public static function printData($data){
+        if(is_array($data)|| is_object($data)){
+            echo '<pre>';
+            print_r($data);
+        }else{
+            echo '<pre>';
+            echo $data;
+        }
 
-
+        die('Terminado');
+    }
 }
