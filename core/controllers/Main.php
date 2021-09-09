@@ -38,7 +38,11 @@ class Main
         };
 
         $lista_produtos = $produtos->lista_produtos_disponiveis($c);
-
+        $lista_categorias = $produtos->lista_categorias();
+        $dados = [
+            'produtos'=>$lista_produtos,
+            'categorias'=>$lista_categorias
+        ];
         //Store::printData($lista_produtos);
         Store::Layout([
             'layouts/html_header',
@@ -46,7 +50,7 @@ class Main
             'loja',
             'footer',
             'layouts/html_footer',
-        ], ['produtos'=> $lista_produtos]);
+        ], $dados);
     }
     //============================================================
     public function novo_cliente()
