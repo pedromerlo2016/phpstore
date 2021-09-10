@@ -23,16 +23,20 @@ class Carrinho
     
         // vai busrcar o id_produto na query string
         if(!isset($_GET['id_produto'])){
+            echo isset($_SESSION['carrinho']) ? count($_SESSION['carrinho']): '';
             header('Location: ').BASE_URL.'index.php?a=loja';
             return;
         }
+       
         // define o id do produto
         $id_produto = $_GET['id_produto'];
 
         $produtos = new Produtos();
         $resultados = $produtos->verifica_stock_produto($id_produto);
+   
         if(!$resultados){
             header('Location: ').BASE_URL.'index.php?a=loja';
+            echo isset($_SESSION['carrinho']) ? count($_SESSION['carrinho']): '';
             return;
         }
       
