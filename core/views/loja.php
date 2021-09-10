@@ -1,3 +1,7 @@
+<?php
+print_r($_SESSION);
+
+?>
 <div class="container espaco-fundo">
     <div class="row">
         <div class="div col-12 text-center my-5">
@@ -21,7 +25,7 @@
                         <p><?= $produto->nome ?></p>
                         <p><?= 'R$ ' . $produto->preco ?></p>
                         <div>
-                            <button>Adicionar ao carrinho</button>
+                            <button class="btn btn-primary btn-sm" onclick="adicionar_carrinho(<?=$produto->id_produto ?>)"><i class="fas fa-shopping-cart me-2"></i>Adicionar ao carrinho</button>
                         </div>
                     </div>
                 </div>

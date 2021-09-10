@@ -17,7 +17,9 @@ $rotas = [
     'login_submit'=>'main@login_submit',
     'logout'=>'main@logout',
 
-    'carrinho'=>'main@carrinho',
+    // carrinho
+    'adicionar_carrinho'=>'carrinho@adicionar_carrinho',
+    'carrinho'=>'carrinho@carrinho',
 ];
 
 // define ação padrão

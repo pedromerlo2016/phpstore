@@ -240,16 +240,5 @@ class Main
         Store::redirect();
     }
 
-    //============================================================
-    public function carrinho()
-    {
-        // apresenta a pagina do carrinho
-        Store::Layout([
-            'layouts/html_header',
-            'header',
-            'carrinho',
-            'footer',
-            'layouts/html_footer',
-        ]);
-    }
+   
 }
