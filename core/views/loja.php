@@ -1,6 +1,5 @@
 <?php
 print_r($_SESSION);
-
 ?>
 <div class="container espaco-fundo">
     <div class="row">
