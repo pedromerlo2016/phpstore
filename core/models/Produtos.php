@@ -35,4 +35,14 @@ class Produtos
        }
        return $categorias;
     }
+
+    //============================================================
+    public function verifica_stock_produto($id_produto){
+        $db = new Database();
+        $parametros=[':id_produto' => $id_produto];
+        $sql = 'SELECT * FROM produtos WHERE id_produto = :id_produto 
+        AND visivel = 1 AND stock > 0 ';
+        $resultados = $db->select($sql , $parametros);
+        return count($resultados)!= 0 ? true : false;
+    }
 }

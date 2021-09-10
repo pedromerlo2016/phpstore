@@ -1,5 +1,5 @@
 <?php
-print_r($_SESSION);
+// print_r($_SESSION);
 ?>
 <div class="container espaco-fundo">
     <div class="row">
@@ -17,6 +17,7 @@ print_r($_SESSION);
                 <h3>Não exitem produto disponíveis</h3>
             </div>
         <?php else : ?>
+            <!-- cliclo de apresentação de produtos -->
             <?php foreach ($produtos as $produto) : ?>
                 <div class="col-sm-4 col-6 p-2">
                     <div class="text-center p-3 box-produto">
@@ -24,7 +25,12 @@ print_r($_SESSION);
                         <p><?= $produto->nome ?></p>
                         <p><?= 'R$ ' . $produto->preco ?></p>
                         <div>
-                            <button class="btn btn-primary btn-sm" onclick="adicionar_carrinho(<?=$produto->id_produto ?>)"><i class="fas fa-shopping-cart me-2"></i>Adicionar ao carrinho</button>
+                            <?php if($produto->stock > 0 ): ?>
+                                <button class="btn btn-primary btn-sm" onclick="adicionar_carrinho(<?=$produto->id_produto ?>)"><i class="fas fa-shopping-cart me-2"></i>Adicionar ao carrinho</button>
+                            <?php else :?>
+                                <button class="btn btn-danger btn-sm"><i class="fas fa-shopping-cart me-2"></i>Sem estoque</button>
+                            <?php endif?>
+                           
                         </div>
                     </div>
                 </div>

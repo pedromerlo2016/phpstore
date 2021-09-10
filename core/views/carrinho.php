@@ -1,7 +1,8 @@
 <h3>Carrinho</h3>
-<button onclick="limpar_carrinho()">Limpar</button>
+<a href="?a=limpar_carrinho" class="btn btn-sm btn-primary">Limpar carrinho</a>
 <pre>
-<?php 
+<?php
 print_r($_SESSION);
 ?>
 </pre>
+
