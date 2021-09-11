@@ -14,7 +14,7 @@ class Carrinho
     {
         
         
-        // adiciona/gestão da variável de SESSÂO do carrinho
+        // adiciona/gestão da variável de SESSÃO do carrinho
         /*
         1. puxar o arry do carrinho da sessão pra o código
         2. gerir o array do carrinho
@@ -33,25 +33,26 @@ class Carrinho
 
         $produtos = new Produtos();
         $resultados = $produtos->verifica_stock_produto($id_produto);
-   
+        
         if(!$resultados){
             header('Location: ').BASE_URL.'index.php?a=loja';
             echo isset($_SESSION['carrinho']) ? count($_SESSION['carrinho']): '';
             return;
         }
-      
-        $carrinho = [];
+        
+        $carrinho = []; 
         if(isset($_SESSION['carrinho'])){
-            //$carrinho= $_SESSION['carrinho'];
-            echo count($_SESSION['carrinho']);
-            return;
+            $carrinho= $_SESSION['carrinho'];
+            //echo count($_SESSION['carrinho']);
+            //return;
         }
 
 
 
         // adicionar o produto ao carrinho
         // caso já exista, soma mais um
-
+       
+        //$carrinho=$_SESSION['carrinho'];
         if(key_exists($id_produto, $carrinho))
         {
             // já exite o produto, Acrescenta mais uma unidade
@@ -93,6 +94,38 @@ class Carrinho
     //============================================================
     public function carrinho()
     {
+       
+        // Verifica se emxite carrinho
+        if(!isset($_SESSION['carrinho']) || count($_SESSION['carrinho']) == 0){
+            $dados=[
+                'carrinho'=> null,
+            ];
+        } else{
+            //buscar os dados dos produtos do carrinho
+            $ids = [];
+
+            foreach($_SESSION['carrinho'] as $id_produto=>$quatidade){
+                array_push($ids, $id_produto);
+               
+
+            }
+            //transforma o array em string
+            $ids = implode(',',$ids);
+            $produtos = new Produtos();
+            $resultados=$produtos->buscar_produtos_por_ids($ids);
+
+            Store::printData($resultados);
+            die();
+
+            //criar um ciclo que constroi a estrutura de dados para o carrinho
+
+
+
+            $dados=[
+                'carrinho'=> 1,
+            ];
+        }  
+
         // apresenta a pagina do carrinho
         Store::Layout([
             'layouts/html_header',
@@ -100,6 +133,15 @@ class Carrinho
             'carrinho',
             'footer',
             'layouts/html_footer',
-        ]);
+        ], $dados);
     }
 }
+/*
+    não exite carrinho?
+    'Carrinho vazio' (link para voltar a loja)
+    exite carrinho
+    montar uma tabela 
+    image | Designação | quantidade |preço 
+
+                                    |Total
+*/

@@ -45,4 +45,11 @@ class Produtos
         $resultados = $db->select($sql , $parametros);
         return count($resultados)!= 0 ? true : false;
     }
+
+    //============================================================
+    public function buscar_produtos_por_ids($ids){
+        $db = new Database();
+        return $db->select("SELECT * FROM produtos WHERE id_produto IN($ids)");
+    }
+
 }
