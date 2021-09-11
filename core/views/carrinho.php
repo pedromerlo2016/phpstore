@@ -1,11 +1,19 @@
-<h3>Carrinho</h3>
-<a href="?a=limpar_carrinho" class="btn btn-sm btn-primary">Limpar carrinho</a>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 class="my-3">A sua compra</h3>
+            <hr>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col">
             <?php if ($carrinho == null) : ?>
-                <p>Carrihno vazio</p>
-                <p><a href="?a=loja" class="btn btn-primary">Loja</a></p>
+                <p class="text-center fs-2">Não exitem produtos no carrinho</p>
+                <div class="mt-4 text-center">
+                    <a href="?a=loja" class="btn btn-primary">Loja</a>
+                </div>
             <?php else : ?>
                 <table class="table table-striped table-sm">
                     <thead>
@@ -21,27 +29,38 @@
                         <?php $contador  =  count($carrinho) ?>
                         <?php for ($i = 0; $i < $contador; $i++) :
                             $produto = $carrinho[$i];
-                            if ($i < $contador-1) : ?>
+                            if ($i < $contador - 1) : ?>
                                 <tr>
-                                    <td><img src="assets/images/produtos/<?= $produto['imagem']?>" class="img-fluid" width="50"></td>
-                                    <td><?= $produto['titulo'] ?></td>
-                                    <td class='text-center col-sm-1'><?= $produto['quantidade'] ?></td>
-                                    <td class="text-end col-sm-1"><?=number_format($produto['preco'],2,',','.') ?></td>
-                                    <td><a href="" class="btn btn-sm btn-danger"><i class="fas fa-times"></i></a> </td>
+                                    <td><img src="assets/images/produtos/<?= $produto['imagem'] ?>" class="img-fluid" width="50"></td>
+                                    <td class="align-middle fs-5"><?= $produto['titulo'] ?></td>
+                                    <td class='text-center align-middle col-sm-1 fs-5'><?= $produto['quantidade'] ?></td>
+                                    <td class="text-end col-sm-2 align-middle fs-5">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
+                                    <td class="align-middle text-center"><a href="" class="btn btn-sm btn-danger"><i class="fas fa-times"></i></a> </td>
+
                                 </tr>
                             <?php else : ?>
                                 <tr>
                                     <td></td>
                                     <td></td>
-                                    <td class="fw-bold">Total</td>
-                                    <td class="text-end fw-bold"><?=number_format($produto,2,',','.') ?></td>
+                                    <td class="fw-bold text-end fs-4">Total:</td>
+                                    <td class="text-end fw-bold fs-4">R$ <?= number_format($produto, 2, ',', '.') ?></td>
                                     <td></td>
                                 </tr>
                             <?php endif ?>
                         <?php endfor ?>
                     </tbody>
                 </table>
+                <div class="row">
+                    <div class="col">
+                        <a href="?a=limpar_carrinho" class="btn btn-sm btn-primary">Limpar carrinho</a>
+                    </div>
+                    <div class="col text-end">
+                        <a href="?a=loja" class="btn btn-sm btn-primary">Continuar comprando</a>
+                        <a href="#" class="btn btn-sm btn-primary">Finalizar encomenrda</a>
+                    </div>
+                </div>
             <?php endif; ?>
+
         </div>
     </div>
 </div>
