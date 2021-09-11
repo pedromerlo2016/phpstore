@@ -7,6 +7,11 @@
                 <p>Carrihno vazio</p>
                 <p><a href="?a=loja" class="btn btn-primary">Loja</a></p>
             <?php else:?>
+                <?php 
+                echo "<pre>";
+                print_r($dados);
+                echo "</pre>";
+                ?>
             <?php endif;?>
         </div>
     </div>
