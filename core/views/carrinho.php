@@ -35,7 +35,11 @@
                                     <td class="align-middle fs-5"><?= $produto['titulo'] ?></td>
                                     <td class='text-center align-middle col-sm-1 fs-5'><?= $produto['quantidade'] ?></td>
                                     <td class="text-end col-sm-2 align-middle fs-5">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
-                                    <td class="align-middle text-center"><a href="" class="btn btn-sm btn-danger"><i class="fas fa-times"></i></a> </td>
+                                    <td class="align-middle text-center">
+                                        <a href="?a=remover_produto_carrinho&id_produto=<?=$produto['id_produto']?>" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-times"></i>
+                                        </a>
+                                    </td>
 
                                 </tr>
                             <?php else : ?>
@@ -56,11 +60,10 @@
                     </div>
                     <div class="col text-end">
                         <a href="?a=loja" class="btn btn-sm btn-primary">Continuar comprando</a>
-                        <a href="#" class="btn btn-sm btn-primary">Finalizar encomenrda</a>
+                        <a href="#" class="btn btn-sm btn-primary">Finalizar encomenda</a>
                     </div>
                 </div>
             <?php endif; ?>
-
         </div>
     </div>
 </div>
