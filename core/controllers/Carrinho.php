@@ -129,7 +129,7 @@ class Carrinho
                         $preco = $produto->preco * $quantidade;
                         // colocar o produto na coleção $dados_temp
                         array_push($dados_tmp, [
-                            'id_produto'=> $id_produto,
+                            'id_produto' => $id_produto,
                             'imagem' => $imagem,
                             'titulo' => $titulo,
                             'quantidade' => $quantidade,
@@ -140,13 +140,13 @@ class Carrinho
                 }
             }
             $total_da_compra = 0;
-            foreach($dados_tmp as $item){
+            foreach ($dados_tmp as $item) {
                 $total_da_compra  += $item['preco'];
             }
-            array_push($dados_tmp,$total_da_compra);
-           $dados = [
-               'carrinho' => $dados_tmp
-           ];
+            array_push($dados_tmp, $total_da_compra);
+            $dados = [
+                'carrinho' => $dados_tmp
+            ];
         }
 
         // apresenta a pagina do carrinho
@@ -159,44 +159,97 @@ class Carrinho
         ], $dados);
     }
     //============================================================
-    public function remover_produto_carrinho(){
+    public function remover_produto_carrinho()
+    {
         // pega o id do produto na query string
-        if(isset($_GET['id_produto'])){
-            $id_produto= $_GET['id_produto'];
+        if (isset($_GET['id_produto'])) {
+            $id_produto = $_GET['id_produto'];
             $carrinho = $_SESSION['carrinho'];
             unset($carrinho[$id_produto]);
-            $_SESSION['carrinho']=$carrinho;
+            $_SESSION['carrinho'] = $carrinho;
             $this->carrinho();
-        }    
+        }
     }
     //============================================================
     public function finalizar_encomenda()
     {
         // Verifica se exite cliente logado
-        if(!isset($_SESSION['cliente'])){
-            
+        if (!isset($_SESSION['cliente'])) {
             //coloca na sessão um "referrer" temporário
-            $_SESSION['tmp_carrinho']=true;
+            $_SESSION['tmp_carrinho'] = true;
             //redireciona para login
             Store::redirect('login');
+        } else {
+            Store::redirect('finalizar_encomenda_resumo');
         }
-        
-        
-        
-        //Store::printData($_SESSION);
-
-        /*
-        Verificar se existe cliente logado
-        Não exite
-            - colocar um "referrer" na sessão
-            - abrir quadro de login
-            - após login com sucesso, regressar a loja
-            - remover o "referrer" da sessaõ
-        Existe
-            - confirmar
-        
-            */
-        
     }
 
+    //============================================================
+    public function finalizar_encomenda_resumo()
+    {
+        // verifica se usuario logado
+        if(!isset($_SESSION['cliente'])){
+            Store::redirect('inicio');
+        }
+
+        $ids = [];
+
+        foreach ($_SESSION['carrinho'] as $id_produto => $quatidade) {
+            array_push($ids, $id_produto);
+        }
+        //transforma o array em string
+        $ids = implode(',', $ids);
+        //busca informação dos produtos do carrinho
+        $produtos = new Produtos();
+        $resultados = $produtos->buscar_produtos_por_ids($ids);
+
+        // Criar um ciclo por cada produto do carrinho
+        // identificar os dados do produtos
+        // Criar uma coleção de dados para a página
+        // imagem | titulo | quantidade | preço | eliminar |mudar a quantidade 
+
+        $dados_tmp = [];
+        foreach ($_SESSION['carrinho'] as $id_produto => $quantidade_carrinho) {
+            // imagem
+            foreach ($resultados as $produto) {
+                if ($produto->id_produto == $id_produto) {
+                    $id_produto = $produto->id_produto;
+                    $imagem = $produto->imagem;
+                    $titulo = $produto->nome;
+                    $quantidade = $quantidade_carrinho;
+                    $preco = $produto->preco * $quantidade;
+                    // colocar o produto na coleção $dados_temp
+                    array_push($dados_tmp, [
+                        'id_produto' => $id_produto,
+                        'imagem' => $imagem,
+                        'titulo' => $titulo,
+                        'quantidade' => $quantidade,
+                        'preco' => $preco
+                    ]);
+                    break;
+                }
+            }
+        }
+        $total_da_compra = 0;
+        foreach ($dados_tmp as $item) {
+            $total_da_compra  += $item['preco'];
+        }
+        array_push($dados_tmp, $total_da_compra);
+        // Preparar os dados da view
+        $dados=[];
+        $dados['carrinho']=$dados_tmp;
+        // buscar informações do cliente
+        $cliente = new Clientes();
+        $dados_cliente = $cliente->buscar_dados_cliente($_SESSION['cliente']);
+        $dados['cliente']= $dados_cliente[0];
+       
+        // apresenta a pagina do resumo da encomenda
+        Store::Layout([
+            'layouts/html_header',
+            'header',
+            'encomenda_resumo',
+            'footer',
+            'layouts/html_footer',
+        ], $dados);
+    }
 }

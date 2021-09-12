@@ -23,6 +23,7 @@ $rotas = [
     'limpar_carrinho'=>'carrinho@limpar_carrinho',
     'remover_produto_carrinho'=>'carrinho@remover_produto_carrinho',
     'finalizar_encomenda'=>'carrinho@finalizar_encomenda',
+    'finalizar_encomenda_resumo'=>'carrinho@finalizar_encomenda_resumo',
 ];
 
 // define ação padrão

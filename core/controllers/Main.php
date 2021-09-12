@@ -227,9 +227,9 @@ class Main
 
 
             if (isset($_SESSION['tmp_carrinho'])) {
-                // remove a variavel da sessão e redireciona para o carrinho
+                // remove a variavel da sessão e redireciona para o resumo da encomenda
                 unset($_SESSION['tmp_carrinho']);
-                Store::redirect('carrinho');
+                Store::redirect('finalizar_encomenda_resumo');
             } else {
                 // redireciona para a loja
                 Store::redirect();
