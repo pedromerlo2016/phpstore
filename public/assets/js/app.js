@@ -20,3 +20,17 @@ function limpar_carrinho_off(){
     var e = document.getElementById('confirma_limpar_carrinho');
     e.style.display="none";
 }
+
+// ============================================================
+function usar_residencai_alternativa(){
+    // mostar ou esconder o espaço da residência alternativa
+    var e  =  document.getElementById('check_residencia_alternatida');
+    var espaco = document.getElementById('residencia_alternativa');
+    if(e.checked==true){
+        // mostra o espaço da residência alternativa
+        espaco.style.display="block";
+    }else{
+        // esconde o espaço da residência alternativa
+        espaco.style.display="none";
+    }
+}
