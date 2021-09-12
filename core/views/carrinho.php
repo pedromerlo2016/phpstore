@@ -56,7 +56,12 @@
                 </table>
                 <div class="row">
                     <div class="col">
-                        <a href="?a=limpar_carrinho" class="btn btn-sm btn-primary">Limpar carrinho</a>
+                        <!-- <a href="?a=limpar_carrinho" class="btn btn-sm btn-primary">Limpar carrinho</a> -->
+                        <button class="btn btn-sm btn-primary" onclick="limpar_carrinho()">Limpar carrinha</button>
+                        <span id="confirma_limpar_carrinho" style="display:none;" class="ms-3">Confirma?
+                            <button onclick="limpar_carrinho_off()" class="btn btn-sm btn-primary">Não</button>
+                            <a href="?a=limpar_carrinho" class="btn btn-sm btn-primary">Sim</a>
+                        </span>
                     </div>
                     <div class="col text-end">
                         <a href="?a=loja" class="btn btn-sm btn-primary">Continuar comprando</a>
