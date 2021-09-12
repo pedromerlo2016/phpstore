@@ -51,16 +51,5 @@ function residencia_alternativa(){
                 text_telefone:document.getElementById('text_telefone_alternativa').value,
             }
         }
-    ).then(function(response){
-        console.log('ok');
-    });
-
-
-   
-
-    // console.log(document.getElementById('text_residencia_alternativa').value);
-    // console.log(document.getElementById('text_cidade_alternativa').value);
-    // console.log(document.getElementById('text_email_alternativa').value);
-    // console.log(document.getElementById('text_telefone_alternativa').value);
-    
+    );
 }
