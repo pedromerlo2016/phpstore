@@ -188,7 +188,7 @@ class Carrinho
     public function finalizar_encomenda_resumo()
     {
         // verifica se usuario logado
-        if(!isset($_SESSION['cliente'])){
+        if (!isset($_SESSION['cliente'])) {
             Store::redirect('inicio');
         }
 
@@ -236,13 +236,13 @@ class Carrinho
         }
         array_push($dados_tmp, $total_da_compra);
         // Preparar os dados da view
-        $dados=[];
-        $dados['carrinho']=$dados_tmp;
+        $dados = [];
+        $dados['carrinho'] = $dados_tmp;
         // buscar informações do cliente
         $cliente = new Clientes();
         $dados_cliente = $cliente->buscar_dados_cliente($_SESSION['cliente']);
-        $dados['cliente']= $dados_cliente[0];
-       
+        $dados['cliente'] = $dados_cliente[0];
+
         // apresenta a pagina do resumo da encomenda
         Store::Layout([
             'layouts/html_header',
@@ -251,5 +251,32 @@ class Carrinho
             'footer',
             'layouts/html_footer',
         ], $dados);
+    }
+
+    //============================================================
+    public function escolher_metodo_pagamento()
+    {
+        echo "Escolher forma de pagamento";
+        // $_SESSION['dados_alternativos']=[
+        //     'residencia',
+        //     'cidade',
+        //     'email',
+        //     'telefone',
+        // ];
+
+        Store::printData($_SESSION);
+    }
+
+    //============================================================
+    public function residencia_alternativa()
+    {
+        // recebe os dados via AJAX(axios)
+        $post = json_decode(file_get_contents('php://input'), true);
+        $_SESSION['dados_alternativos'] = [
+            'residencia' => $post['text_residencia'],
+            'cidade' => $post['text_cidade'],
+            'email' => $post['text_email'],
+            'telefone' => $post['text_telefone'],
+        ];
     }
 }

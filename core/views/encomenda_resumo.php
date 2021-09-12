@@ -52,22 +52,34 @@
                 </div>
             </div>
             <div class="form-check">
-                <label for="check_residencia_alternatida" class="form-check-label">Utilizar residência alternativa</label>              
+                <label for="check_residencia_alternatida" class="form-check-label">Utilizar residência alternativa</label>
                 <input type="checkbox" onchange="usar_residencai_alternativa()" name="check_residencia_alternatida" id="check_residencia_alternatida" class="form-check-input">
             </div>
-
+            <!-- Redidência alternativa -->
             <div id="residencia_alternativa" style="display:none">
-                residência alternativa
-            </div>                
-
-
-
-            <div class="row my-5">
+                <div class="mb-3">
+                    <label for="text_residencia_alternativa" class="form-label">Residência:</label>
+                    <input type="text" id="text_residencia_alternativa" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="text_cidade_alternativa" class="form-label">Cidade:</label>
+                    <input type="text" id="text_cidade_alternativa" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="text_email_alternativa" class="form-label">Email:</label>
+                    <input type="email" id="text_email_alternativa" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="text_telefone_alternativa" class="form-label">telefone:</label>
+                    <input type="text" id="text_telefone_alternativa" class="form-control">
+                </div>
+            </div>
+            <div class="row mb-5 mt-5">
                 <div class="col">
-                    cancelar
+                    <a href="?a=carrinho" class="btn btn-sm btn-primary">Cancelar</a>
                 </div>
                 <div class="col text-end">
-                    escolher método de pagamento
+                    <a href="?a=escolher_metodo_pagamento" onclick="residencia_alternativa()" class="btn btn-sm btn-primary">Escolher método de pagamento</a>
                 </div>
             </div>
         </div>

@@ -24,6 +24,9 @@ $rotas = [
     'remover_produto_carrinho'=>'carrinho@remover_produto_carrinho',
     'finalizar_encomenda'=>'carrinho@finalizar_encomenda',
     'finalizar_encomenda_resumo'=>'carrinho@finalizar_encomenda_resumo',
+    'residencia_alternativa' => 'carrinho@residencia_alternativa',
+    'escolher_metodo_pagamento' =>'carrinho@escolher_metodo_pagamento'
+    //
 ];
 
 // define ação padrão

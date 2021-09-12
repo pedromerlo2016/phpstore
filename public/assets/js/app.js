@@ -34,3 +34,33 @@ function usar_residencai_alternativa(){
         espaco.style.display="none";
     }
 }
+
+// ============================================================
+function residencia_alternativa(){
+    // buscar os dados dos inputs
+    // enviar por url via post para um médoto do controlador
+    // metodo controlador recebe os dados e coloca na sessão
+    axios(
+        {
+            method:'post',
+            url:'?a=residencia_alternativa',
+            data: {
+                text_residencia:document.getElementById('text_residencia_alternativa').value,
+                text_cidade:document.getElementById('text_cidade_alternativa').value,
+                text_email:document.getElementById('text_email_alternativa').value,
+                text_telefone:document.getElementById('text_telefone_alternativa').value,
+            }
+        }
+    ).then(function(response){
+        console.log('ok');
+    });
+
+
+   
+
+    // console.log(document.getElementById('text_residencia_alternativa').value);
+    // console.log(document.getElementById('text_cidade_alternativa').value);
+    // console.log(document.getElementById('text_email_alternativa').value);
+    // console.log(document.getElementById('text_telefone_alternativa').value);
+    
+}
