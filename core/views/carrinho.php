@@ -65,7 +65,7 @@
                     </div>
                     <div class="col text-end">
                         <a href="?a=loja" class="btn btn-sm btn-primary">Continuar comprando</a>
-                        <a href="#" class="btn btn-sm btn-primary">Finalizar encomenda</a>
+                        <a href="?a=finalizar_encomenda" class="btn btn-sm btn-primary">Finalizar encomenda</a>
                     </div>
                 </div>
             <?php endif; ?>

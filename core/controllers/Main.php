@@ -32,16 +32,16 @@ class Main
         $produtos = new Produtos();
         // analisa que categoria ira mostrar
 
-        $c="todos";
-        if(isset($_GET['c'])){
-            $c=$_GET['c'];
+        $c = "todos";
+        if (isset($_GET['c'])) {
+            $c = $_GET['c'];
         };
 
         $lista_produtos = $produtos->lista_produtos_disponiveis($c);
         $lista_categorias = $produtos->lista_categorias();
         $dados = [
-            'produtos'=>$lista_produtos,
-            'categorias'=>$lista_categorias
+            'produtos' => $lista_produtos,
+            'categorias' => $lista_categorias
         ];
         //Store::printData($lista_produtos);
         Store::Layout([
@@ -224,8 +224,16 @@ class Main
             $_SESSION['cliente'] = $resultado->id_cliente;
             $_SESSION['usuario'] = $resultado->email;
             $_SESSION['nome_cliente'] = $resultado->nome_completo;
-            // redireciona para a loja
-            Store::redirect();
+
+
+            if (isset($_SESSION['tmp_carrinho'])) {
+                // remove a variavel da sessão e redireciona para o carrinho
+                unset($_SESSION['tmp_carrinho']);
+                Store::redirect('carrinho');
+            } else {
+                // redireciona para a loja
+                Store::redirect();
+            }
         }
     }
 
@@ -234,11 +242,9 @@ class Main
     {
         // remove as variaveis de sessão
         // Criar sessão de cliente
-        unset($_SESSION['cliente']); 
-        unset($_SESSION['usuario']); 
-        unset($_SESSION['nome_cliente'] );
+        unset($_SESSION['cliente']);
+        unset($_SESSION['usuario']);
+        unset($_SESSION['nome_cliente']);
         Store::redirect();
     }
-
-   
 }

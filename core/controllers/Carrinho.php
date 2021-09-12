@@ -169,4 +169,34 @@ class Carrinho
             $this->carrinho();
         }    
     }
+    //============================================================
+    public function finalizar_encomenda()
+    {
+        // Verifica se exite cliente logado
+        if(!isset($_SESSION['cliente'])){
+            
+            //coloca na sessão um "referrer" temporário
+            $_SESSION['tmp_carrinho']=true;
+            //redireciona para login
+            Store::redirect('login');
+        }
+        
+        
+        
+        //Store::printData($_SESSION);
+
+        /*
+        Verificar se existe cliente logado
+        Não exite
+            - colocar um "referrer" na sessão
+            - abrir quadro de login
+            - após login com sucesso, regressar a loja
+            - remover o "referrer" da sessaõ
+        Existe
+            - confirmar
+        
+            */
+        
+    }
+
 }
