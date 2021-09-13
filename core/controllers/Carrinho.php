@@ -242,7 +242,11 @@ class Carrinho
         $cliente = new Clientes();
         $dados_cliente = $cliente->buscar_dados_cliente($_SESSION['cliente']);
         $dados['cliente'] = $dados_cliente[0];
-
+        // gerar o código da encomenda
+        if(!isset($_SESSION['codigo_encomenda'])){
+            $codigo_encomenda =  Store::gerarCódigoEncomenda();
+            $_SESSION['codigo_encomenda']= $codigo_encomenda;
+        }
         // apresenta a pagina do resumo da encomenda
         Store::Layout([
             'layouts/html_header',

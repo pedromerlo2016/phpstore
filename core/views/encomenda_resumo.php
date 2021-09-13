@@ -51,11 +51,22 @@
                     <p>Telefone: <strong><?= $cliente->telefone ?></strong></p>
                 </div>
             </div>
+            <!-- Dados do Pagamento -->
+            <h5 class="bg-dark text-white p-2">Dados do pagamento</h5>
+            <div class="row">
+                <div class="col">
+                <p>Conta bancária: 123456789</p>
+                <p>Código da encomenda: <strong><?=$_SESSION['codigo_encomenda'] ?></strong></p>
+                <p>Total: <strong>R$ <?= number_format($produto, 2, ',', '.') ?></strong></p>
+                </div>
+            </div>
+            <!-- Redidência alternativa -->
+            <h5 class="bg-dark text-white p-2">Residência alternativa</h5>
             <div class="form-check">
                 <label for="check_residencia_alternatida" class="form-check-label">Utilizar residência alternativa</label>
                 <input type="checkbox" onchange="usar_residencai_alternativa()" name="check_residencia_alternatida" id="check_residencia_alternatida" class="form-check-input">
             </div>
-            <!-- Redidência alternativa -->
+            
             <div id="residencia_alternativa" style="display:none">
                 <div class="mb-3">
                     <label for="text_residencia_alternativa" class="form-label">Residência:</label>
@@ -79,7 +90,7 @@
                     <a href="?a=carrinho" class="btn btn-sm btn-primary">Cancelar</a>
                 </div>
                 <div class="col text-end">
-                    <a href="?a=escolher_metodo_pagamento" onclick="residencia_alternativa()" class="btn btn-sm btn-primary">Escolher método de pagamento</a>
+                    <a href="?a=escolher_metodo_pagamento" onclick="residencia_alternativa()" class="btn btn-sm btn-primary">Finalizar encomenda</a>
                 </div>
             </div>
         </div>
