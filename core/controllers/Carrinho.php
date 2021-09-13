@@ -230,11 +230,16 @@ class Carrinho
                 }
             }
         }
+
+        // calcula o total da encomenda
         $total_da_compra = 0;
         foreach ($dados_tmp as $item) {
             $total_da_compra  += $item['preco'];
         }
         array_push($dados_tmp, $total_da_compra);
+        
+        // colocar o preço total na sessão
+        $_SESSION['valor_total']=$total_da_compra;
         // Preparar os dados da view
         $dados = [];
         $dados['carrinho'] = $dados_tmp;
@@ -258,17 +263,33 @@ class Carrinho
     }
 
     //============================================================
-    public function escolher_metodo_pagamento()
+    public function confirmar_encomenda()
     {
-        echo "Escolher forma de pagamento";
-        // $_SESSION['dados_alternativos']=[
-        //     'residencia',
-        //     'cidade',
-        //     'email',
-        //     'telefone',
-        // ];
+        // guardar na base dae dados a encomenda
 
-        Store::printData($_SESSION);
+        // Aprensentar mensagem sobre encomenda confirmada
+        $codigo_encomenda= $_SESSION['codigo_encomenda'];
+        $total_encomenda= $_SESSION['valor_total'];
+        $dados= [
+            'codigo_encomenda'=> $codigo_encomenda,
+            'total_encomenda' => $total_encomenda
+        ];
+        // Limpar todos os dados da encomenda que estão no carrinho
+        
+
+        // enviar email para o cliente com os dados da encomenda e pagamento
+        Store::Layout([
+            'layouts/html_header',
+            'header',
+            'encomenda_confirmada',
+            'footer',
+            'layouts/html_footer',
+        ],$dados);
+
+        
+
+
+        // Store::printData($_SESSION);
     }
 
     //============================================================

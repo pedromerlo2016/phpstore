@@ -25,7 +25,7 @@ $rotas = [
     'finalizar_encomenda'=>'carrinho@finalizar_encomenda',
     'finalizar_encomenda_resumo'=>'carrinho@finalizar_encomenda_resumo',
     'residencia_alternativa' => 'carrinho@residencia_alternativa',
-    'escolher_metodo_pagamento' =>'carrinho@escolher_metodo_pagamento'
+    'confirmar_encomenda' =>'carrinho@confirmar_encomenda'
     //
 ];
 

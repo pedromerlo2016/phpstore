@@ -57,7 +57,7 @@
                 <div class="col">
                 <p>Conta bancária: 123456789</p>
                 <p>Código da encomenda: <strong><?=$_SESSION['codigo_encomenda'] ?></strong></p>
-                <p>Total: <strong>R$ <?= number_format($produto, 2, ',', '.') ?></strong></p>
+                <p>Total: <strong>R$ <?= number_format($total_encomenda, 2, ',', '.') ?></strong></p>
                 </div>
             </div>
             <!-- Redidência alternativa -->
@@ -90,7 +90,7 @@
                     <a href="?a=carrinho" class="btn btn-sm btn-primary">Cancelar</a>
                 </div>
                 <div class="col text-end">
-                    <a href="?a=escolher_metodo_pagamento" onclick="residencia_alternativa()" class="btn btn-sm btn-primary">Finalizar encomenda</a>
+                    <a href="?a=confirmar_encomenda" onclick="residencia_alternativa()" class="btn btn-sm btn-primary">Avançar para ckeckout</a>
                 </div>
             </div>
         </div>
