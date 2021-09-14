@@ -2,6 +2,7 @@
 
 namespace core\controllers;
 
+use core\classes\EnviarEmail;
 use core\classes\Store;
 use core\models\Clientes;
 use core\models\Produtos;
@@ -308,13 +309,10 @@ class Carrinho
             'total'=> 'R$ '. number_format($_SESSION['valor_total'],2,',','.'),
         ];
 
-        Store::printData($dados_encomenda);
-
-
-
-
-
+        //Store::printData($dados_encomenda);
         // enviar email para o cliente com os dados da encomenda e pagamento
+        $email = new EnviarEmail();
+        $resultado = $email->enviar_email_confirmacao_encomenda($_SESSION['usuario'], $dados_encomenda);
 
         // - Lista de produtos + quantidade  + preço/inid 
         //   2 x [nome do produto] - repco/unid
@@ -327,6 +325,7 @@ class Carrinho
         // - total
 
          // Aprensentar mensagem sobre encomenda confirmada
+        die('TERMINADO'); 
         Store::Layout([
             'layouts/html_header',
             'header',

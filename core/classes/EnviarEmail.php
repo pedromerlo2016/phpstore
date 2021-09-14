@@ -72,14 +72,29 @@ class EnviarEmail
 
             //Assunto
             $mail->isHTML(true);                  
-            $mail->Subject = APP_NAME.' - Confirmação de encomenda - xxxxxxxxx.';
+            $mail->Subject = APP_NAME.' - Confirmação de encomenda - '.$dados_encomenda['dados_pagamento']['codigo_encomenda'];
              //Mensagens
-            $html = '';
-            $html.= '';
-            $html.= '';
-            $html.= '';
-            $html.= '';
+            $html = '<p>Este e-mail serve para confirmar a sua encomenda</p>';
+            $html.= '<p>Dados da encomenda:</p>';
+            // lista dos produtos
+            $html.= '<ul>';
+            foreach($dados_encomenda['lista_produtos'] as $produto){
+                $html.= '<li>'.$produto.'</li>';
+            }
+            $html.= '</ul>';
+            // total
+            $html.= '<p>Total: <strong>'.$dados_encomenda['total'].'<strong></p>';
+            // dados do pagamento
+            $html.='<hr>';
+            $html.= '<p>DADOS DE PAGAMENTO:</p>';
+            $html.= '<p>Número da conta: <strong>'.$dados_encomenda['dados_pagamento']['numero_da_conta'].'</strong></p>';
+            $html.= '<p>Código da encomenda: <strong>'.$dados_encomenda['dados_pagamento']['codigo_encomenda'].'</strong></p>';
+            $html.= '<p>Valor a pagar: <strong>'.$dados_encomenda['dados_pagamento']['total'].'</strong></p>';
+            $html.='<hr>';
+            // nota importante
+            $html.= '<p>NOTA: A sua encomenda sómente será processada após o pagamento.</p>';
             $mail->Body    = $html;
+            
             //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
             $mail->send();
