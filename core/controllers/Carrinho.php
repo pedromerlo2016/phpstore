@@ -265,9 +265,10 @@ class Carrinho
     //============================================================
     public function confirmar_encomenda()
     {
-        // guardar na base dae dados a encomenda
-
-        // Aprensentar mensagem sobre encomenda confirmada
+        //Store::printData($_SESSION);
+        // guardar na base da dados a encomenda
+        $dados_encomenda =[];
+        // Guardar dados na sessão
         $codigo_encomenda= $_SESSION['codigo_encomenda'];
         $total_encomenda= $_SESSION['valor_total'];
         $dados= [
@@ -275,9 +276,57 @@ class Carrinho
             'total_encomenda' => $total_encomenda
         ];
         // Limpar todos os dados da encomenda que estão no carrinho
-        
+
+        // Criar uma lista de produtos + quantidade + preço por unidade 
+        $ids = [];
+
+        foreach ($_SESSION['carrinho'] as $id_produto => $quatidade) {
+            array_push($ids, $id_produto);
+        }
+        //transforma o array em string
+        $ids = implode(',', $ids);
+        //busca informação dos produtos do carrinho
+        $produtos = new Produtos();
+        $resultados = $produtos->buscar_produtos_por_ids($ids);
+        //Store::printData($_SESSION['carrinho'][3]);
+        $tring_produtos=[];
+        foreach($resultados as $resultado){
+           // quantidade 
+            $quantidade = $_SESSION['carrinho'][$resultado->id_produto];
+ 
+            $string_produtos[]= "$quantidade X $resultado->nome - R$ ".number_format($resultado->preco,2,',','.')." /unid";
+        }
+        //lista de produto para e-mail
+        $dados_encomenda['lista_produtos']= $string_produtos;
+        // preço total da encomenda para e-mail
+        $dados_encomenda['total'] = 'R$ '. number_format($_SESSION['valor_total'],2,',','.');
+
+        // Dados do pagamento
+        $dados_encomenda['dados_pagamento']=[
+            'numero_da_conta' =>'123456789',
+            'codigo_encomenda' => $_SESSION['codigo_encomenda'],
+            'total'=> 'R$ '. number_format($_SESSION['valor_total'],2,',','.'),
+        ];
+
+        Store::printData($dados_encomenda);
+
+
+
+
 
         // enviar email para o cliente com os dados da encomenda e pagamento
+
+        // - Lista de produtos + quantidade  + preço/inid 
+        //   2 x [nome do produto] - repco/unid
+        //   1 x [nome do produto] - repco/unid
+        //   total da encomenda : valor
+
+        // Dados do pagamento
+        // - numero da conta (123456789)
+        // - codigo da encomenda
+        // - total
+
+         // Aprensentar mensagem sobre encomenda confirmada
         Store::Layout([
             'layouts/html_header',
             'header',

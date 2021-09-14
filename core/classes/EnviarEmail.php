@@ -47,4 +47,45 @@ class EnviarEmail
             return false;
         }
     }
+
+    public function enviar_email_confirmacao_encomenda($email_cliente, $dados_encomenda)
+    {
+        //============================================================
+        //Envia um e-mail para confirmar a encomenda 
+        $mail = new PHPMailer(true);
+
+
+        try {
+            //Opções do servidor
+            $mail->SMTPDebug = SMTP::DEBUG_OFF;                     
+            $mail->isSMTP();
+            $mail->Host       = EMAIL_HOST;
+            $mail->SMTPAuth   = true;      
+            $mail->Username   = EMAIL_USER;
+            $mail->Password   = EMAIL_PASS;
+            $mail->Port       = EMAIL_PORT;
+            $mail->CharSet    ='UTF-8'; 
+
+            //Emissor e receptor
+            $mail->setFrom(EMAIL_FROM, APP_NAME);
+            $mail->addAddress($email_cliente);     
+
+            //Assunto
+            $mail->isHTML(true);                  
+            $mail->Subject = APP_NAME.' - Confirmação de encomenda - xxxxxxxxx.';
+             //Mensagens
+            $html = '';
+            $html.= '';
+            $html.= '';
+            $html.= '';
+            $html.= '';
+            $mail->Body    = $html;
+            //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
