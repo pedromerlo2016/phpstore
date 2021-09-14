@@ -74,7 +74,8 @@ class EnviarEmail
             $mail->isHTML(true);                  
             $mail->Subject = APP_NAME.' - Confirmação de encomenda - '.$dados_encomenda['dados_pagamento']['codigo_encomenda'];
              //Mensagens
-            $html = '<p>Este e-mail serve para confirmar a sua encomenda</p>';
+            $html = '<p>Prezado(a): '.$dados_encomenda['nome_cliente'] .'</p>';
+            $html.= '<p>Este e-mail serve para confirmar a sua encomenda.</p>';
             $html.= '<p>Dados da encomenda:</p>';
             // lista dos produtos
             $html.= '<ul>';
@@ -93,6 +94,7 @@ class EnviarEmail
             $html.='<hr>';
             // nota importante
             $html.= '<p>NOTA: A sua encomenda sómente será processada após o pagamento.</p>';
+            $html.= '<p>Caso '.$dados_encomenda['nome_cliente'] .' não  seja você, por favor desconsidere a mensagem.</p>';
             $mail->Body    = $html;
             
             //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';

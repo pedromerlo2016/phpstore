@@ -284,6 +284,8 @@ class Carrinho
         foreach ($_SESSION['carrinho'] as $id_produto => $quatidade) {
             array_push($ids, $id_produto);
         }
+        // Store::printData($_SESSION);
+        $dados_encomenda['nome_cliente']= $_SESSION['nome_cliente'];
         //transforma o array em string
         $ids = implode(',', $ids);
         //busca informação dos produtos do carrinho
