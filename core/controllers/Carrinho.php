@@ -4,6 +4,7 @@ namespace core\controllers;
 
 use core\classes\EnviarEmail;
 use core\classes\Store;
+use core\Encomendas\Encomendas;
 use core\models\Clientes;
 use core\models\Produtos;
 
@@ -276,6 +277,8 @@ class Carrinho
             'codigo_encomenda'=> $codigo_encomenda,
             'total_encomenda' => $total_encomenda
         ];
+      
+
         // Limpar todos os dados da encomenda que estão no carrinho
 
         // Criar uma lista de produtos + quantidade + preço por unidade 
@@ -311,7 +314,8 @@ class Carrinho
             'total'=> 'R$ '. number_format($_SESSION['valor_total'],2,',','.'),
         ];
 
-        //Store::printData($dados_encomenda);
+        Store::printData($_SESSION);
+        die();
         // enviar email para o cliente com os dados da encomenda e pagamento
         $email = new EnviarEmail();
         $resultado = $email->enviar_email_confirmacao_encomenda($_SESSION['usuario'], $dados_encomenda);
@@ -325,9 +329,46 @@ class Carrinho
         // - numero da conta (123456789)
         // - codigo da encomenda
         // - total
+   
+        // guardar encomenda no DB
+        $dados_encomenda = [''];
+        // id_cliente
+        $dados_encomenda['id_cliente']= $_SESSION['cliente'];
+        // Residência
+        if(isset($_SESSION['dados_alternativos']) && !empty($_SESSION['dados_alternativos']['residencia'])) {
+            // considera o endereço alternativo
+            $dados_encomenda['endereco']= $_SESSION['dados_alternativos']['residencia'];
+            $dados_encomenda['cidade']=$_SESSION['dados_alternativos']['cidade'];
+            $dados_encomenda['email']=$_SESSION['dados_alternativos']['email'];
+            $dados_encomenda['telefone']=$_SESSION['dados_alternativos']['telefone'];
+        }else{
+            // considera o endereço cadastrado no DB
+            $cliente = new Clientes();
+            $dados_cliente = $cliente->buscar_dados_cliente($_SESSION['cliente']);
+            $dados_encomenda['endereco']= $cliente->endereco;
+            $dados_encomenda['cidade']=$cliente->cidade;
+            $dados_encomenda['email']=$cliente->email;
+            $dados_encomenda['telefone']=$cliente->telefone;
+        }
+        // Código da encomenda
+        $dados_encomenda['codigo_encomenda']=$_SESSION['codigo_encomenda'];
+        // Status inicial PENDENTE
+        // PENDENTE
+        // PAGO
+        // EM TRATAMENTO
+        // ENVIADA
+        // CANCELADO
+        // ENTREGUE
+        $dados_encomenda['codigo_encomenda']='PENDENTE';
+        $dados_encomenda['mensagem']='';
+  
+        
 
-         // Aprensentar mensagem sobre encomenda confirmada
+  
+        $encomenda = new Encomendas($dados_encomenda, $produtos);
+
         die('TERMINADO'); 
+         // Aprensentar mensagem sobre encomenda confirmada
         Store::Layout([
             'layouts/html_header',
             'header',

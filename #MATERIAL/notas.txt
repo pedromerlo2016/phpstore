@@ -42,3 +42,12 @@ text_nome_completo' => string 'Pedro Merlo Junior' (length=18)
 text_endereco' => string 'Rua Apiacás' (length=12)
 text_cidade' => string 'Praia Grande' (length=12)
 text_telefone' => string '13991681307' (length=11)
+
+
+ // Status inicial PENDENTE
+        // PENDENTE
+        // PAGO
+        // EM TRATAMENTO
+        // ENVIADA
+        // CANCELADO
+        // ENTREGUE
