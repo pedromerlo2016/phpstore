@@ -57,7 +57,7 @@
                 <div class="col">
                 <p>Conta bancária: 123456789</p>
                 <p>Código da encomenda: <strong><?=$_SESSION['codigo_encomenda'] ?></strong></p>
-                <p>Total: <strong>R$ <?= number_format($total_encomenda, 2, ',', '.') ?></strong></p>
+                <p>Total: <strong>R$ <?= number_format($produto, 2, ',', '.') ?></strong></p>
                 </div>
             </div>
             <!-- Redidência alternativa -->

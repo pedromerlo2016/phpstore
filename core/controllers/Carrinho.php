@@ -239,9 +239,9 @@ class Carrinho
             $total_da_compra  += $item['preco'];
         }
         array_push($dados_tmp, $total_da_compra);
-        
+
         // colocar o preço total na sessão
-        $_SESSION['valor_total']=$total_da_compra;
+        $_SESSION['valor_total'] = $total_da_compra;
         // Preparar os dados da view
         $dados = [];
         $dados['carrinho'] = $dados_tmp;
@@ -250,9 +250,9 @@ class Carrinho
         $dados_cliente = $cliente->buscar_dados_cliente($_SESSION['cliente']);
         $dados['cliente'] = $dados_cliente[0];
         // gerar o código da encomenda
-        if(!isset($_SESSION['codigo_encomenda'])){
+        if (!isset($_SESSION['codigo_encomenda'])) {
             $codigo_encomenda =  Store::gerarCódigoEncomenda();
-            $_SESSION['codigo_encomenda']= $codigo_encomenda;
+            $_SESSION['codigo_encomenda'] = $codigo_encomenda;
         }
         // apresenta a pagina do resumo da encomenda
         Store::Layout([
@@ -269,17 +269,14 @@ class Carrinho
     {
         //Store::printData($_SESSION);
         // guardar na base da dados a encomenda
-        $dados_encomenda =[];
+        $dados_encomenda = [];
         // Guardar dados na sessão
-        $codigo_encomenda= $_SESSION['codigo_encomenda'];
-        $total_encomenda= $_SESSION['valor_total'];
-        $dados= [
-            'codigo_encomenda'=> $codigo_encomenda,
+        $codigo_encomenda = $_SESSION['codigo_encomenda'];
+        $total_encomenda = $_SESSION['valor_total'];
+        $dados = [
+            'codigo_encomenda' => $codigo_encomenda,
             'total_encomenda' => $total_encomenda
         ];
-      
-
-        // Limpar todos os dados da encomenda que estão no carrinho
 
         // Criar uma lista de produtos + quantidade + preço por unidade 
         $ids = [];
@@ -288,33 +285,33 @@ class Carrinho
             array_push($ids, $id_produto);
         }
         // Store::printData($_SESSION);
-        $dados_encomenda['nome_cliente']= $_SESSION['nome_cliente'];
+        $dados_encomenda['nome_cliente'] = $_SESSION['nome_cliente'];
         //transforma o array em string
         $ids = implode(',', $ids);
         //busca informação dos produtos do carrinho
         $produtos = new Produtos();
         $produtos_da_encomenda = $produtos->buscar_produtos_por_ids($ids);
         //Store::printData($_SESSION['carrinho'][3]);
-        $tring_produtos=[];
-        foreach($produtos_da_encomenda as $resultado){
-           // quantidade 
+        $tring_produtos = [];
+        foreach ($produtos_da_encomenda as $resultado) {
+            // quantidade 
             $quantidade = $_SESSION['carrinho'][$resultado->id_produto];
- 
-            $string_produtos[]= "$quantidade X $resultado->nome - R$ ".number_format($resultado->preco,2,',','.')." /unid";
+
+            $string_produtos[] = "$quantidade X $resultado->nome - R$ " . number_format($resultado->preco, 2, ',', '.') . " /unid";
         }
         //lista de produto para e-mail
-        $dados_encomenda['lista_produtos']= $string_produtos;
+        $dados_encomenda['lista_produtos'] = $string_produtos;
         // preço total da encomenda para e-mail
-        $dados_encomenda['total'] = 'R$ '. number_format($_SESSION['valor_total'],2,',','.');
+        $dados_encomenda['total'] = 'R$ ' . number_format($_SESSION['valor_total'], 2, ',', '.');
 
         // Dados do pagamento
-        $dados_encomenda['dados_pagamento']=[
-            'numero_da_conta' =>'123456789',
+        $dados_encomenda['dados_pagamento'] = [
+            'numero_da_conta' => '123456789',
             'codigo_encomenda' => $_SESSION['codigo_encomenda'],
-            'total'=> 'R$ '. number_format($_SESSION['valor_total'],2,',','.'),
+            'total' => 'R$ ' . number_format($_SESSION['valor_total'], 2, ',', '.'),
         ];
 
-        
+
         // enviar email para o cliente com os dados da encomenda e pagamento
         //$email = new EnviarEmail();
         //$resultado = $email->enviar_email_confirmacao_encomenda($_SESSION['usuario'], $dados_encomenda);
@@ -328,29 +325,29 @@ class Carrinho
         // - numero da conta (123456789)
         // - codigo da encomenda
         // - total
-   
+
         // guardar encomenda no DB
         $dados_encomenda = [''];
         // id_cliente
-        $dados_encomenda['id_cliente']= $_SESSION['cliente'];
+        $dados_encomenda['id_cliente'] = $_SESSION['cliente'];
         // Residência
-        if(isset($_SESSION['dados_alternativos']) && !empty($_SESSION['dados_alternativos']['residencia'])) {
+        if (isset($_SESSION['dados_alternativos']) && !empty($_SESSION['dados_alternativos']['residencia'])) {
             // considera o endereço alternativo
-            $dados_encomenda['endereco']= $_SESSION['dados_alternativos']['residencia'];
-            $dados_encomenda['cidade']=$_SESSION['dados_alternativos']['cidade'];
-            $dados_encomenda['email']=$_SESSION['dados_alternativos']['email'];
-            $dados_encomenda['telefone']=$_SESSION['dados_alternativos']['telefone'];
-        }else{
+            $dados_encomenda['endereco'] = $_SESSION['dados_alternativos']['residencia'];
+            $dados_encomenda['cidade'] = $_SESSION['dados_alternativos']['cidade'];
+            $dados_encomenda['email'] = $_SESSION['dados_alternativos']['email'];
+            $dados_encomenda['telefone'] = $_SESSION['dados_alternativos']['telefone'];
+        } else {
             // considera o endereço cadastrado no DB
             $cliente = new Clientes();
             $dados_cliente = $cliente->buscar_dados_cliente($_SESSION['cliente']);
-            $dados_encomenda['endereco']= $dados_cliente[0]->endereco;
-            $dados_encomenda['cidade']=$dados_cliente[0]->cidade;
-            $dados_encomenda['email']=$dados_cliente[0]->email;
-            $dados_encomenda['telefone']=$dados_cliente[0]->telefone;
+            $dados_encomenda['endereco'] = $dados_cliente[0]->endereco;
+            $dados_encomenda['cidade'] = $dados_cliente[0]->cidade;
+            $dados_encomenda['email'] = $dados_cliente[0]->email;
+            $dados_encomenda['telefone'] = $dados_cliente[0]->telefone;
         }
         // Código da encomenda
-        $dados_encomenda['codigo_encomenda']=$_SESSION['codigo_encomenda'];
+        $dados_encomenda['codigo_encomenda'] = $_SESSION['codigo_encomenda'];
         // Status inicial PENDENTE
         // PENDENTE
         // PAGO
@@ -360,31 +357,30 @@ class Carrinho
         // ENTREGUE
 
         // Status
-        $dados_encomenda['status']='PENDENTE';
-        $dados_encomenda['mensagem']='';
-       
-      
+        $dados_encomenda['status'] = 'PENDENTE';
+        $dados_encomenda['mensagem'] = '';
+
+        // Limpar todos os dados da encomenda que estão no carrinho
+        unset($_SESSION['carrinho']);
+        unset($_SESSION['valor_total']);
+        unset($_SESSION['codigo_encomenda']);
+        unset($_SESSION['dados_alternativos']);
+
+        //Store::printData($_SESSION);
         // Dados dos produtos
-        $dados_produtos=[];
-        foreach($produtos_da_encomenda as $produto){
-            $dados_produtos[]=[
-                'designacao_produto'=> $produto->nome,
-                'preco_unidade'=>$produto->preco,
-                'quantidade'=>$_SESSION['carrinho'][$produto->id_produto],
+        $dados_produtos = [];
+        foreach ($produtos_da_encomenda as $produto) {
+            $dados_produtos[] = [
+                'designacao_produto' => $produto->nome,
+                'preco_unidade' => $produto->preco,
+                'quantidade' => $_SESSION['carrinho'][$produto->id_produto],
 
             ];
-        
         }
-        // echo'<pre>';
-        // print_r($dados_encomenda);
-        // print_r( $dados_produtos);
-        // echo'</pre>';
-        // die();
+
         $encomenda = new Encomendas();
         $encomenda->guardar_encomenda($dados_encomenda, $dados_produtos);
-        die('TERMINADO'); 
-
-
+        
         // Aprensentar mensagem sobre encomenda confirmada
         Store::Layout([
             'layouts/html_header',
@@ -392,12 +388,7 @@ class Carrinho
             'encomenda_confirmada',
             'footer',
             'layouts/html_footer',
-        ],$dados);
-
-        
-
-
-        // Store::printData($_SESSION);
+        ], $dados);
     }
 
     //============================================================
