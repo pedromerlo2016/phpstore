@@ -161,6 +161,7 @@ class Main
         } else {
             // Redirecionar para a pagina inicial
             Store::redirect();
+            return;
         }
     }
     //============================================================
@@ -230,9 +231,11 @@ class Main
                 // remove a variavel da sessão e redireciona para o resumo da encomenda
                 unset($_SESSION['tmp_carrinho']);
                 Store::redirect('finalizar_encomenda_resumo');
+                return;
             } else {
                 // redireciona para a loja
                 Store::redirect();
+                return;
             }
         }
     }
@@ -246,5 +249,6 @@ class Main
         unset($_SESSION['usuario']);
         unset($_SESSION['nome_cliente']);
         Store::redirect();
+        return;
     }
 }

@@ -181,8 +181,10 @@ class Carrinho
             $_SESSION['tmp_carrinho'] = true;
             //redireciona para login
             Store::redirect('login');
+            return;
         } else {
             Store::redirect('finalizar_encomenda_resumo');
+            return;
         }
     }
 
@@ -192,6 +194,14 @@ class Carrinho
         // verifica se usuario logado
         if (!isset($_SESSION['cliente'])) {
             Store::redirect('inicio');
+            return;
+        }
+
+        // verifica se pode avançar para gravação de encomenda
+
+        if (!isset($_SESSION['carrinho']) || count($_SESSION['carrinho']) == 0) {
+            Store::redirect('inicio');
+            return;
         }
 
         $ids = [];
@@ -267,7 +277,17 @@ class Carrinho
     //============================================================
     public function confirmar_encomenda()
     {
-        //Store::printData($_SESSION);
+        // verifica se usuario logado
+        if (!isset($_SESSION['cliente'])) {
+            Store::redirect('inicio');
+            return;
+        }
+        // verifica se pode avançar para gravação de encomenda
+        if (!isset($_SESSION['carrinho']) || count($_SESSION['carrinho']) == 0) {
+            Store::redirect('inicio');
+            return;
+        }
+
         // guardar na base da dados a encomenda
         $dados_encomenda = [];
         // Guardar dados na sessão
@@ -360,12 +380,7 @@ class Carrinho
         $dados_encomenda['status'] = 'PENDENTE';
         $dados_encomenda['mensagem'] = '';
 
-        // Limpar todos os dados da encomenda que estão no carrinho
-        unset($_SESSION['carrinho']);
-        unset($_SESSION['valor_total']);
-        unset($_SESSION['codigo_encomenda']);
-        unset($_SESSION['dados_alternativos']);
-
+       
         //Store::printData($_SESSION);
         // Dados dos produtos
         $dados_produtos = [];
@@ -378,9 +393,16 @@ class Carrinho
             ];
         }
 
+         // Limpar todos os dados da encomenda que estão no carrinho
+         unset($_SESSION['carrinho']);
+         unset($_SESSION['valor_total']);
+         unset($_SESSION['codigo_encomenda']);
+         unset($_SESSION['dados_alternativos']);
+ 
+
         $encomenda = new Encomendas();
         $encomenda->guardar_encomenda($dados_encomenda, $dados_produtos);
-        
+
         // Aprensentar mensagem sobre encomenda confirmada
         Store::Layout([
             'layouts/html_header',
