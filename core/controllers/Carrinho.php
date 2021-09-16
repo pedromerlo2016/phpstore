@@ -333,9 +333,11 @@ class Carrinho
 
 
         // enviar email para o cliente com os dados da encomenda e pagamento
-        //$email = new EnviarEmail();
-        //$resultado = $email->enviar_email_confirmacao_encomenda($_SESSION['usuario'], $dados_encomenda);
-
+        if(EMAIL_ENVIAR==true){
+            $email = new EnviarEmail();
+            $resultado = $email->enviar_email_confirmacao_encomenda($_SESSION['usuario'], $dados_encomenda);
+        }
+        
         // - Lista de produtos + quantidade  + preço/inid 
         //   2 x [nome do produto] - repco/unid
         //   1 x [nome do produto] - repco/unid

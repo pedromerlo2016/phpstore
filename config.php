@@ -17,5 +17,5 @@ define('EMAIL_FROM',        'contato@phpstore.com.br');
 define('EMAIL_USER',        'e3d0b2a3742a69');
 define('EMAIL_PASS',        '1497f366b61cd3');
 define('EMAIL_PORT',        '2525');
-define('','');
+define('EMAIL_ENVIAR',      false);
 
