@@ -4,7 +4,7 @@ namespace core\controllers;
 
 use core\classes\EnviarEmail;
 use core\classes\Store;
-use core\Encomendas\Encomendas;
+use core\models\Encomendas;
 use core\models\Clientes;
 use core\models\Produtos;
 
@@ -293,10 +293,10 @@ class Carrinho
         $ids = implode(',', $ids);
         //busca informação dos produtos do carrinho
         $produtos = new Produtos();
-        $resultados = $produtos->buscar_produtos_por_ids($ids);
+        $produtos_da_encomenda = $produtos->buscar_produtos_por_ids($ids);
         //Store::printData($_SESSION['carrinho'][3]);
         $tring_produtos=[];
-        foreach($resultados as $resultado){
+        foreach($produtos_da_encomenda as $resultado){
            // quantidade 
             $quantidade = $_SESSION['carrinho'][$resultado->id_produto];
  
@@ -314,11 +314,10 @@ class Carrinho
             'total'=> 'R$ '. number_format($_SESSION['valor_total'],2,',','.'),
         ];
 
-        Store::printData($_SESSION);
-        die();
+        
         // enviar email para o cliente com os dados da encomenda e pagamento
-        $email = new EnviarEmail();
-        $resultado = $email->enviar_email_confirmacao_encomenda($_SESSION['usuario'], $dados_encomenda);
+        //$email = new EnviarEmail();
+        //$resultado = $email->enviar_email_confirmacao_encomenda($_SESSION['usuario'], $dados_encomenda);
 
         // - Lista de produtos + quantidade  + preço/inid 
         //   2 x [nome do produto] - repco/unid
@@ -345,10 +344,10 @@ class Carrinho
             // considera o endereço cadastrado no DB
             $cliente = new Clientes();
             $dados_cliente = $cliente->buscar_dados_cliente($_SESSION['cliente']);
-            $dados_encomenda['endereco']= $cliente->endereco;
-            $dados_encomenda['cidade']=$cliente->cidade;
-            $dados_encomenda['email']=$cliente->email;
-            $dados_encomenda['telefone']=$cliente->telefone;
+            $dados_encomenda['endereco']= $dados_cliente[0]->endereco;
+            $dados_encomenda['cidade']=$dados_cliente[0]->cidade;
+            $dados_encomenda['email']=$dados_cliente[0]->email;
+            $dados_encomenda['telefone']=$dados_cliente[0]->telefone;
         }
         // Código da encomenda
         $dados_encomenda['codigo_encomenda']=$_SESSION['codigo_encomenda'];
@@ -359,16 +358,34 @@ class Carrinho
         // ENVIADA
         // CANCELADO
         // ENTREGUE
-        $dados_encomenda['codigo_encomenda']='PENDENTE';
+
+        // Status
+        $dados_encomenda['status']='PENDENTE';
         $dados_encomenda['mensagem']='';
-  
+       
+      
+        // Dados dos produtos
+        $dados_produtos=[];
+        foreach($produtos_da_encomenda as $produto){
+            $dados_produtos[]=[
+                'designacao_produto'=> $produto->nome,
+                'preco_unidade'=>$produto->preco,
+                'quantidade'=>$_SESSION['carrinho'][$produto->id_produto],
+
+            ];
         
-
-  
-        $encomenda = new Encomendas($dados_encomenda, $produtos);
-
+        }
+        // echo'<pre>';
+        // print_r($dados_encomenda);
+        // print_r( $dados_produtos);
+        // echo'</pre>';
+        // die();
+        $encomenda = new Encomendas();
+        $encomenda->guardar_encomenda($dados_encomenda, $dados_produtos);
         die('TERMINADO'); 
-         // Aprensentar mensagem sobre encomenda confirmada
+
+
+        // Aprensentar mensagem sobre encomenda confirmada
         Store::Layout([
             'layouts/html_header',
             'header',
