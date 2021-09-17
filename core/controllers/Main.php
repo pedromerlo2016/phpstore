@@ -251,4 +251,29 @@ class Main
         Store::redirect();
         return;
     }
+
+    //============================================================
+    public function perfil()
+    {
+        // verifica se exite um cliente logado
+        if (!Store::clienteLogado()) {
+            Store::redirect();
+            return;
+        }
+        // carrega informações do cliente
+        $cliente  = new Clientes();
+        $dados =[
+            'dados_cliente' => $cliente->buscar_dados_cliente($_SESSION['cliente'])
+        ];
+        // Apresenta o paginal de perfil
+       
+        Store::Layout([
+            'layouts/html_header',
+            'header',
+            'perfil_navegacao',
+            'perfil',
+            'footer',
+            'layouts/html_footer',
+        ], $dados);
+    }
 }

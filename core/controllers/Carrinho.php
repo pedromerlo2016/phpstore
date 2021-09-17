@@ -317,7 +317,7 @@ class Carrinho
             // quantidade 
             $quantidade = $_SESSION['carrinho'][$resultado->id_produto];
 
-            $string_produtos[] = "$quantidade X $resultado->nome - R$ " . number_format($resultado->preco, 2, ',', '.') . " /unid";
+            $string_produtos[] = "$quantidade x $resultado->nome - R$ " . number_format($resultado->preco, 2, ',', '.') . " /unid";
         }
         //lista de produto para e-mail
         $dados_encomenda['lista_produtos'] = $string_produtos;

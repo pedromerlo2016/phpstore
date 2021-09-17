@@ -17,6 +17,9 @@ $rotas = [
     'login_submit'=>'main@login_submit',
     'logout'=>'main@logout',
 
+    // Perfil
+    'perfil'=>'main@perfil',
+
     // carrinho
     'adicionar_carrinho'=>'carrinho@adicionar_carrinho',
     'carrinho'=>'carrinho@carrinho',

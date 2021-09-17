@@ -54,11 +54,11 @@ class Database
             if (!empty($parametros)) {
                 $executar = $this->ligacao->prepare($sql);
                 $executar->execute($parametros);
-                $resultados = $executar->fetchAll(PDO::FETCH_CLASS);
+                $resultados = $executar->fetchAll(PDO::FETCH_OBJ);
             } else {
                 $executar = $this->ligacao->prepare($sql);
                 $executar->execute();
-                $resultados = $executar->fetchAll(PDO::FETCH_CLASS);
+                $resultados = $executar->fetchAll(PDO::FETCH_OBJ);
             }
         } catch (PDOException $e) {
             // caso exista erro
