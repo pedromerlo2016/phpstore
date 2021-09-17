@@ -262,11 +262,24 @@ class Main
         }
         // carrega informações do cliente
         $cliente  = new Clientes();
-        $dados =[
-            'dados_cliente' => $cliente->buscar_dados_cliente($_SESSION['cliente'])
-        ];
+        // $dados =[
+        //     'dados_cliente' => $cliente->buscar_dados_cliente($_SESSION['cliente'])
+        // ];
         // Apresenta o paginal de perfil
-       
+
+        $dtemp = $cliente->buscar_dados_cliente($_SESSION['cliente']);
+        $dados_cliente=[
+            'Email'=>$dtemp[0]->email, 
+            'Nome completo'=>$dtemp[0]->nome_completo, 
+            'Endereço'=>$dtemp[0]->endereco, 
+            'Cidade'=>$dtemp[0]->cidade, 
+            'Telefone'=>$dtemp[0]->telefone, 
+        ];
+        $dados=[
+            'dados_cliente'=>$dados_cliente,
+        ];    
+
+      
         Store::Layout([
             'layouts/html_header',
             'header',
