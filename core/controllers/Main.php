@@ -253,6 +253,9 @@ class Main
     }
 
     //============================================================
+    // Perfil do usuário
+    //============================================================
+
     public function perfil()
     {
         // verifica se exite um cliente logado
@@ -268,18 +271,18 @@ class Main
         // Apresenta o paginal de perfil
 
         $dtemp = $cliente->buscar_dados_cliente($_SESSION['cliente']);
-        $dados_cliente=[
-            'Email'=>$dtemp[0]->email, 
-            'Nome completo'=>$dtemp[0]->nome_completo, 
-            'Endereço'=>$dtemp[0]->endereco, 
-            'Cidade'=>$dtemp[0]->cidade, 
-            'Telefone'=>$dtemp[0]->telefone, 
+        $dados_cliente = [
+            'Email' => $dtemp[0]->email,
+            'Nome completo' => $dtemp[0]->nome_completo,
+            'Endereço' => $dtemp[0]->endereco,
+            'Cidade' => $dtemp[0]->cidade,
+            'Telefone' => $dtemp[0]->telefone,
         ];
-        $dados=[
-            'dados_cliente'=>$dados_cliente,
-        ];    
+        $dados = [
+            'dados_cliente' => $dados_cliente,
+        ];
 
-      
+
         Store::Layout([
             'layouts/html_header',
             'header',
@@ -289,4 +292,65 @@ class Main
             'layouts/html_footer',
         ], $dados);
     }
+
+    //============================================================
+    public function alterar_dados_pessoais()
+    {
+        // verifica se exite um cliente logado (midlleware do Laravel)
+        if (!Store::clienteLogado()) {
+            Store::redirect();
+            return;
+        }
+        // carrega informações do cliente
+        $cliente  = new Clientes();
+        $dtemp = $cliente->buscar_dados_cliente($_SESSION['cliente'])[0];
+        $dados_pessoais= [
+            'email' => $dtemp->email,
+            'Nome completo' => $dtemp->nome_completo,
+            'Endereço' => $dtemp->endereco,
+            'Cidade' => $dtemp->cidade,
+            'Telefone' => $dtemp->telefone,
+        ];
+        $dados = [
+            'dados_pessoais' => (object)$dados_pessoais,
+        ];
+
+        // Apresenta o paginal de perfil
+        Store::Layout([
+            'layouts/html_header',
+            'header',
+            'perfil_navegacao',
+            'alterar_dados_pessoais',
+            'footer',
+            'layouts/html_footer',
+        ], $dados);
+        
+    }
+
+    //============================================================
+    public function alterar_dados_pessoais_submit()
+    {
+        echo "alterar dados pessoais submit";
+    }
+
+    //============================================================
+    public function alterar_password()
+    {
+        echo "alterar password";
+    }
+
+    //============================================================
+    public function alterar_password_submit()
+    {
+        echo "alterar password submit";
+    }
+
+
+      //============================================================
+      public function historico_encomendas()
+      {
+          echo "histórico encomendas";
+      }
+  
+     
 }
