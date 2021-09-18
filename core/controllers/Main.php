@@ -422,20 +422,41 @@ class Main
         }
         // validar os dados 
         $senha_atual = trim($_POST['text_senha_atual']);
-        $nova_nova_senha = trim($_POST['text_nova_senha']);
+        $nova_senha = trim($_POST['text_nova_senha']);
         $repetir_nova_senha = trim($_POST['text_repetir_nova_senha']);
-        // verifica se a senha atual está correta
         
+        // verifica se a senha atual está correta
+        $cliente =  new Clientes();
+        if(!$cliente->verifica_se_senha_atual_correta($_SESSION['cliente'], $senha_atual)){
+            $_SESSION['erro'] = "A senha atual está errada.";
+            $this->alterar_password();
+            return;
+        };
+        // validar se a nova senha vem con dados
+        if(strlen($nova_senha)< 6){
+            $_SESSION['erro'] = "Digite uma nova senha e sua repetição.";
+            $this->alterar_password();
+            return;
+        };
 
         // verifica se a nova senha e repetir nova senha são iguais
-        if ($nova_nova_senha != $repetir_nova_senha) {
+        if ($nova_senha != $repetir_nova_senha) {
             $_SESSION['erro'] = "Senha e sua repetição são diferentes.";
             $this->alterar_password();
             return;
         }
 
-        echo "alterar password submit";
-        Store::printData($_POST);
+        // verifica se a nova senha e for igual a senha atual
+        if ($nova_senha == $senha_atual) {
+            $_SESSION['erro'] = "Nova senha e igual a senha autal.";
+            $this->alterar_password();
+            return;
+        }
+        
+        // Atualizar a nova senha
+        $cliente->atualizar_nova_senha($_SESSION['cliente'],$nova_senha);
+        Store::redirect('perfil');
+        return;
     }
 
 

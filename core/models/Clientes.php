@@ -142,12 +142,12 @@ class Clientes
     //============================================================
     public function atualizar_dados_cliente($email, $nome_completo, $endereco, $cidade, $telefone)
     {
-        $parametros=[
-            ':id_cliente'=> $_SESSION['cliente'],
-            ':email' => $email, 
-            ':nome_completo' => $nome_completo, 
-            ':endereco' => $endereco, 
-            ':cidade' => $cidade, 
+        $parametros = [
+            ':id_cliente' => $_SESSION['cliente'],
+            ':email' => $email,
+            ':nome_completo' => $nome_completo,
+            ':endereco' => $endereco,
+            ':cidade' => $cidade,
             ':telefone' => $telefone
         ];
 
@@ -160,6 +160,31 @@ class Clientes
             telefone = :telefone,
             updated_at= NOW()
             WHERE id_cliente = :id_cliente
-        ',$parametros);
+        ', $parametros);
+    }
+
+    //============================================================
+    public function verifica_se_senha_atual_correta($id_cliente, $senha_atual)
+    {
+        $parametros = [
+            ':id_cliente' => $id_cliente,
+        ];
+        $db = new Database();
+        $senha_db = $db->select('SELECT senha FROM clientes where id_cliente= :id_cliente ', $parametros)[0]->senha;
+        // verifica se a senha corresponde
+        return  password_verify($senha_atual, $senha_db);
+    }
+
+    //============================================================
+    public function atualizar_nova_senha($id_cliente, $nova_senha)
+    {
+
+        $parametros = [
+            ':id_cliente' => $id_cliente,
+            ':senha' =>  password_hash($nova_senha, PASSWORD_DEFAULT)
+        ];
+        $db = new Database();
+        $db->update('UPDATE clientes set senha=:senha WHERE id_cliente=:id_cliente', $parametros);
+
     }
 }
