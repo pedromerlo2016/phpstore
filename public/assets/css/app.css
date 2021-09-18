@@ -31,3 +31,8 @@
     border: 1px solid rgb(150,150,150);
     border-radius: 10px;
 }
+
+.btn-100{ min-width: 100px !important; }
+.btn-125{ min-width: 125px !important; }
+.btn-150{ min-width: 150px !important; }
+.btn-175{ min-width: 175px !important; }

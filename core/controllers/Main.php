@@ -306,15 +306,16 @@ class Main
         $dtemp = $cliente->buscar_dados_cliente($_SESSION['cliente'])[0];
         $dados_pessoais= [
             'email' => $dtemp->email,
-            'Nome completo' => $dtemp->nome_completo,
-            'Endereço' => $dtemp->endereco,
-            'Cidade' => $dtemp->cidade,
-            'Telefone' => $dtemp->telefone,
+            'nome_completo' => $dtemp->nome_completo,
+            'endereco' => $dtemp->endereco,
+            'cidade' => $dtemp->cidade,
+            'telefone' => $dtemp->telefone,
         ];
+       
         $dados = [
             'dados_pessoais' => (object)$dados_pessoais,
         ];
-
+        
         // Apresenta o paginal de perfil
         Store::Layout([
             'layouts/html_header',
@@ -330,7 +331,40 @@ class Main
     //============================================================
     public function alterar_dados_pessoais_submit()
     {
-        echo "alterar dados pessoais submit";
+        // verifica se exite um cliente logado (midlleware do Laravel)
+        if (!Store::clienteLogado()) {
+            Store::redirect();
+            return;
+        }
+        // verificar a submissão do formulário
+        if($_SERVER['REQUEST_METHOD']!='POST'){
+            Store::redirect();
+            return;
+        }
+       // validar dados
+       $email = trim(strtolower($_POST['text_email']));
+       $nome_completo = trim($_POST['text_nome_completo']);
+       $endereco = trim($_POST['text_endereco']);
+       $cidade=trim($_POST['text_cidade']);
+       $telefone=trim($_POST['text_telefone']);
+       
+       // validar se é email válido
+       if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        $_SESSION['erro']="Endereço de e-mail inválido.";
+        $this->alterar_dados_pessoais();
+        return;
+       }
+
+       // vai buscar os dados pessoais no db
+       $cliente= new Clientes();
+       $dados = [
+           'dados_pessoais'=> $cliente->buscar_dados_cliente($_SESSION['cliente'])[0],
+       ];
+        
+       //Store::printData($dados);
+      // Apresenta o paginal de perfil
+     
+
     }
 
     //============================================================
