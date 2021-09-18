@@ -8,7 +8,7 @@
                 </div>
                 <div class="form-group">
                     <label for="text_mome_completo">Nome completo</label>
-                    <input type="text" name="text_mome_conpleto" class="form-control" maxlength="50" required value="<?= $dados_pessoais->nome_completo ?>">
+                    <input type="text" name="text_nome_completo" class="form-control" maxlength="50" required value="<?= $dados_pessoais->nome_completo ?>">
                 </div>
                 <div class="form-group">
                     <label for="text_endereco">Endereco</label>

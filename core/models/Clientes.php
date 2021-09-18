@@ -107,18 +107,59 @@ class Clientes
     }
 
     //============================================================
-
     public function buscar_dados_cliente($id_cliente)
     {
 
-        $parametros =[
-            'id_cliente'=>$id_cliente
+        $parametros = [
+            'id_cliente' => $id_cliente
         ];
 
         $db = new Database();
-        $resultados= $db->select("SELECT  
+        $resultados = $db->select("SELECT  
         email, nome_completo, endereco, cidade, telefone 
         FROM clientes WHERE id_cliente = :id_cliente", $parametros);
         return $resultados;
+    }
+
+    //============================================================
+    public function verifica_se_email_ja_existe($id_cliente, $email)
+    {
+        // verificar se exite e-maiol em outra conta de cliente
+        $parametros = [
+            ':email' => $email,
+            ':id_cliente' => $id_cliente,
+        ];
+        $db = new Database();
+        $resultado = $db->select("SELECT id_cliente FROM clientes
+        where id_cliente <> :id_cliente AND email= :email", $parametros);
+        if (count($resultado) != 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //============================================================
+    public function atualizar_dados_cliente($email, $nome_completo, $endereco, $cidade, $telefone)
+    {
+        $parametros=[
+            ':id_cliente'=> $_SESSION['cliente'],
+            ':email' => $email, 
+            ':nome_completo' => $nome_completo, 
+            ':endereco' => $endereco, 
+            ':cidade' => $cidade, 
+            ':telefone' => $telefone
+        ];
+
+        $db = new Database();
+        $db->update('UPDATE clientes SET
+            email=:email,
+            nome_completo = :nome_completo,
+            endereco = :endereco,
+            cidade= :cidade,
+            telefone = :telefone,
+            updated_at= NOW()
+            WHERE id_cliente = :id_cliente
+        ',$parametros);
     }
 }

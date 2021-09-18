@@ -304,18 +304,18 @@ class Main
         // carrega informações do cliente
         $cliente  = new Clientes();
         $dtemp = $cliente->buscar_dados_cliente($_SESSION['cliente'])[0];
-        $dados_pessoais= [
+        $dados_pessoais = [
             'email' => $dtemp->email,
             'nome_completo' => $dtemp->nome_completo,
             'endereco' => $dtemp->endereco,
             'cidade' => $dtemp->cidade,
             'telefone' => $dtemp->telefone,
         ];
-       
+
         $dados = [
             'dados_pessoais' => (object)$dados_pessoais,
         ];
-        
+
         // Apresenta o paginal de perfil
         Store::Layout([
             'layouts/html_header',
@@ -325,7 +325,6 @@ class Main
             'footer',
             'layouts/html_footer',
         ], $dados);
-        
     }
 
     //============================================================
@@ -337,34 +336,53 @@ class Main
             return;
         }
         // verificar a submissão do formulário
-        if($_SERVER['REQUEST_METHOD']!='POST'){
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             Store::redirect();
             return;
         }
-       // validar dados
-       $email = trim(strtolower($_POST['text_email']));
-       $nome_completo = trim($_POST['text_nome_completo']);
-       $endereco = trim($_POST['text_endereco']);
-       $cidade=trim($_POST['text_cidade']);
-       $telefone=trim($_POST['text_telefone']);
-       
-       // validar se é email válido
-       if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-        $_SESSION['erro']="Endereço de e-mail inválido.";
-        $this->alterar_dados_pessoais();
+        // validar dados
+        $email = trim(strtolower($_POST['text_email']));
+        $nome_completo = trim($_POST['text_nome_completo']);
+        $endereco = trim($_POST['text_endereco']);
+        $cidade = trim($_POST['text_cidade']);
+        $telefone = trim($_POST['text_telefone']);
+
+        // validar se é email válido
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $_SESSION['erro'] = "Endereço de e-mail inválido.";
+            $this->alterar_dados_pessoais();
+            return;
+        }
+
+        // vai buscar os dados pessoais no db
+        $cliente = new Clientes();
+        $dados = [
+            'dados_pessoais' => $cliente->buscar_dados_cliente($_SESSION['cliente'])[0],
+        ];
+
+        // validar os restantes dos campos obrigatórios
+        if (empty($nome_completo) || empty($endereco) || empty($cidade)) {
+            $_SESSION['erro'] = "Preencha corretamente o formulário.";
+            $this->alterar_dados_pessoais();
+            return;
+        }
+
+        // validar se é email está sendo utilizado
+        $cliente = new Clientes();
+        $exiteEmail = $cliente->verifica_se_email_ja_existe($_SESSION['cliente'], $email);
+        if ($exiteEmail == true) {
+            $_SESSION['erro'] = "O e-mail já pertence a outro cliente.";
+            $this->alterar_dados_pessoais();
+            return;
+        }
+
+        // Atualizar os dados do cliente no DB
+        $cliente->atualizar_dados_cliente($email, $nome_completo, $endereco, $cidade, $telefone);
+
+        //Store::printData($dados);
+        // Apresenta o paginal de perfil
+        Store::redirect('perfil');
         return;
-       }
-
-       // vai buscar os dados pessoais no db
-       $cliente= new Clientes();
-       $dados = [
-           'dados_pessoais'=> $cliente->buscar_dados_cliente($_SESSION['cliente'])[0],
-       ];
-        
-       //Store::printData($dados);
-      // Apresenta o paginal de perfil
-     
-
     }
 
     //============================================================
@@ -380,11 +398,9 @@ class Main
     }
 
 
-      //============================================================
-      public function historico_encomendas()
-      {
-          echo "histórico encomendas";
-      }
-  
-     
+    //============================================================
+    public function historico_encomendas()
+    {
+        echo "histórico encomendas";
+    }
 }
