@@ -378,8 +378,10 @@ class Main
 
         // Atualizar os dados do cliente no DB
         $cliente->atualizar_dados_cliente($email, $nome_completo, $endereco, $cidade, $telefone);
+        // Atualizar os dados na sessão
+        $_SESSION['usuario'] = $email;
+        $_SESSION['nome_cliente'] = $nome_completo;
 
-        //Store::printData($dados);
         // Apresenta o paginal de perfil
         Store::redirect('perfil');
         return;
@@ -388,13 +390,52 @@ class Main
     //============================================================
     public function alterar_password()
     {
-        echo "alterar password";
+        // verifica se exite um cliente logado (midlleware do Laravel)
+        if (!Store::clienteLogado()) {
+            Store::redirect();
+            return;
+        }
+
+        // Apresenta o paginal de alterar a senha
+        Store::Layout([
+            'layouts/html_header',
+            'header',
+            'perfil_navegacao',
+            'alterar_password',
+            'footer',
+            'layouts/html_footer',
+        ]);
     }
 
     //============================================================
     public function alterar_password_submit()
     {
+        // verifica se exite um cliente logado (midlleware do Laravel)
+        if (!Store::clienteLogado()) {
+            Store::redirect();
+            return;
+        }
+        // verificar a submissão do formulário
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+            Store::redirect();
+            return;
+        }
+        // validar os dados 
+        $senha_atual = trim($_POST['text_senha_atual']);
+        $nova_nova_senha = trim($_POST['text_nova_senha']);
+        $repetir_nova_senha = trim($_POST['text_repetir_nova_senha']);
+        // verifica se a senha atual está correta
+        
+
+        // verifica se a nova senha e repetir nova senha são iguais
+        if ($nova_nova_senha != $repetir_nova_senha) {
+            $_SESSION['erro'] = "Senha e sua repetição são diferentes.";
+            $this->alterar_password();
+            return;
+        }
+
         echo "alterar password submit";
+        Store::printData($_POST);
     }
 
 
