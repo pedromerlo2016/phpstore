@@ -425,16 +425,16 @@ class Main
         $senha_atual = trim($_POST['text_senha_atual']);
         $nova_senha = trim($_POST['text_nova_senha']);
         $repetir_nova_senha = trim($_POST['text_repetir_nova_senha']);
-        
+
         // verifica se a senha atual está correta
         $cliente =  new Clientes();
-        if(!$cliente->verifica_se_senha_atual_correta($_SESSION['cliente'], $senha_atual)){
+        if (!$cliente->verifica_se_senha_atual_correta($_SESSION['cliente'], $senha_atual)) {
             $_SESSION['erro'] = "A senha atual está errada.";
             $this->alterar_password();
             return;
         };
         // validar se a nova senha vem con dados
-        if(strlen($nova_senha)< 6){
+        if (strlen($nova_senha) < 6) {
             $_SESSION['erro'] = "Digite uma nova senha e sua repetição.";
             $this->alterar_password();
             return;
@@ -453,9 +453,9 @@ class Main
             $this->alterar_password();
             return;
         }
-        
+
         // Atualizar a nova senha
-        $cliente->atualizar_nova_senha($_SESSION['cliente'],$nova_senha);
+        $cliente->atualizar_nova_senha($_SESSION['cliente'], $nova_senha);
         Store::redirect('perfil');
         return;
     }
@@ -474,10 +474,11 @@ class Main
         $historico_encomendas = $encomendas->buscar_hitorico_encomendas($_SESSION['cliente']);
         // Store::printData($historico_encomendas);
         $data = [
-            'historico_encomendas'=> $historico_encomendas,
+            'historico_encomendas' => $historico_encomendas,
         ];
 
         // Apresenta o paginal de historico das encomendas
+        // com um link de detalhes de cada encomenda
         Store::Layout([
             'layouts/html_header',
             'header',
@@ -486,7 +487,16 @@ class Main
             'footer',
             'layouts/html_footer',
         ], $data);
+    }
 
-        // com um link de detalhes de cada encomenda
+    //============================================================
+    public function historico_encomendas_detalhe()
+    {
+        // verifica se exite um cliente logado (midlleware do Laravel)
+        if (!Store::clienteLogado()) {
+            Store::redirect();
+            return;
+        }
+        Store::printData($_GET) ;         
     }
 }

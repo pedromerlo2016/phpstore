@@ -23,8 +23,9 @@ $rotas = [
     'alterar_dados_pessoais_submit'=>'main@alterar_dados_pessoais_submit',
     'alterar_password'=>'main@alterar_password',
     'alterar_password_submit'=>'main@alterar_password_submit',
+    // Historico encomendas
     'historico_encomendas'=>'main@historico_encomendas',
-
+    'detalhe_encomenda'=> 'main@historico_encomendas_detalhe',
     // carrinho
     'adicionar_carrinho'=>'carrinho@adicionar_carrinho',
     'carrinho'=>'carrinho@carrinho',
