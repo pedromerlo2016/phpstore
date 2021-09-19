@@ -525,7 +525,18 @@ class Main
         }
 
         // buscar detalhes da encomenda
-        // apresentar esta informação na tela
-        Store::printData($resultado) ;         
+        $dados_encomenda = $encomendas->detalhes_da_encomenda($id_encomenda);
+        
+        $dados = [
+            'dados_encomenda' => $dados_encomenda,
+        ];
+        Store::Layout([
+            'layouts/html_header',
+            'header',
+            'perfil_navegacao',
+            'encomenda_detalhe',
+            'footer',
+            'layouts/html_footer',
+        ], $dados);
     }
 }
