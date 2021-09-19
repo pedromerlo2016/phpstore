@@ -497,6 +497,35 @@ class Main
             Store::redirect();
             return;
         }
-        Store::printData($_GET) ;         
+        // verifica se  o id chegou
+        if(!isset($_GET['id']) ){
+            Store::redirect();
+            return;
+        }
+        // verifica se  o id encriptado tem 32 caracteres
+        if(strlen($_GET['id'])!= 32){
+            Store::redirect();
+            return;
+        }
+        // id_encomenda desencriptado
+        $id_encomenda = Store::aesDesencriptar($_GET['id']);
+        if(empty($id_encomenda)){
+            Store::redirect();
+            return;
+        }
+
+
+        // verifica se esta encomenda pertence ao cliente logado
+        $encomendas = new Encomendas();
+
+        $resultado = $encomendas->verifica_encomenda_cliente($_SESSION['cliente'], $id_encomenda);
+        if($resultado==0){
+            Store::redirect();
+            return;
+        }
+
+        // buscar detalhes da encomenda
+        // apresentar esta informação na tela
+        Store::printData($resultado) ;         
     }
 }

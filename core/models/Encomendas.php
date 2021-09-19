@@ -3,6 +3,7 @@
 namespace core\models;
 
 use core\classes\Database;
+use core\classes\Store;
 
 class Encomendas
 {
@@ -77,5 +78,19 @@ class Encomendas
         ",$paramentros);
 
         return $resultados;
+    }
+    
+    //============================================================
+    public function verifica_encomenda_cliente($id_cliente, $id_encomenda){
+       
+        $paramentros = [
+            ':id_cliente'=> $id_cliente,
+            ':id_encomenda' =>$id_encomenda,
+        ];
+        $db= new Database();
+        $resultados = $db->select("SELECT id_encomenda FROM encomendas 
+        WHERE id_cliente = :id_cliente AND id_encomenda = :id_encomenda",$paramentros);
+
+        return count($resultados);
     }
 }
