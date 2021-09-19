@@ -59,5 +59,23 @@ class Encomendas
         }
         
     }
+    
+    //============================================================
+    public function buscar_hitorico_encomendas($id_cliente){
+        // buscar historico de encomendas do cliente = id_cliente
+        $paramentros = [
+            ':id_cliente'=> $id_cliente,
+        ];
 
+        $db= new Database();
+        $resultados = $db->select("SELECT 
+        id_encomenda, 
+        data_encomenda, 
+        codigo_encomenda, 
+        status FROM encomendas WHERE id_cliente = :id_cliente
+        ORDER BY data_encomenda DESC
+        ",$paramentros);
+
+        return $resultados;
+    }
 }

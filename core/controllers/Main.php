@@ -7,6 +7,7 @@ use core\classes\EnviarEmail;
 use core\classes\Store;
 use core\models\Clientes;
 use core\models\Produtos;
+use core\models\Encomendas;
 
 class Main
 {
@@ -459,10 +460,33 @@ class Main
         return;
     }
 
-
     //============================================================
     public function historico_encomendas()
     {
-        echo "histórico encomendas";
+        // verifica se exite um cliente logado (midlleware do Laravel)
+        if (!Store::clienteLogado()) {
+            Store::redirect();
+            return;
+        }
+
+        // Carrega o historico das encomendas
+        $encomendas =  new Encomendas();
+        $historico_encomendas = $encomendas->buscar_hitorico_encomendas($_SESSION['cliente']);
+        // Store::printData($historico_encomendas);
+        $data = [
+            'historico_encomendas'=> $historico_encomendas,
+        ];
+
+        // Apresenta o paginal de historico das encomendas
+        Store::Layout([
+            'layouts/html_header',
+            'header',
+            'perfil_navegacao',
+            'historico_encomendas',
+            'footer',
+            'layouts/html_footer',
+        ], $data);
+
+        // com um link de detalhes de cada encomenda
     }
 }
