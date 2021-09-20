@@ -3,38 +3,70 @@
         <div class="col-12">
             <h1 class="text-center">Detalhe da encomenda</h1>
             <!-- Dados da encomenda-->
-            <div >
-                <p>Data: <strong><?= date('d/m/Y H:i:s', strtotime($dados_encomenda['dados_encomenda']->data_encomenda)) ?></strong> </p>
-                <p>Codigo: <strong><?= $dados_encomenda['dados_encomenda']->codigo_encomenda ?></strong> </p>
-                <p>Status: <strong><?= $dados_encomenda['dados_encomenda']->status ?></strong> </p>
-                <p>Endereço: <strong><?= $dados_encomenda['dados_encomenda']->residencia ?></strong> </p>
-                <p>Cidade: <strong><?= $dados_encomenda['dados_encomenda']->cidade ?></strong> </p>
-                <p>Telefone: <strong><?= $dados_encomenda['dados_encomenda']->telefone ?></strong> </p>
-                <p>E-mail: <strong><?= $dados_encomenda['dados_encomenda']->email ?></strong> </p>
-                <p>Mensagem: <strong><?= $dados_encomenda['dados_encomenda']->mensagem ?></strong> </p>
-                <p>Total: <strong>R$ <?= number_format($dados_encomenda['total'],2,',','.')?></strong> </p>
+            <div class="row">
+                <div class="col">
+                    <div class="p-2 my-3">
+                        <span><strong>Data da encomenda: </strong></span><br>
+                        <?= date('d/m/Y H:i:s', strtotime($dados_encomenda['dados_encomenda']->data_encomenda)) ?>
+                    </div>
+                    <div class="p-2 my-3">
+                        <span><strong>Código da Encomenda </strong></span><br>
+                        <?= $dados_encomenda['dados_encomenda']->codigo_encomenda ?>
+                    </div>
+                    <div class="p-2 my-3">
+                        <span><strong>Situação </strong></span><br>
+                        <?= $dados_encomenda['dados_encomenda']->status ?>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="p-2 my-3">
+                        <span><strong>E-mail </strong></span><br>
+                        <?= $dados_encomenda['dados_encomenda']->email ?>
+                    </div>
+                    <div class="p-2 my-3">
+                        <span><strong>Telefone </strong></span><br>
+                        <?= !empty($dados_encomenda['dados_encomenda']->telefone) ? $dados_encomenda['dados_encomenda']->telefone : '&nbsp' ?>
+                    </div>    
+                </div>
+                <div class="col">
+                    <div class="p-2 my-3">
+                        <span><strong>Endereço </strong></span><br>
+                        <?= $dados_encomenda['dados_encomenda']->residencia ?>
+                    </div>
+                    <div class="p-2 my-3">
+                        <span><strong>Cidade </strong></span><br>
+                        <?= $dados_encomenda['dados_encomenda']->cidade ?>
+                    </div>
+                    <div  class="p-2 my-3">
+                        <span><strong>Total </strong></span><br>   
+                        R$ <?= number_format($dados_encomenda['total'], 2, ',', '.') ?>    
+                    </div>
+                </div>
+
             </div>
             <hr>
             <!-- lista de produtos da encomenda-->
-            <div class='mb-5'>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Descrição</th>
-                            <th>Preço Unitário</th>
-                            <th>Quantidade</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($dados_encomenda['detalhes_encomenda'] as $detalhes) : ?>
+            <div class='row mb-5'>
+                <div class="col">
+                    <table class="table table-striped">
+                        <thead>
                             <tr>
-                                <td><?= $detalhes->descricao_produto ?></td>
-                                <td>R$ <?= number_format($detalhes->preco_unidade,2,',','.') ?></td>
-                                <td><?= $detalhes->quantidade ?></td>
-                            <tr>
-                            <?php endforeach ?>
-                    </tbody>
-                </table>
+                                <th>Descrição</th>
+                                <th>Preço Unitário</th>
+                                <th>Quantidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($dados_encomenda['detalhes_encomenda'] as $detalhes) : ?>
+                                <tr>
+                                    <td><?= $detalhes->descricao_produto ?></td>
+                                    <td>R$ <?= number_format($detalhes->preco_unidade, 2, ',', '.') ?></td>
+                                    <td><?= $detalhes->quantidade ?></td>
+                                <tr>
+                                <?php endforeach ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
