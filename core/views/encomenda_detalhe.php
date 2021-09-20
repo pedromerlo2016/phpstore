@@ -52,20 +52,25 @@
                         <thead>
                             <tr>
                                 <th>Descrição</th>
-                                <th>Preço Unitário</th>
-                                <th>Quantidade</th>
+                                <th class="text-center">Quantidade</th>
+                                <th class="text-end">Preço Unitário</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($dados_encomenda['detalhes_encomenda'] as $detalhes) : ?>
                                 <tr>
                                     <td><?= $detalhes->descricao_produto ?></td>
-                                    <td>R$ <?= number_format($detalhes->preco_unidade, 2, ',', '.') ?></td>
-                                    <td><?= $detalhes->quantidade ?></td>
+                                    <td class="text-center"><?= $detalhes->quantidade ?></td>
+                                    <td class="text-end">R$ <?= number_format($detalhes->preco_unidade, 2, ',', '.') ?></td>
                                 <tr>
                                 <?php endforeach ?>
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 100px;">
+                <div class="col text-center">
+                    <a href="?a=historico_encomendas" class="btn btn-primary btn-150">Voltar</a>
                 </div>
             </div>
         </div>
