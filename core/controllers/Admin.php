@@ -9,7 +9,17 @@ class Admin
     //============================================================
     public function index()
     {
-        echo 'Backoffice da loja';
+        // 
+
+
+        // apresenta a pagina inicial do backoffice
+        Store::Layout_admin([
+            'admin/layouts/html_header',
+            'admin/header',
+            'admin/home',
+            'admin/footer',
+            'admin/layouts/html_footer',
+        ]);
     }
 
     //============================================================
