@@ -539,4 +539,24 @@ class Main
             'layouts/html_footer',
         ], $dados);
     }
+
+    //============================================================
+    public function pagamento()
+    {
+        // simulação do webhook do gateway de pagamento
+
+        // verificar se vem o código da encomenda
+        $codigo_encomenda='';
+        if(!isset($_GET['cod'])){
+            return;
+        }else{
+            $codigo_encomenda = $_GET['cod'];
+        }     
+
+        // verificar se a encomenda com o código indicado está pendente
+        $encomenda  = new Encomendas();
+        $resultado = $encomenda->efetuar_pagamento($codigo_encomenda);
+        // alterar o status da encomenda de PENDENTE para EM PROCESSAMENTO
+        echo (int)$resultado;
+    }
 }

@@ -100,22 +100,44 @@ class Encomendas
     {
         // dados da encomenda
         $parametros = ['id_encomenda' => $id_encomenda];
-        $db= new Database();
+        $db = new Database();
         $dados_encomenda =  $db->select("SELECT * FROM encomendas WHERE id_encomenda = :id_encomenda", $parametros)[0];
-        
+
         // dados dos produtos da encomenda
-        $detalhes_encomenda =$db->select("SELECT * FROM encomenda_produto WHERE id_encomenda = :id_encomenda",$parametros);
+        $detalhes_encomenda = $db->select("SELECT * FROM encomenda_produto WHERE id_encomenda = :id_encomenda", $parametros);
         $total = 0.0;
-        foreach($detalhes_encomenda as $encomenda){
+        foreach ($detalhes_encomenda as $encomenda) {
             $total += $encomenda->preco_unidade * $encomenda->quantidade;
         }
 
-        
-        
+
+
         return [
             'dados_encomenda' => $dados_encomenda,
-            'detalhes_encomenda'=> $detalhes_encomenda,
-            'total'=> $total,
+            'detalhes_encomenda' => $detalhes_encomenda,
+            'total' => $total,
         ];
+    }
+
+    //============================================================
+    public function efetuar_pagamento($encomenda)
+    {
+        // verifica se exite uma encomenda com o código fornecido
+        $paramentros = [
+            ':codigo_encomenda' =>$encomenda,
+        ];
+        $db =  new Database();
+        $resultado = $db->select("SELECT * FROM encomendas WHERE status='PENDENTE' and codigo_encomenda = :codigo_encomenda", $paramentros );
+        //Store::printData($resultado);
+        
+        if (count($resultado) == 0) {
+            return false;
+        }
+
+        // efetua a alteração de status para EM PROCESSAMENTO
+        $db->update("UPDATE encomendas SET status='EM PROCESSAMENTO', updated_at = NOW() WHERE codigo_encomenda = :codigo_encomenda", $paramentros);
+        return true;
+
+
     }
 }
