@@ -6,7 +6,11 @@
 // coleção de rotas
 $rotas = [
     'inicio'=>'admin@index',
-    'lista_clientes'=>'admin@lista_clientes'
+
+    'admin_login'=>'admin@admin_login',
+
+    'lista_clientes'=>'admin@lista_clientes',
+
 ];
 
 // define ação padrão

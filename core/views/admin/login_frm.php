@@ -2,10 +2,10 @@
     <div class="row my-5">
         <div class="col-sm-4 offset-sm-4">
             <div>
-                <h3 class="text-center">LOGIN</h3>
+                <h3 class="text-center">LOGIN DE ADMIN</h3>
                 <form action="?a=login_submit" method="POST">
                     <div class="my-3">
-                        <label for="text_usuario" class="text-start">Usuário:</label>
+                        <label for="text_usuario" class="text-start">Administrador:</label>
                         <input type="email" name="text_usuario" placeholder="usuario" required class="form-control">
                     </div>
                     <div class="my-3">
@@ -15,7 +15,6 @@
                     <div class="my-3 text-center">
                         <input type="submit" value="Entrar" class="btn btn-primary">
                     </div>
-
                 </form>
                 <?php if (isset($_SESSION['erro'])) : ?>
                     <div class="alert alert-danger text-center">
