@@ -1,4 +1,5 @@
 <?php
+
 namespace core\controllers;
 
 use core\classes\EnviarEmail;
@@ -19,12 +20,19 @@ class Admin
         // echo password_hash('123456', PASSWORD_DEFAULT);
         // die();
         // verifica se já exite sessão aberta
-        if(!Store::adminLogado()){
-           Store::redirect('admin_login', true);
-           return;
+        if (!Store::adminLogado()) {
+            Store::redirect('admin_login', true);
+            return;
         }
-        // já existe un admin logado
+
+        // verificar se exitem encomendas com status=PENDENTES
+        $admin = new ModelsAdmin();
+        $encomendas_pendentes = $admin->lista_encomendas_pendentes();
         
+        $dados =[
+            'encomendas_pendentes'=> $encomendas_pendentes,
+        ]; 
+        // já existe un admin logado
         // apresenta a pagina inicial do backoffice
         Store::Layout_admin([
             'admin/layouts/html_header',
@@ -32,21 +40,22 @@ class Admin
             'admin/home',
             'admin/footer',
             'admin/layouts/html_footer',
-        ]);
+        ], $dados);
     }
     //============================================================
-    public function admin_login(){
-        if(Store::adminLogado()){
+    public function admin_login()
+    {
+        if (Store::adminLogado()) {
             Store::redirect('inicio', true);
             return;
-         }
+        }
         // apresenta a pagina de login
         Store::Layout_admin([
-           'admin/layouts/html_header',
-           'admin/header',
-           'admin/login_frm',
-           'admin/footer',
-           'admin/layouts/html_footer',
+            'admin/layouts/html_header',
+            'admin/header',
+            'admin/login_frm',
+            'admin/footer',
+            'admin/layouts/html_footer',
         ]);
     }
 
@@ -54,50 +63,62 @@ class Admin
     public function admin_login_submit()
     {
         // verifica se já exite um usuario logado
-        if(Store::adminLogado()){
+        if (Store::adminLogado()) {
             Store::redirect('inicio', true);
             return;
-         }
+        }
 
-         // valida se as informações chegaram corretamente preenchidas
-         if(!isset($_POST['text_admin'])||
-             !isset($_POST['text_senha']) ||
-             !filter_var(trim($_POST['text_admin']),FILTER_VALIDATE_EMAIL)){
+        // valida se as informações chegaram corretamente preenchidas
+        if (
+            !isset($_POST['text_admin']) ||
+            !isset($_POST['text_senha']) ||
+            !filter_var(trim($_POST['text_admin']), FILTER_VALIDATE_EMAIL)
+        ) {
             // erro de preenchimento de formulário
-            $_SESSION['erro']='login inválido';
+            $_SESSION['erro'] = 'login inválido';
             Store::redirect('admin_login', true);
             return;
-         }
-         // prepara dados para o model
-         $email_admin = trim(strtolower($_POST['text_admin']));
-         $senha = trim($_POST['text_senha']);
+        }
+        // prepara dados para o model
+        $email_admin = trim(strtolower($_POST['text_admin']));
+        $senha = trim($_POST['text_senha']);
 
-         $admin = new ModelsAdmin();
-         $resultado = $admin->validar_login($email_admin, $senha);
-         if(is_bool($resultado)){
+        $admin = new ModelsAdmin();
+        $resultado = $admin->validar_login($email_admin, $senha);
+        if (is_bool($resultado)) {
             // login inválido
-            $_SESSION['erro']='login invalido';
+            $_SESSION['erro'] = 'login invalido';
             Store::redirect('login', true);
             return;
-         }else{
-             if(!password_verify($senha,$resultado->senha)){
+        } else {
+            if (!password_verify($senha, $resultado->senha)) {
                 // senha incorreta
-                $_SESSION['erro']='login invalido';
+                $_SESSION['erro'] = 'login invalido';
                 Store::redirect('login', true);
                 return;
-             }
-             // login válido
-             $_SESSION['admin']=$resultado->id_admin;
-             $_SESSION['usuario']=$resultado->email;
-             // redireciona para pagina inicial do backoffice
-             Store::redirect('inicio', true);
-         }
+            }
+            // login válido
+            $_SESSION['admin'] = $resultado->id_admin;
+            $_SESSION['usuario'] = $resultado->usuario;
+            // redireciona para pagina inicial do backoffice
+            Store::redirect('inicio', true);
+        }
+    }
+
+    //============================================================
+    public function admin_logout()
+    {
+        // faz o logout do admin na sessão
+
+        unset($_SESSION['admin']);
+        unset($_SESSION['admin_usuario']);
+        Store::redirect('inicio', true);
+        return;
     }
 
     //============================================================
     public function lista_clientes()
     {
         echo "Lista de clientes";
-
     }
 }

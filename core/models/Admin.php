@@ -36,5 +36,10 @@ class Admin
         }
     }
 
-
+    //============================================================
+    public function lista_encomendas_pendentes(){
+        // lista as encomendas com status=PENDENTE
+        $db = new Database();
+        return $resultado  = $db->select("SELECT * FROM encomendas where status='PENDENTE' ", );
+    }
 }
