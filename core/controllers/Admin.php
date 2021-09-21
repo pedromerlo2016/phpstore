@@ -3,12 +3,21 @@ namespace core\controllers;
 
 use core\classes\EnviarEmail;
 use core\classes\Store;
+use core\models\Admin as ModelsAdmin;
 use core\models\Database;
+
 class Admin
 {
-    //============================================================
+    //=============================================================
+    // senha admin1@teste.com e admin2@teste.com
+    // $2y$10$6OVgc./1NbJs/RAU8QJWXuVdB0hcDJI57KDVSC9rS7Pe8QrjQxlHC
+    // senha 123456
+    //=============================================================
     public function index()
     {
+        //temp
+        // echo password_hash('123456', PASSWORD_DEFAULT);
+        // die();
         // verifica se já exite sessão aberta
         if(!Store::adminLogado()){
            Store::redirect('admin_login', true);
@@ -46,7 +55,7 @@ class Admin
     {
         // verifica se já exite um usuario logado
         if(Store::adminLogado()){
-            Store::redirect('', true);
+            Store::redirect('inicio', true);
             return;
          }
 
@@ -60,9 +69,29 @@ class Admin
             return;
          }
          // prepara dados para o model
-         $admin = trim(strtolower($_POST['text_admin']));
+         $email_admin = trim(strtolower($_POST['text_admin']));
          $senha = trim($_POST['text_senha']);
 
+         $admin = new ModelsAdmin();
+         $resultado = $admin->validar_login($email_admin, $senha);
+         if(is_bool($resultado)){
+            // login inválido
+            $_SESSION['erro']='login invalido';
+            Store::redirect('login', true);
+            return;
+         }else{
+             if(!password_verify($senha,$resultado->senha)){
+                // senha incorreta
+                $_SESSION['erro']='login invalido';
+                Store::redirect('login', true);
+                return;
+             }
+             // login válido
+             $_SESSION['admin']=$resultado->id_admin;
+             $_SESSION['usuario']=$resultado->email;
+             // redireciona para pagina inicial do backoffice
+             Store::redirect('inicio', true);
+         }
     }
 
     //============================================================
