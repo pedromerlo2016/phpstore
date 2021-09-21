@@ -3,10 +3,10 @@
         <div class="col-sm-4 offset-sm-4">
             <div>
                 <h3 class="text-center">LOGIN DE ADMIN</h3>
-                <form action="?a=login_submit" method="POST">
+                <form action="?a=admin_login_submit" method="POST">
                     <div class="my-3">
-                        <label for="text_usuario" class="text-start">Administrador:</label>
-                        <input type="email" name="text_usuario" placeholder="usuario" required class="form-control">
+                        <label for="text_admin" class="text-start">Administrador:</label>
+                        <input type="email" name="text_admin" placeholder="usuario" required class="form-control">
                     </div>
                     <div class="my-3">
                         <label for="text_senha" class="text-start">Senha:</label>

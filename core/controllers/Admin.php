@@ -42,8 +42,33 @@ class Admin
     }
 
     //============================================================
+    public function admin_login_submit()
+    {
+        // verifica se já exite um usuario logado
+        if(Store::adminLogado()){
+            Store::redirect('', true);
+            return;
+         }
+
+         // valida se as informações chegaram corretamente preenchidas
+         if(!isset($_POST['text_admin'])||
+             !isset($_POST['text_senha']) ||
+             !filter_var(trim($_POST['text_admin']),FILTER_VALIDATE_EMAIL)){
+            // erro de preenchimento de formulário
+            $_SESSION['erro']='login inválido';
+            Store::redirect('admin_login', true);
+            return;
+         }
+         // prepara dados para o model
+         $admin = trim(strtolower($_POST['text_admin']));
+         $senha = trim($_POST['text_senha']);
+
+    }
+
+    //============================================================
     public function lista_clientes()
     {
         echo "Lista de clientes";
+
     }
 }
