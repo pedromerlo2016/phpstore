@@ -10,8 +10,8 @@
                 <p>Não exitem encomendas registradas</p>
                 <hr>
             <?php else : ?>
-                <table class="table table-sm">
-                    <thead>
+                <table class="table table-sm table-striped" id="tabela-encomendas">
+                    <thead class='table-dark'>
                         <tr>
                             <th>Data</th>
                             <th>Codigo</th>
@@ -37,7 +37,11 @@
                     </tbody>
                 </table>
             <?php endif; ?>
-
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+       $('#tabela-encomendas').DataTable(); 
+    });
+</script>

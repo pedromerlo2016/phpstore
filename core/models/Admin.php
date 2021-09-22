@@ -55,19 +55,35 @@ class Admin
     }
 
     //============================================================
-    public function lista_encomendas($filtro="")
+    public function lista_encomendas($filtro = "")
     {
         // lista as encomendas com status=PENDENTE
         $db = new Database();
-        
-        $sql = "SELECT encomendas.*, clientes.nome_completo FROM encomendas, clientes WHERE 1";
-        
-        if ($filtro!= ''){
-            $sql.=" AND encomendas.status='$filtro'";
+
+        $sql = "SELECT e.*, c.nome_completo FROM encomendas e LEFT JOIN clientes c";
+        $sql .= " ON e.id_cliente  = c.id_cliente";
+
+        if ($filtro != '') {
+            $sql .= " WHERE e.status='$filtro'";
         }
-        $sql .=" AND clientes.id_cliente=encomendas.id_cliente ORDER BY encomendas.id_encomenda DESC";
+        $sql .= " ORDER BY e.id_encomenda DESC";
 
         return $db->select($sql);
-       
+    }
+
+    //============================================================
+    public function lista_encomendas_old($filtro = "")
+    {
+        // lista as encomendas com status=PENDENTE
+        $db = new Database();
+
+        $sql = "SELECT encomendas.*, clientes.nome_completo FROM encomendas, clientes WHERE 1";
+
+        if ($filtro != '') {
+            $sql .= " AND encomendas.status='$filtro'";
+        }
+        $sql .= " AND clientes.id_cliente=encomendas.id_cliente ORDER BY encomendas.id_encomenda DESC";
+
+        return $db->select($sql);
     }
 }

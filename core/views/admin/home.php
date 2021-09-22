@@ -12,7 +12,7 @@
             <?php else : ?>
                 <div class="alert-info p-2 ">
                     <span>Existem encomendas pendentes: <strong><?= $total_encomendas_pendentes ?></strong></span>
-                    <a href="?a=lista_encomendas&f=pendentes"><i class="fas fa-eye me-2"></i>Ver</a>
+                    <a href="?a=lista_encomendas&f=pendente"><i class="fas fa-eye me-2"></i>Ver</a>
                 </div>
             <?php endif; ?>
 

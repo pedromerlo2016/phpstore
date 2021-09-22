@@ -153,6 +153,7 @@ class Admin
         // carregamento dos dados
         $admin_model = new ModelsAdmin();
         $lista_encomendas = $admin_model->lista_encomendas($filtro);
+        //Store::printData($lista_encomendas);
         $dados = [
             'lista_encomendas' => $lista_encomendas,
             'filtro' => $filtro,
