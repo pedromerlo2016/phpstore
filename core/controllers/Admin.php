@@ -29,15 +29,15 @@ class Admin
         $admin = new ModelsAdmin();
         $total_encomendas_pendentes = $admin->total_encomendas_pendente();
         $total_encomendas_em_processamento = $admin->total_encomendas_em_processamento();
-        
-        $dados=[
-            'total_encomendas_pendentes'=>$total_encomendas_pendentes,
-            'total_encomendas_em_processamento'=>$total_encomendas_em_processamento
-        ]; 
 
-        $encomendas_pendentes = $admin->lista_encomendas_pendentes();
-        
-        
+        $dados = [
+            'total_encomendas_pendentes' => $total_encomendas_pendentes,
+            'total_encomendas_em_processamento' => $total_encomendas_em_processamento
+        ];
+
+       
+
+
         // $dados =[
         //     'encomendas_pendentes'=> $encomendas_pendentes,
         // ]; 
@@ -132,14 +132,33 @@ class Admin
     }
 
     //============================================================
-    public function lista_encomendas(){
-        // verifica se exite filtro na query string
-        $filtro="";
-        if(isset($_GET['f'])){
-            $filtro = $_GET['f'];
+    public function lista_encomendas()
+    {
+        // verifica se exite filtro na query STRING
+        $filtros = [
+            'pendente' => 'PENDENTE',
+            'em_processamento' => 'EM PROCESSAMENTO',
+            'cancelada' => 'CANCELADA',
+            'enviada' => 'ENVIADA',
+            'concluida' => 'CONCLUIDA',
+        ];
+
+        $filtro = "";
+        if (isset($_GET['f'])) {
+            // verifica se a variavel é uma key dos filtros
+            if (key_exists($_GET['f'], $filtros)) {
+                $filtro = $filtros[$_GET['f']];
+            }
         }
-        
-        $dados=[];
+        // carregamento dos dados
+        $admin_model = new ModelsAdmin();
+        $lista_encomendas= $admin_model->lista_encomendas($filtro);
+       
+
+        $dados = [
+            'lista_encomendas'=>$lista_encomendas,
+            'filtro'=>$filtro,
+        ];
 
         // apresenta a pagina das encomendas
         Store::Layout_admin([

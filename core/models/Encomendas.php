@@ -109,9 +109,6 @@ class Encomendas
         foreach ($detalhes_encomenda as $encomenda) {
             $total += $encomenda->preco_unidade * $encomenda->quantidade;
         }
-
-
-
         return [
             'dados_encomenda' => $dados_encomenda,
             'detalhes_encomenda' => $detalhes_encomenda,

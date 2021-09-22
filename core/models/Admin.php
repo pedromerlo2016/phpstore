@@ -55,10 +55,19 @@ class Admin
     }
 
     //============================================================
-    public function lista_encomendas_pendentes()
+    public function lista_encomendas($filtro="")
     {
         // lista as encomendas com status=PENDENTE
         $db = new Database();
-        return $resultado  = $db->select("SELECT * FROM encomendas where status='PENDENTE' ",);
+        
+        $sql = "SELECT * FROM encomendas";
+        
+        if ($filtro!= ''){
+            $sql.=" WHERE status='$filtro'";
+        }
+        $sql .=" ORDER BY id_encomenda DESC";
+        
+        return $db->select($sql);
+       
     }
 }
