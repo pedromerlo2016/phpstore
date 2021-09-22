@@ -27,11 +27,17 @@ class Admin
 
         // verificar se exitem encomendas com status=PENDENTES
         $admin = new ModelsAdmin();
+        $total_encomendas_pendentes = $admin->total_encomendas_pendente();
+       
+        $dados=[
+            'total_encomendas_pendentes'=>$total_encomendas_pendentes,
+        ]; 
+
         $encomendas_pendentes = $admin->lista_encomendas_pendentes();
         
-        $dados =[
-            'encomendas_pendentes'=> $encomendas_pendentes,
-        ]; 
+        // $dados =[
+        //     'encomendas_pendentes'=> $encomendas_pendentes,
+        // ]; 
         // já existe un admin logado
         // apresenta a pagina inicial do backoffice
         Store::Layout_admin([
