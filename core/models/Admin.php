@@ -37,17 +37,28 @@ class Admin
     }
 
     //============================================================
-    public function total_encomendas_pendente(){
+    public function total_encomendas_pendente()
+    {
         // recupera o valor total de encomendas pendentes
         $db = new Database();
-        $resultados= $db->select("SELECT COUNT(*) as total FROM encomendas WHERE status='PENDENTE'");
+        $resultados = $db->select("SELECT COUNT(*) as total FROM encomendas WHERE status='PENDENTE'");
         return $resultados[0]->total;
     }
-    
+
     //============================================================
-    public function lista_encomendas_pendentes(){
+    public function total_encomendas_em_processamento()
+    {
+        // recupera o valor total de encomendas em processamento
+        $db = new Database();
+        $resultados = $db->select("SELECT COUNT(*) as total FROM encomendas WHERE status='EM PROCESSAMENTO'");
+        return $resultados[0]->total;
+    }
+
+    //============================================================
+    public function lista_encomendas_pendentes()
+    {
         // lista as encomendas com status=PENDENTE
         $db = new Database();
-        return $resultado  = $db->select("SELECT * FROM encomendas where status='PENDENTE' ", );
+        return $resultado  = $db->select("SELECT * FROM encomendas where status='PENDENTE' ",);
     }
 }

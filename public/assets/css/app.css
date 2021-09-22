@@ -36,3 +36,8 @@
 .btn-125{ min-width: 125px !important; }
 .btn-150{ min-width: 150px !important; }
 .btn-175{ min-width: 175px !important; }
+
+/* cores */
+.text-a1a1a1{
+    color:#a1a1a1;
+}

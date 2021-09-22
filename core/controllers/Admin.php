@@ -28,12 +28,15 @@ class Admin
         // verificar se exitem encomendas com status=PENDENTES
         $admin = new ModelsAdmin();
         $total_encomendas_pendentes = $admin->total_encomendas_pendente();
-       
+        $total_encomendas_em_processamento = $admin->total_encomendas_em_processamento();
+        
         $dados=[
             'total_encomendas_pendentes'=>$total_encomendas_pendentes,
+            'total_encomendas_em_processamento'=>$total_encomendas_em_processamento
         ]; 
 
         $encomendas_pendentes = $admin->lista_encomendas_pendentes();
+        
         
         // $dados =[
         //     'encomendas_pendentes'=> $encomendas_pendentes,
@@ -126,5 +129,25 @@ class Admin
     public function lista_clientes()
     {
         echo "Lista de clientes";
+    }
+
+    //============================================================
+    public function lista_encomendas(){
+        // verifica se exite filtro na query string
+        $filtro="";
+        if(isset($_GET['f'])){
+            $filtro = $_GET['f'];
+        }
+        
+        $dados=[];
+
+        // apresenta a pagina das encomendas
+        Store::Layout_admin([
+            'admin/layouts/html_header',
+            'admin/header',
+            'admin/lista_encomendas',
+            'admin/footer',
+            'admin/layouts/html_footer',
+        ], $dados);
     }
 }
