@@ -35,7 +35,7 @@ class Admin
             'total_encomendas_em_processamento' => $total_encomendas_em_processamento
         ];
 
-       
+
 
 
         // $dados =[
@@ -152,12 +152,10 @@ class Admin
         }
         // carregamento dos dados
         $admin_model = new ModelsAdmin();
-        $lista_encomendas= $admin_model->lista_encomendas($filtro);
-       
-
+        $lista_encomendas = $admin_model->lista_encomendas($filtro);
         $dados = [
-            'lista_encomendas'=>$lista_encomendas,
-            'filtro'=>$filtro,
+            'lista_encomendas' => $lista_encomendas,
+            'filtro' => $filtro,
         ];
 
         // apresenta a pagina das encomendas

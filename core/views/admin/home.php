@@ -1,9 +1,9 @@
 <div class="contanier-fluid">
     <div class="row mt-3">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <?php include(__DIR__ . '/layouts/admin_menu.php') ?>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-10">
             <!-- Apresenta informações sobre o total das encomendas PENDENTES -->
             <h4>Encomendas Pendentes</h4>
             <hr>

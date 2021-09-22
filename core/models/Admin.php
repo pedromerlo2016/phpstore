@@ -60,13 +60,13 @@ class Admin
         // lista as encomendas com status=PENDENTE
         $db = new Database();
         
-        $sql = "SELECT * FROM encomendas";
+        $sql = "SELECT encomendas.*, clientes.nome_completo FROM encomendas, clientes WHERE 1";
         
         if ($filtro!= ''){
-            $sql.=" WHERE status='$filtro'";
+            $sql.=" AND encomendas.status='$filtro'";
         }
-        $sql .=" ORDER BY id_encomenda DESC";
-        
+        $sql .=" AND clientes.id_cliente=encomendas.id_cliente ORDER BY encomendas.id_encomenda DESC";
+
         return $db->select($sql);
        
     }

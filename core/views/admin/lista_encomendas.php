@@ -1,22 +1,43 @@
 <div class="contanier-fluid">
     <div class="row mt-3">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <?php include(__DIR__ . '/layouts/admin_menu.php') ?>
         </div>
-        <div class="col-md-9">
-             <h3>Lista de encomendas <?=$filtro !=''? $filtro:''?></h3>
-            <hr>
-                <?php if(count($lista_encomendas)): ?>
-                    <p>Não exitem encomendas registradas</p>
-                <?php else: ?>
-                    <table>
-                        <thead>
+        <div class="col-md-10">
+            <h3>Lista de encomendas <?= $filtro != '' ? $filtro : '' ?></h3>
+            <?php if (count($lista_encomendas) == 0) : ?>
+                <hr>
+                <p>Não exitem encomendas registradas</p>
+                <hr>
+            <?php else : ?>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Codigo</th>
+                            <th>Nome Cliente</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                            <th>Status</th>
+                            <th>Atualizado em</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($lista_encomendas as $encomenda) : ?>
+                            <tr>
+                                <td><?= date('d/m/Y', strtotime($encomenda->data_encomenda)) ?></td>
+                                <td><?= $encomenda->codigo_encomenda ?></td>
+                                <td><?= $encomenda->nome_completo ?></td>
+                                <td><?= $encomenda->email ?></td>
+                                <td><?= $encomenda->telefone ?></td>
+                                <td><?= $encomenda->status ?></td>
+                                <td><?= date('d/m/Y', strtotime($encomenda->updated_at)) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
 
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                <?php endif;?>
-            <hr>
-        </div>    
+        </div>
     </div>
 </div>
