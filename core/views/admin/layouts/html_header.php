@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="assets/css/app.css">
     <link rel="stylesheet" type="text/css" href="assets/datatable/datatables.min.css"/>
     <script type="text/javascript" src="assets/js/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/datatable/datatables.min.js"></script> -->
+    <script type="text/javascript" src="assets/datatable/datatables.min.js"></script>
 
     
 </head>

@@ -41,7 +41,30 @@
     </div>
 </div>
 <script>
-    $(document).ready(function(){
-       $('#tabela-encomendas').DataTable(); 
+    $(document).ready(function() {
+        $('#tabela-encomendas').DataTable({
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ registro por página",
+                "zeroRecords": "Nenhum registro encontrado - Desculpe!",
+                "info": "Visualizando pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Nenhum registro válido",
+                "infoFiltered": "(filtrado de total de _MAX_ registros)",
+                "loadingRecords": "Carregadon...",
+                "processing": "Processando...",
+                "search": "Procura:",
+                "paginate": {
+                    "first": "Primeiro",
+                    "last": "Último",
+                    "next": "Próximo",
+                    "previous": "Prévio"
+                },
+                "aria": {
+                    "sortAscending": ": Ativa para classificar a coluna ascendente",
+                    "sortDescending": ":Ativa para classificar a coluna descendente"
+                }
+            }
+
+
+        });
     });
 </script>
