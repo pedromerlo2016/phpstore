@@ -4,7 +4,26 @@
             <?php include(__DIR__ . '/layouts/admin_menu.php') ?>
         </div>
         <div class="col-md-10">
-            <h3>Lista de encomendas <?= $filtro != '' ? $filtro : '' ?></h3>
+            <h3>Lista de encomendas <?= $filtro != '' ? $filtro."S" : '' ?></h3>
+            <hr>
+            <div class="d-inline-flex">
+                <div>
+                    <a href="?a=lista-encomendas" class="btn btn-primary btn-sm">Ver todas as encomendas</a>
+                </div>
+                <div class="d-inline-flex">
+                   Escolher status
+                    <select id="combo-status" class="form-select" onchange="definir_filtro()">
+                        <option value=""></option>
+                        <option value="pendente">Pendentes</option>
+                        <option value="em_processamento">Em processamento</option>
+                        <option value="enviada">Enviadas</option>
+                        <option value="cancelada">Cancelas</option>
+                        <option value="concluida">Concluídas</option>
+                    </select>
+                </div>
+            </div>
+
+
             <?php if (count($lista_encomendas) == 0) : ?>
                 <hr>
                 <p>Não exitem encomendas registradas</p>
@@ -63,8 +82,13 @@
                     "sortDescending": ":Ativa para classificar a coluna descendente"
                 }
             }
-
-
         });
     });
+
+    function definir_filtro(){
+        var filtro = document.getElementById('combo-status').value;
+       
+        //reload da página para um filtro
+        window.location.href = "?"+$.param({'a':'lista_encomendas','f':filtro })
+    }
 </script>

@@ -1,4 +1,4 @@
-<div>
+<div class="ms-3">
     <div class="mb-3">
         <a href="?a=inicio">Início</a>
     </div>
