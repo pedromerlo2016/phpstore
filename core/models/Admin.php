@@ -37,6 +37,32 @@ class Admin
     }
 
     //============================================================
+    // CLIENTES
+    //============================================================
+
+    public static function lista_clientes()
+    {
+        // recupera todos sos clientes na DB
+        $db = new Database();
+        $sql = "SELECT 
+            id_cliente,
+            email,
+            nome_completo,
+            endereco,
+            cidade,
+            telefone,
+            ativo,
+            created_at,
+            deleted_at
+            FROM clientes";
+        $resultados= $db->select($sql);
+        return $resultados;
+    }
+
+    //============================================================
+    // ENCOMENDAS
+    //============================================================
+
     public function total_encomendas_pendente()
     {
         // recupera o valor total de encomendas pendentes

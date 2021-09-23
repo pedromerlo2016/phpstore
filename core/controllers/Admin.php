@@ -135,7 +135,13 @@ class Admin
             return;
         }
 
-        $dados=[];
+        // pegar alista de clientes
+        $clientes = ModelsAdmin::lista_clientes();
+        $dados=[
+            'clientes'=>$clientes
+        ];
+        
+        
         // apresenta a pagina das encomendas
         Store::Layout_admin([
             'admin/layouts/html_header',
