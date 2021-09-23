@@ -128,7 +128,23 @@ class Admin
     //============================================================
     public function lista_clientes()
     {
-        echo "Lista de clientes";
+       
+        // verifica se já exite um usuario logado
+        if (!Store::adminLogado()) {
+            Store::redirect('inicio', true);
+            return;
+        }
+
+        $dados=[];
+        // apresenta a pagina das encomendas
+        Store::Layout_admin([
+            'admin/layouts/html_header',
+            'admin/header',
+            'admin/lista_clientes',
+            'admin/footer',
+            'admin/layouts/html_footer',
+        ], $dados);
+
     }
 
     //============================================================

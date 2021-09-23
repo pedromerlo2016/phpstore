@@ -4,21 +4,29 @@
             <?php include(__DIR__ . '/layouts/admin_menu.php') ?>
         </div>
         <div class="col-md-10">
-            <h3>Lista de encomendas <?= $filtro != '' ? $filtro."S" : '' ?></h3>
+            <h3>Lista de encomendas <?= $filtro != '' ? ($filtro != "EM PROCESSAMENTO" ? $filtro."S": $filtro) : '' ?></h3>
             <hr>
             <div class="d-inline-flex">
                 <div>
                     <a href="?a=lista-encomendas" class="btn btn-primary btn-sm">Ver todas as encomendas</a>
                 </div>
+
+                <?php 
+                    // recupera o filtro que esta na quey string
+                    $f='';
+                    if(isset($_GET['f'])){
+                        $f = $_GET['f'];
+                    }
+                ?>
                 <div class="d-inline-flex">
                    Escolher status
                     <select id="combo-status" class="form-select" onchange="definir_filtro()">
-                        <option value=""></option>
-                        <option value="pendente">Pendentes</option>
-                        <option value="em_processamento">Em processamento</option>
-                        <option value="enviada">Enviadas</option>
-                        <option value="cancelada">Cancelas</option>
-                        <option value="concluida">Concluídas</option>
+                        <option value=""  <?= ($f== ''? "selected" :"") ?> ></option>
+                        <option value="pendente" <?= ($f== 'pendente'? "selected" :"")?> >Pendentes</option>
+                        <option value="em_processamento"<?= ($f== 'em_processamento'? "selected" :"")?> >Em processamento</option>
+                        <option value="enviada"<?= ($f== 'enviada'? "selected" :"") ?>>Enviadas</option>
+                        <option value="cancelada"<?= ($f== 'cancelada'? "selected" :"") ?>>Cancelas</option>
+                        <option value="concluida"<?= ($f== 'concluida'? "selected" :"") ?>>Concluídas</option>
                     </select>
                 </div>
             </div>
