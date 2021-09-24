@@ -70,6 +70,20 @@ class Admin
 
         return $resultado[0];
     }
+    
+    //============================================================      
+    public static function total_encomendas($id_cliente){
+         // consulta o total de encomendas do cliente
+         $db = new Database();
+         $parametros=[
+             ':id_cliente'=>$id_cliente,
+         ];
+ 
+         $sql = "SELECT COUNT(*) total FROM encomendas WHERE id_cliente = :id_cliente";
+         $resultado = $db->select($sql, $parametros)[0];
+        
+         return $resultado;
+    }
 
     //============================================================
     // ENCOMENDAS
@@ -124,4 +138,6 @@ class Admin
 
         return $db->select($sql);
     }
+
+    
 }

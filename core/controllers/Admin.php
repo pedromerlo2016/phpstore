@@ -175,9 +175,10 @@ class Admin
 
 
         $cliente_detalhe =  ModelsAdmin::detalhe_cliente($id_cliente);
-        // die(print_r($cliente_detalhe));
+        $total_encomendas = ModelsAdmin::total_encomendas($id_cliente);
         $dados = [
             'cliente_detalhe'=>$cliente_detalhe,
+            'total_encomendas'=>$total_encomendas
         ];
 
          // apresenta a pagina das encomendas
@@ -188,6 +189,25 @@ class Admin
             'admin/footer',
             'admin/layouts/html_footer',
         ], $dados);
+    }
+
+    //============================================================
+    function cliente_historico_encomendas(){
+        // verifica se já exite um usuario logado
+        if (!Store::adminLogado()) {
+            Store::redirect('inicio', true);
+            return;
+        }
+        // verifica se exite um id de cliente 
+        if(!isset($_GET['c'])){
+            Store::redirect('inicio',true);
+            return;
+        };
+       
+        $id_cliente= Store::aesDesencriptar($_GET['c']);
+
+        // $cliente_historico_encomendas  = ModelsAdmin:: );
+
     }
 
     //============================================================
