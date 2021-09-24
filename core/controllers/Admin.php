@@ -128,7 +128,7 @@ class Admin
     //============================================================
     public function lista_clientes()
     {
-       
+
         // verifica se já exite um usuario logado
         if (!Store::adminLogado()) {
             Store::redirect('inicio', true);
@@ -137,11 +137,11 @@ class Admin
 
         // pegar alista de clientes
         $clientes = ModelsAdmin::lista_clientes();
-        $dados=[
-            'clientes'=>$clientes
+        $dados = [
+            'clientes' => $clientes
         ];
-        
-        
+
+
         // apresenta a pagina das encomendas
         Store::Layout_admin([
             'admin/layouts/html_header',
@@ -150,7 +150,44 @@ class Admin
             'admin/footer',
             'admin/layouts/html_footer',
         ], $dados);
+    }
 
+    //============================================================
+    public function detalhe_cliente()
+    {
+        // verifica se já exite um usuario logado
+        if (!Store::adminLogado()) {
+            Store::redirect('inicio', true);
+            return;
+        }
+        // verifica se exite um id de cliente 
+        if(!isset($_GET['c'])){
+            Store::redirect('inicio',true);
+            return;
+        };
+       
+        $id_cliente= Store::aesDesencriptar($_GET['c']);
+        // testa se o id_cliente é válido
+        if(empty($id_cliente)){
+            Store::redirect('inicio',true);
+            return;
+        };
+
+
+        $cliente_detalhe =  ModelsAdmin::detalhe_cliente($id_cliente);
+        // die(print_r($cliente_detalhe));
+        $dados = [
+            'cliente_detalhe'=>$cliente_detalhe,
+        ];
+
+         // apresenta a pagina das encomendas
+         Store::Layout_admin([
+            'admin/layouts/html_header',
+            'admin/header',
+            'admin/detalhe_cliente',
+            'admin/footer',
+            'admin/layouts/html_footer',
+        ], $dados);
     }
 
     //============================================================

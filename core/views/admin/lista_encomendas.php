@@ -4,30 +4,34 @@
             <?php include(__DIR__ . '/layouts/admin_menu.php') ?>
         </div>
         <div class="col-md-10">
-            <h3>Lista de encomendas <?= $filtro != '' ? ($filtro != "EM PROCESSAMENTO" ? $filtro."S": $filtro) : '' ?></h3>
+            <h3>Lista de encomendas <?= $filtro != '' ? ($filtro != "EM PROCESSAMENTO" ? $filtro . "S" : $filtro) : '' ?></h3>
             <hr>
-            <div class="d-inline-flex">
-                <div>
-                    <a href="?a=lista-encomendas" class="btn btn-primary btn-sm">Ver todas as encomendas</a>
-                </div>
-
-                <?php 
+            <div class="row ">
+                <div class="d-inline-flex">
+                    <div class="align-self-center me-5">
+                        <a href="?a=lista-encomendas" class="btn btn-primary btn-sm">Ver todas as encomendas</a>
+                    </div>
+                    <?php
                     // recupera o filtro que esta na quey string
-                    $f='';
-                    if(isset($_GET['f'])){
+                    $f = '';
+                    if (isset($_GET['f'])) {
                         $f = $_GET['f'];
                     }
-                ?>
-                <div class="d-inline-flex">
-                   Escolher status
-                    <select id="combo-status" class="form-select" onchange="definir_filtro()">
-                        <option value=""  <?= ($f== ''? "selected" :"") ?> ></option>
-                        <option value="pendente" <?= ($f== 'pendente'? "selected" :"")?> >Pendentes</option>
-                        <option value="em_processamento"<?= ($f== 'em_processamento'? "selected" :"")?> >Em processamento</option>
-                        <option value="enviada"<?= ($f== 'enviada'? "selected" :"") ?>>Enviadas</option>
-                        <option value="cancelada"<?= ($f== 'cancelada'? "selected" :"") ?>>Cancelas</option>
-                        <option value="concluida"<?= ($f== 'concluida'? "selected" :"") ?>>Concluídas</option>
-                    </select>
+                    ?>
+
+                    <div class="d-inline-flex ">
+                        <div class="col-6  align-self-center">
+                            <label for="">Escolher status</label>
+                        </div class="col">
+                        <select id="combo-status" class="form-select" onchange="definir_filtro()">
+                            <option value="" <?= ($f == '' ? "selected" : "") ?>></option>
+                            <option value="pendente" <?= ($f == 'pendente' ? "selected" : "") ?>>Pendentes</option>
+                            <option value="em_processamento" <?= ($f == 'em_processamento' ? "selected" : "") ?>>Em processamento</option>
+                            <option value="enviada" <?= ($f == 'enviada' ? "selected" : "") ?>>Enviadas</option>
+                            <option value="cancelada" <?= ($f == 'cancelada' ? "selected" : "") ?>>Cancelas</option>
+                            <option value="concluida" <?= ($f == 'concluida' ? "selected" : "") ?>>Concluídas</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -93,10 +97,13 @@
         });
     });
 
-    function definir_filtro(){
+    function definir_filtro() {
         var filtro = document.getElementById('combo-status').value;
-       
+
         //reload da página para um filtro
-        window.location.href = "?"+$.param({'a':'lista_encomendas','f':filtro })
+        window.location.href = "?" + $.param({
+            'a': 'lista_encomendas',
+            'f': filtro
+        })
     }
 </script>

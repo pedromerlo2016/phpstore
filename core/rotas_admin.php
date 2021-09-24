@@ -14,6 +14,7 @@ $rotas = [
 
     // clientes
     'lista_clientes'=>'admin@lista_clientes',
+    'detalhe_cliente'=>'admin@detalhe_cliente',
 
     // encomendas
     'lista_encomendas'=>'admin@lista_encomendas',

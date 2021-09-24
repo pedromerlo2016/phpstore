@@ -1,7 +1,11 @@
 <div class="contanier-fluid">
     <div class="row mt-3">
         <div class="col-md-2">
-            <?php include(__DIR__ . '/layouts/admin_menu.php') ?>
+            <?php
+
+            use core\classes\Store;
+
+            include(__DIR__ . '/layouts/admin_menu.php') ?>
         </div>
         <div class="col-md-10">
             <h3>Lista de clientes</h3>
@@ -15,36 +19,39 @@
                         <tr>
                             <th>Nome</th>
                             <th>E-mail</th>
-                            <th>Residência</th>
-                            <th>Cidade</th>
                             <th>Telefone</th>
                             <!-- Ativo/Inativo -->
-                            <th>Ativo</th>
-                            <!--created_at -->
-                            <th>Registrado em</th>
+                            <th class="text-center">Ativo</th>
                             <!-- deleted_at -->
-                            <th>Excluído</th>
+                            <th class="text-center">Excluído</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($clientes as $cliente) : ?>
                             <tr>
-                                <td><?= $cliente->nome_completo ?></td>
+                                <td>
+                                    <a href="?a=detalhe_cliente&c=<?= Store::aesEncriptar($cliente->id_cliente) ?>">
+                                        <?= $cliente->nome_completo ?>
+                                    </a>
+                                </td>
                                 <td><?= $cliente->email ?></td>
-                                <td><?= $cliente->endereco ?></td>
-                                <td><?= $cliente->cidade ?></td>
                                 <td><?= $cliente->telefone ?></td>
-                                <?php if ($cliente->ativo == 1) : ?>
-                                    <td>Ativo</td>
-                                <?php else : ?>
-                                    <td>Inativo</td>
-                                <?php endif; ?>
-                                <td><?= date('d/m/Y', strtotime($cliente->created_at)) ?></td>
-                                <?php if ($cliente->deleted_at == null) : ?>
-                                    <td></td>
-                                <?php else : ?>
-                                    <td><?= date('d/m/Y', strtotime($cliente->deleted_at)) ?></td>
-                                <?php endif; ?>
+                                <td class="text-center">
+                                    <?php if ($cliente->ativo == 1) : ?>
+                                        <i class="fas fa-check-circle text-success"></i>
+                                    <?php else : ?>
+                                        <i class="fas fa-times-circle text-danger"></i>
+                                    <?php endif; ?>
+
+                                </td>
+                                <td class="text-center">
+                                    <?php if ($cliente->deleted_at == null) : ?>
+                                        <i class="fas fa-times-circle text-success"></i>
+                                    <?php else : ?>
+                                        <i class="fas fa-check-circle text-danger"></i>
+
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

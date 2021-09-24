@@ -48,15 +48,27 @@ class Admin
             id_cliente,
             email,
             nome_completo,
-            endereco,
-            cidade,
             telefone,
             ativo,
-            created_at,
             deleted_at
             FROM clientes";
-        $resultados= $db->select($sql);
+        $resultados = $db->select($sql);
         return $resultados;
+    }
+
+    //============================================================
+    public static function detalhe_cliente($id_cliente)
+    {
+        // recupera todos sos clientes na DB
+        $db = new Database();
+        $parametros=[
+            ':id_cliente'=>$id_cliente,
+        ];
+
+        $sql = "SELECT * FROM clientes WHERE id_cliente = :id_cliente";
+        $resultado = $db->select($sql, $parametros);
+
+        return $resultado[0];
     }
 
     //============================================================
