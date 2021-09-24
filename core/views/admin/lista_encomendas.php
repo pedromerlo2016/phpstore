@@ -1,7 +1,11 @@
 <div class="contanier-fluid">
     <div class="row mt-3">
         <div class="col-md-2">
-            <?php include(__DIR__ . '/layouts/admin_menu.php') ?>
+            <?php
+
+use core\classes\Store;
+
+include(__DIR__ . '/layouts/admin_menu.php') ?>
         </div>
         <div class="col-md-10">
             <h3>Lista de encomendas <?= $filtro != '' ? ($filtro != "EM PROCESSAMENTO" ? $filtro . "S" : $filtro) : '' ?></h3>
@@ -61,7 +65,7 @@
                                 <td><?= $encomenda->nome_completo ?></td>
                                 <td><?= $encomenda->email ?></td>
                                 <td><?= $encomenda->telefone ?></td>
-                                <td><?= $encomenda->status ?></td>
+                                <td><a href="?a=detalhe_encomenda&e=<?= Store::aesEncriptar($encomenda->id_encomenda)?>"><?= $encomenda->status ?></a></td>
                                 <td><?= date('d/m/Y', strtotime($encomenda->updated_at)) ?></td>
                             </tr>
                         <?php endforeach; ?>

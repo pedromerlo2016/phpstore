@@ -161,15 +161,15 @@ class Admin
             return;
         }
         // verifica se exite um id de cliente 
-        if(!isset($_GET['c'])){
-            Store::redirect('inicio',true);
+        if (!isset($_GET['c'])) {
+            Store::redirect('inicio', true);
             return;
         };
-       
-        $id_cliente= Store::aesDesencriptar($_GET['c']);
+
+        $id_cliente = Store::aesDesencriptar($_GET['c']);
         // testa se o id_cliente é válido
-        if(empty($id_cliente)){
-            Store::redirect('inicio',true);
+        if (empty($id_cliente)) {
+            Store::redirect('inicio', true);
             return;
         };
 
@@ -177,12 +177,12 @@ class Admin
         $cliente_detalhe =  ModelsAdmin::detalhe_cliente($id_cliente);
         $total_encomendas = ModelsAdmin::total_encomendas($id_cliente);
         $dados = [
-            'cliente_detalhe'=>$cliente_detalhe,
-            'total_encomendas'=>$total_encomendas
+            'cliente_detalhe' => $cliente_detalhe,
+            'total_encomendas' => $total_encomendas
         ];
 
-         // apresenta a pagina das encomendas
-         Store::Layout_admin([
+        // apresenta a pagina das encomendas
+        Store::Layout_admin([
             'admin/layouts/html_header',
             'admin/header',
             'admin/detalhe_cliente',
@@ -192,40 +192,58 @@ class Admin
     }
 
     //============================================================
-    function cliente_historico_encomendas(){
+    public function cliente_historico_encomendas()
+    {
         // verifica se já exite um usuario logado
         if (!Store::adminLogado()) {
             Store::redirect('inicio', true);
             return;
         }
         // verifica se exite um id de cliente 
-        if(!isset($_GET['c'])){
-            Store::redirect('inicio',true);
+        if (!isset($_GET['c'])) {
+            Store::redirect('inicio', true);
             return;
         };
-       
-        $id_cliente= Store::aesDesencriptar($_GET['c']);
-         // testa se o id_cliente é válido
-         if(empty($id_cliente)){
-            Store::redirect('inicio',true);
+
+        $id_cliente = Store::aesDesencriptar($_GET['c']);
+        // testa se o id_cliente é válido
+        if (empty($id_cliente)) {
+            Store::redirect('inicio', true);
             return;
         };
 
 
         $cliente_historico_encomendas  = ModelsAdmin::cliente_historico_encomendas($id_cliente);
-        $cliente= ModelsAdmin::detalhe_cliente($id_cliente);
-        $dados =[
-        'cliente_historico_encomendas'=>$cliente_historico_encomendas,
-        'cliente'=>$cliente,
+        $cliente = ModelsAdmin::detalhe_cliente($id_cliente);
+        $dados = [
+            'cliente_historico_encomendas' => $cliente_historico_encomendas,
+            'cliente' => $cliente,
         ];
-         // apresenta a pagina das encomendas
-         Store::Layout_admin([
+        // apresenta a pagina das encomendas
+        Store::Layout_admin([
             'admin/layouts/html_header',
             'admin/header',
             'admin/cliente_historico_encomendas',
             'admin/footer',
             'admin/layouts/html_footer',
         ], $dados);
+    }
+
+    //============================================================
+    public function detalhe_encomenda()
+    {
+        // verifica se já exite um usuario logado
+        if (!Store::adminLogado()) {
+            Store::redirect('inicio', true);
+            return;
+        }
+        // verifica se exite um id de cliente 
+        if (!isset($_GET['e'])) {
+            Store::redirect('inicio', true);
+            return;
+        };
+
+        $codigo_encomenda = Store::aesDesencriptar($_GET['e']);
     }
 
     //============================================================
