@@ -102,12 +102,14 @@ class Store
     //============================================================
     public static function aesEncriptar($valor)
     {
-        return bin2hex(openssl_encrypt($valor, 'aes-256-cbc', AES_KEY, OPENSSL_RAW_DATA, AES_IV));
+        $chave1 = bin2hex(openssl_encrypt($valor, 'aes-256-cbc', AES_KEY, OPENSSL_RAW_DATA, AES_IV));
+        return $chave1;
     }
 
     //============================================================
     public static function aesDesencriptar($valor)
     {
-        return openssl_decrypt(hex2bin($valor), 'aes-256-cbc', AES_KEY, OPENSSL_RAW_DATA, AES_IV);
+        $chave=openssl_decrypt(hex2bin($valor), 'aes-256-cbc', AES_KEY, OPENSSL_RAW_DATA, AES_IV); 
+        return $chave;
     }
 }

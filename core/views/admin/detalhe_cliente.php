@@ -1,9 +1,12 @@
+<?php
+
+use core\classes\Store;
+
+include(__DIR__ . '/layouts/admin_menu.php') ?>
 <div class="contanier-fluid">
     <div class="row mt-3">
         <div class="col-md-2">
-            <?php
-            use core\classes\Store;
-            include(__DIR__ . '/layouts/admin_menu.php') ?>
+
         </div>
         <div class="col-md-10">
             <h1>Detalhe do cliente</h1>
@@ -39,7 +42,7 @@
                             <p>Não exitem encomendas deste clientes</p>
                         <?php else : ?>
                             <!-- Exite(m) encomenda(s) -->
-                            <a href="?a=cliente_historico_encomendas&c=<?= Store::aesEncriptar($cliente->id_cliente) ?>" class="btn btn-primary">Ver histórico de encomendas...</a>
+                            <a href="?a=cliente_historico_encomendas&c=<?= Store::aesEncriptar($cliente_detalhe->id_cliente) ?>" class="btn btn-primary">Ver histórico de encomendas...</a>
                         <?php endif ?>
                     </div>
                 </div>

@@ -45,13 +45,15 @@ class Admin
         // recupera todos sos clientes na DB
         $db = new Database();
         $sql = "SELECT 
-            id_cliente,
-            email,
-            nome_completo,
-            telefone,
-            ativo,
-            deleted_at
-            FROM clientes";
+            clientes.id_cliente,
+            clientes.email,
+            clientes.nome_completo,
+            clientes.telefone,
+            clientes.ativo,
+            clientes.deleted_at,
+            COUNT(encomendas.id_encomenda) total_encomendas
+            FROM clientes LEFT JOIN encomendas ON clientes.id_cliente = encomendas.id_cliente
+            GROUP BY clientes.Id_cliente";
         $resultados = $db->select($sql);
         return $resultados;
     }
@@ -61,8 +63,8 @@ class Admin
     {
         // recupera todos sos clientes na DB
         $db = new Database();
-        $parametros=[
-            ':id_cliente'=>$id_cliente,
+        $parametros = [
+            ':id_cliente' => $id_cliente,
         ];
 
         $sql = "SELECT * FROM clientes WHERE id_cliente = :id_cliente";
@@ -70,20 +72,36 @@ class Admin
 
         return $resultado[0];
     }
-    
+
     //============================================================      
-    public static function total_encomendas($id_cliente){
-         // consulta o total de encomendas do cliente
-         $db = new Database();
-         $parametros=[
-             ':id_cliente'=>$id_cliente,
-         ];
- 
-         $sql = "SELECT COUNT(*) total FROM encomendas WHERE id_cliente = :id_cliente";
-         $resultado = $db->select($sql, $parametros)[0];
-        
-         return $resultado;
+    public static function total_encomendas($id_cliente)
+    {
+        // consulta o total de encomendas do cliente
+        $db = new Database();
+        $parametros = [
+            ':id_cliente' => $id_cliente,
+        ];
+
+        $sql = "SELECT COUNT(*) total FROM encomendas WHERE id_cliente = :id_cliente";
+        $resultado = $db->select($sql, $parametros)[0];
+
+        return $resultado;
     }
+
+    //============================================================     
+    public static  function buscar_encomendas_cliente($id_cliente){
+        // buscar todas as  encomendas do cliente
+        $db = new Database();
+        $parametros = [
+            ':id_cliente' => $id_cliente,
+        ];
+
+        $sql = "SELECT * FROM encomendas WHERE id_cliente = :id_cliente";
+        $resultado = $db->select($sql, $parametros)[0];
+        Store::printData($resultado);
+        return $resultado;
+    }
+
 
     //============================================================
     // ENCOMENDAS
@@ -139,5 +157,17 @@ class Admin
         return $db->select($sql);
     }
 
-    
+    //============================================================
+    public static function  cliente_historico_encomendas($id_cliente)
+    {
+        // lista as encomendas com status=PENDENTE
+        $db = new Database();
+
+        $sql = "SELECT e.*, c.nome_completo FROM encomendas e LEFT JOIN clientes c";
+        $sql .= " ON e.id_cliente  = c.id_cliente";
+        $sql .= " WHERE e.id_cliente=$id_cliente";
+        $sql .= " ORDER BY e.id_encomenda DESC";
+       
+        return $db->select($sql);
+    }
 }

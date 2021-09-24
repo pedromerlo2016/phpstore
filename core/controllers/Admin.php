@@ -205,9 +205,25 @@ class Admin
         };
        
         $id_cliente= Store::aesDesencriptar($_GET['c']);
+         // testa se o id_cliente é válido
+         if(empty($id_cliente)){
+            Store::redirect('inicio',true);
+            return;
+        };
 
-        // $cliente_historico_encomendas  = ModelsAdmin:: );
 
+        $cliente_historico_encomendas  = ModelsAdmin::cliente_historico_encomendas($id_cliente);
+        $dados =[
+        'cliente_historico_encomendas'=>$cliente_historico_encomendas,    
+        ];
+         // apresenta a pagina das encomendas
+         Store::Layout_admin([
+            'admin/layouts/html_header',
+            'admin/header',
+            'admin/cliente_historico_encomendas',
+            'admin/footer',
+            'admin/layouts/html_footer',
+        ], $dados);
     }
 
     //============================================================
