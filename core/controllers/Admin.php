@@ -213,8 +213,10 @@ class Admin
 
 
         $cliente_historico_encomendas  = ModelsAdmin::cliente_historico_encomendas($id_cliente);
+        $cliente= ModelsAdmin::detalhe_cliente($id_cliente);
         $dados =[
-        'cliente_historico_encomendas'=>$cliente_historico_encomendas,    
+        'cliente_historico_encomendas'=>$cliente_historico_encomendas,
+        'cliente'=>$cliente,
         ];
          // apresenta a pagina das encomendas
          Store::Layout_admin([
