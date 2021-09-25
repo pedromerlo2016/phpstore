@@ -244,6 +244,21 @@ class Admin
         };
 
         $codigo_encomenda = Store::aesDesencriptar($_GET['e']);
+        if(gettype($codigo_encomenda)!= 'string'){
+            Store::redirect('inicio', true);
+            return;
+        }
+
+        $dados =  ModelsAdmin::detalhe_encomenda($codigo_encomenda);
+        
+         // apresenta a pagina das encomendas
+         Store::Layout_admin([
+            'admin/layouts/html_header',
+            'admin/header',
+            'admin/encomenda_detalhe',
+            'admin/footer',
+            'admin/layouts/html_footer',
+        ], $dados);
     }
 
     //============================================================

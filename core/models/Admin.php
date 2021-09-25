@@ -170,4 +170,24 @@ class Admin
        
         return $db->select($sql);
     }
+
+    //============================================================
+    public static function detalhe_encomenda($codigo_encomenda){
+        // lista detalhes dos produtos da encomenda e dados da encomenda
+        $db = new Database();
+        $parametros=[
+            ':codigo_encomenda'=>$codigo_encomenda,
+        ];
+
+        $sql ="SELECT * FROM encomendas WHERE id_encomenda = :codigo_encomenda";
+        $encomenda = $db->select($sql,$parametros);
+        $sql ="SELECT * FROM encomenda_produto WHERE id_encomenda =:codigo_encomenda";
+        $lista_produtos =  $db->select($sql,$parametros);
+        
+        $dados=[
+            'encomenda'=>$encomenda[0],
+            'lista_produtos'=> $lista_produtos
+        ];
+        return $dados;
+    }
 }

@@ -86,7 +86,7 @@ class Store
         return $codigo;
     }
     //============================================================
-    public static function printData($data)
+    public static function printData($data, $die=true)
     {
         if (is_array($data) || is_object($data)) {
             echo '<pre>';
@@ -95,8 +95,10 @@ class Store
             echo '<pre>';
             echo $data;
         }
-
-        die('Terminado');
+        if($die==true){
+            die('<br>Terminado');
+        }
+        
     }
 
     //============================================================
