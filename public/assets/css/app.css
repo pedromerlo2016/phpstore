@@ -41,3 +41,8 @@
 .text-a1a1a1{
     color:#a1a1a1;
 }
+
+/* status clicavel */
+.status-clicavel{
+    cursor: pointer;
+}
