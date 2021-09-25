@@ -243,16 +243,16 @@ class Admin
             return;
         };
 
-        $codigo_encomenda = Store::aesDesencriptar($_GET['e']);
-        if(gettype($codigo_encomenda)!= 'string'){
+        $id_encomenda = Store::aesDesencriptar($_GET['e']);
+        if (gettype($id_encomenda) != 'string') {
             Store::redirect('inicio', true);
             return;
         }
 
-        $dados =  ModelsAdmin::detalhe_encomenda($codigo_encomenda);
-        
-         // apresenta a pagina das encomendas
-         Store::Layout_admin([
+        $dados =  ModelsAdmin::detalhe_encomenda($id_encomenda);
+
+        // apresenta a pagina das encomendas
+        Store::Layout_admin([
             'admin/layouts/html_header',
             'admin/header',
             'admin/encomenda_detalhe',
@@ -297,5 +297,22 @@ class Admin
             'admin/footer',
             'admin/layouts/html_footer',
         ], $dados);
+    }
+
+    //============================================================
+    public function encomenda_alterar_status()
+    {
+        // Substitui o espaço por underline
+        $status = $_GET['s'];
+        $status = str_replace(' ', '_', $status);
+        if (in_array($status, STATUS)) {
+            $id_encomenda = Store::aesEncriptar($id_encomenda = $_GET['e']);
+
+            ModelsAdmin::altera_status_encomenda($id_encomenda, $status);
+            $this->lista_encomendas();
+        }else{
+            die("Status Inexistente!");
+        }
+
     }
 }

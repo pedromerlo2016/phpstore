@@ -1,7 +1,11 @@
 <div class="contanier-fluid">
     <div class="row mt-3 mb-5">
         <div class="col-md-2">
-            <?php include(__DIR__ . '/layouts/admin_menu.php') ?>
+            <?php
+
+            use core\classes\Store;
+
+            include(__DIR__ . '/layouts/admin_menu.php') ?>
         </div>
         <div class="col-md-10">
             <div class="row">
@@ -18,7 +22,7 @@
             <hr>
             <div class="row">
                 <div class="col">
-                    <p>Nome do cliente:<br><strong>Nome do cliente</strong></p>
+                    <p>Nome do cliente:<br><strong><?= $encomenda->nome_completo?></strong></p>
                     <p>E-mail:<br><strong><?= $encomenda->email ?> </strong></p>
                     <p>Telefone:<br><strong><?= $encomenda->telefone ?></strong></p>
                 </div>
@@ -50,30 +54,41 @@
         </div>
     </div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="modalStatus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Alterar status da encomenda</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <a href="#">Status</a><br>
-        <a href="#">Status</a><br>
-        <a href="#">Status</a><br>
-        <a href="#">Status</a><br>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-      </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Alterar status da encomenda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+  
+            <div class="modal-body">
+                <div class="text-center">
+                    <?php foreach (STATUS as $status) : ?>
+                        <?php if ($encomenda->status == $status) : ?>
+                            <p><?= $status ?></p>
+                        <?php else : ?>
+                            <a href="?a=encomenda_alterar_status&e=<?= $encomenda->id_encomenda ?>&s=<?= $status ?>">
+                                <p><?= $status ?></p>
+                            </a>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <script>
-    function apresentarModal(){
+    function apresentarModal() {
         var modalStatus = new bootstrap.Modal(document.getElementById('modalStatus'));
         modalStatus.show();
     }

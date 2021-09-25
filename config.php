@@ -22,3 +22,6 @@ define('EMAIL_ENVIAR',      false);
 // AES encriptação
 define('AES_KEY','dHn5mWyuuwCcjTTaTAU6yZwWJHuqMpaa');
 define('AES_IV','HFqxWH4xkDtpKWf4');
+
+// Status
+define('STATUS',            ['PENDENTE','EM_PROCESSAMENTO','ENVIADO','CANCELADO','CONCLUIDO']);

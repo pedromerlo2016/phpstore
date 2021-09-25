@@ -172,16 +172,18 @@ class Admin
     }
 
     //============================================================
-    public static function detalhe_encomenda($codigo_encomenda){
+    public static function detalhe_encomenda($id_encomenda){
         // lista detalhes dos produtos da encomenda e dados da encomenda
         $db = new Database();
         $parametros=[
-            ':codigo_encomenda'=>$codigo_encomenda,
+            ':id_encomenda'=>$id_encomenda,
         ];
 
-        $sql ="SELECT * FROM encomendas WHERE id_encomenda = :codigo_encomenda";
+        $sql ="SELECT clientes.nome_completo, encomendas.* FROM clientes, encomendas
+        WHERE encomendas.id_encomenda = :id_encomenda
+        AND clientes.id_cliente = encomendas.id_cliente ";
         $encomenda = $db->select($sql,$parametros);
-        $sql ="SELECT * FROM encomenda_produto WHERE id_encomenda =:codigo_encomenda";
+        $sql ="SELECT * FROM encomenda_produto WHERE id_encomenda =:id_encomenda";
         $lista_produtos =  $db->select($sql,$parametros);
         
         $dados=[
@@ -189,5 +191,18 @@ class Admin
             'lista_produtos'=> $lista_produtos
         ];
         return $dados;
+    }
+
+    //============================================================
+    public static function altera_status_encomenda($id_encomenda, $status){
+        $db = new Database();
+        $id_encomenda= Store::aesDesencriptar($id_encomenda);
+        $parametros=[
+            ':status'=>$status,
+            ':id_encomenda'=>$id_encomenda
+        ];
+        $sql=("UPDATE encomendas SET status=:status WHERE id_encomenda = :id_encomenda");
+        $db->update($sql, $parametros);
+        return;
     }
 }

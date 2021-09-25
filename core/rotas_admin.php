@@ -20,7 +20,7 @@ $rotas = [
     // encomendas
     'lista_encomendas'=>'admin@lista_encomendas',
     'detalhe_encomenda'=>'admin@detalhe_encomenda',
-    
+    'encomenda_alterar_status'=>'admin@encomenda_alterar_status',
 ];
 
 // define ação padrão
