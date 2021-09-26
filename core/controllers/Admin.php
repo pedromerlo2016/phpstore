@@ -267,7 +267,7 @@ class Admin
         // verifica se exite filtro na query STRING
         $filtros = [
             'pendente' => 'PENDENTE',
-            'em_processamento' => 'EM PROCESSAMENTO',
+            'em_processamento' => 'EM_PROCESSAMENTO',
             'cancelada' => 'CANCELADA',
             'enviada' => 'ENVIADA',
             'concluida' => 'CONCLUIDA',
@@ -351,8 +351,8 @@ class Admin
                 break;
         }
 
-
-        //$this->lista_encomendas();
+        // Redireciona para a pagina da proria encomenda
+        Store::redirect('detalhe_encomenda&e='.$id_encomenda,true);
     }
 
     //============================================================

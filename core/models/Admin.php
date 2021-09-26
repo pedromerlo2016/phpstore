@@ -120,7 +120,7 @@ class Admin
     {
         // recupera o valor total de encomendas em processamento
         $db = new Database();
-        $resultados = $db->select("SELECT COUNT(*) as total FROM encomendas WHERE status='EM PROCESSAMENTO'");
+        $resultados = $db->select("SELECT COUNT(*) as total FROM encomendas WHERE status='EM_PROCESSAMENTO'");
         return $resultados[0]->total;
     }
 

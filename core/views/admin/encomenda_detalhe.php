@@ -16,6 +16,11 @@
                     <div class="text-center p-3 badge bg-primary status-clicavel" onclick="apresentarModal()">
                         <?= $encomenda->status ?>
                     </div>
+                    <?php if($encomenda->status=="EM_PROCESSAMENTO"):?>
+                        <div>
+                           <a href="#" class="btn btn-sm btn-primary">PDF</a>
+                        </div>
+                    <?php endif;?>
                 </div>
 
             </div>
