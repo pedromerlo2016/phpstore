@@ -37,7 +37,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th>Descrição</th>
-                        <th>Preço unitário</th>
+                        <th class="text-end">Preço unitário</th>
                         <th class="text-center">Quantidade</th>
                     </tr>
                 </thead>
@@ -45,7 +45,7 @@
                     <?php foreach ($lista_produtos as $produto) : ?>
                         <tr>
                             <td><?= $produto->descricao_produto ?></td>
-                            <td>R$ <?= number_format($produto->preco_unidade, 2, ',', '.') ?></td>
+                            <td class="text-end">R$ <?= number_format($produto->preco_unidade, 2, ',', '.') ?></td>
                             <td class="text-center"><?= $produto->quantidade ?></td>
                         </tr>
                     <?php endforeach; ?>

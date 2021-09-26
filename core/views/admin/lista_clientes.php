@@ -41,7 +41,7 @@
                                     <?php if ($cliente->total_encomendas == 0) : ?>
                                         ---
                                     <?php else : ?>
-                                        <a href="#"><?= $cliente->total_encomendas ?></a>
+                                        <a href="?a=lista_encomendas&c=<?=Store::aesEncriptar($cliente->id_cliente)?>"><?= $cliente->total_encomendas ?></a>
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center">

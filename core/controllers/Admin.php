@@ -274,15 +274,24 @@ class Admin
         ];
 
         $filtro = "";
+        $id_cliente = null;
         if (isset($_GET['f'])) {
             // verifica se a variavel é uma key dos filtros
             if (key_exists($_GET['f'], $filtros)) {
                 $filtro = $filtros[$_GET['f']];
             }
         }
+        // busca o id_cliente se existir na query string
+        if (isset($_GET['c'])) {
+            $id_cliente = Store::aesDesencriptar($_GET['c']);
+            // verifica se id_cliente é valido
+            if(gettype($id_cliente)!="string"){
+                Store::redirect('inicio', true);
+            };
+        }
         // carregamento dos dados
         $admin_model = new ModelsAdmin();
-        $lista_encomendas = $admin_model->lista_encomendas($filtro);
+        $lista_encomendas = $admin_model->lista_encomendas($filtro, $id_cliente);
         //Store::printData($lista_encomendas);
         $dados = [
             'lista_encomendas' => $lista_encomendas,

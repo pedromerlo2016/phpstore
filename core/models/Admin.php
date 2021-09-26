@@ -125,17 +125,21 @@ class Admin
     }
 
     //============================================================
-    public function lista_encomendas($filtro = "")
+    public function lista_encomendas($filtro = "", $id_cliente)
     {
         // lista as encomendas com status=PENDENTE
         $db = new Database();
 
         $sql = "SELECT e.*, c.nome_completo FROM encomendas e LEFT JOIN clientes c";
-        $sql .= " ON e.id_cliente  = c.id_cliente";
+        $sql .= " ON e.id_cliente  = c.id_cliente WHERE 1";
 
         if ($filtro != '') {
-            $sql .= " WHERE e.status='$filtro'";
+            $sql .= " AND e.status='$filtro'";
         }
+        if(!empty($id_cliente)){
+            $sql .= " AND e.id_cliente = $id_cliente";
+        }
+
         $sql .= " ORDER BY e.id_encomenda DESC";
 
         return $db->select($sql);
