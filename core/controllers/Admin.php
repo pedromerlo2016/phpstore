@@ -302,17 +302,59 @@ class Admin
     //============================================================
     public function encomenda_alterar_status()
     {
-        // Substitui o espaço por underline
-        $status = $_GET['s'];
-        $status = str_replace(' ', '_', $status);
-        if (in_array($status, STATUS)) {
-            $id_encomenda = Store::aesEncriptar($id_encomenda = $_GET['e']);
+        $status = null;
+        // Verifica se veio um status na query string
+        if (isset($_GET['s'])) {
+            $status = $_GET['s'];
+            // Substitui o espaço por underline
+            $status = str_replace(' ', '_', $status);
+        } else {
+            Store::redirect('inicio', true);
+            return;
+        };
 
-            ModelsAdmin::altera_status_encomenda($id_encomenda, $status);
-            $this->lista_encomendas();
-        }else{
-            die("Status Inexistente!");
+        // Verifica se o status esta definido
+        if (!in_array($status, STATUS)) {
+            Store::redirect('inicio', true);
+            return;
         }
+        // Atualiza o status da encomenda
+        $id_encomenda = Store::aesEncriptar($id_encomenda = $_GET['e']);
+        ModelsAdmin::altera_status_encomenda($id_encomenda, $status);
+
+        // executar ações após alteração do status
+        switch ($status) {
+            case 'PENDENTE':
+                // não exitem ações
+                break;
+            case 'EM_PROCESSAMENTO':
+                // não exitem ações
+                break;
+            case 'ENVIADA':
+                //  enviar e-mail com notificação 
+                $this->operacao_enviar_email_encomenda_enviada($id_encomenda);
+                break;
+            case 'CANCELADA':
+                // não exitem ações
+                break;
+            case 'CONCLUIDA':
+                // não exitem ações
+                break;
+        }
+
+
+        //$this->lista_encomendas();
+    }
+
+    //============================================================
+    // Operações privadas após mudanças de status
+    //============================================================
+
+    
+    //============================================================
+
+    private function operacao_enviar_email_encomenda_enviada($id_encomenda){
+        // executar as operações para enviar e-mail ao cliente
 
     }
 }
