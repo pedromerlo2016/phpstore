@@ -566,9 +566,8 @@ class Main
     {
         // usar os metodos do objeto pdf para construir HTM e fazer o output
         $pdf = new PDF();
-        $pdf->escrever('Esta é a primeira frase no meu documento');
-        $pdf->nova_pagina();
-        $pdf->escrever('Esta é a segunda frase no meu documento');
+        $pdf->posicao(200,200);
+        echo $pdf->escrever('Esta é a segunda frase no meu documento');
         $pdf->apresentar_pdf();
     }
 }
