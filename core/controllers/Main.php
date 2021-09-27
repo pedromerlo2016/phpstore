@@ -566,8 +566,18 @@ class Main
     {
         // usar os metodos do objeto pdf para construir HTM e fazer o output
         $pdf = new PDF();
-        $pdf->posicao(200,200);
-        echo $pdf->escrever('Esta é a segunda frase no meu documento');
+        //$pdf->posicao(200,200);
+        //$pdf->dimensao(50,50);
+        $pdf->posicao_dimensao(200,200,400,30);
+        $pdf->set_cor('blue');
+        $pdf->set_cor_fundo('rgb(240,240,240)');
+        $pdf->set_alinhamento('left');
+
+        $pdf->escrever('Esta é a primeira frase no meu documento');
+        $pdf->posicao_dimensao(200,235,400,30);
+        
+        $pdf->set_alinhamento('right');
+        $pdf->escrever('Esta é a segunda frase no meu documento');
         $pdf->apresentar_pdf();
     }
 }

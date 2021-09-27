@@ -60,34 +60,96 @@ class PDF
         $this->html .= '<pagebreak>';
     }
 
+    //============================================================
+    public function set_x($x)
+    {
+        $this->x = $x;
+    }
 
     //============================================================
-    public function posicao($x,$y)
-    {   
+    public function set_largura($largura)
+    {
+        $this->largura = $largura;
+    }
+
+
+    //============================================================
+    public function set_altura($altura)
+    {
+        $this->altura = $altura;
+    }
+
+    //============================================================
+    public function set_y($y)
+    {
+        $this->y = $y;
+    }
+
+
+    //============================================================
+    public function posicao($x, $y)
+    {
         $this->x = $x;
         $this->y = $y;
     }
 
     //============================================================
+    public function dimensao($largura, $altura)
+    {
+        $this->largura = $largura;
+        $this->altura = $altura;
+    }
+
+    //============================================================
+    public function posicao_dimensao($x, $y, $largura, $altura)
+    {
+        $this->posicao($x, $y);
+        $this->dimensao($largura, $altura);
+    }
+
+
+    //============================================================
+    public function set_cor($cor)
+    {
+        $this->cor=$cor;
+    }
+
+    //============================================================
+    public function set_cor_fundo($cor)
+    {
+        $this->fundo=$cor;
+    }
+
+   
+    //============================================================
+    public function set_alinhamento($alinhamento)
+    {
+        $this->alinhamento=$alinhamento;
+    }
+
+
+
+    //============================================================
     public function escrever($texto)
     {
         // escreve texto no documento
-        $this->html .='<div style="';
+        $this->html .= '<div style="';
         // posicionamento e dimensão
-        $this->html .='position:absolute;';
-        $this->html .='left: '. $this->x.'px ;' ;
-        $this->html .='top: '. $this->y.'px;' ;
-        // $this->html .='width'. $this->largura.' px;' ;
-        // $this->html .='heiht'. $this->altura.' px;' ;
-        // // cores
-        // $this->html .='color:'. $this->cor.';' ;
-        // $this->html .='backgound-color:'. $this->fundo.';' ;
+        $this->html .= 'position:absolute;';
+        $this->html .= 'left: ' . $this->x . 'px ;';
+        $this->html .= 'top: ' . $this->y . 'px;';
+        $this->html .= 'width: ' . $this->largura . 'px;';
+        $this->html .= 'height: ' . $this->altura . 'px;';
+        // alinhamento
+        $this->html .= 'text-align: ' . $this->alinhamento . ';';
+        // cores
+        $this->html .= 'color: ' . $this->cor.';';
+        $this->html .= 'background-color: ' . $this->fundo.';';
         // // fonte
         // $this->html .='font-family:'. $this->letra_familia.';' ;
         // $this->html .='font-size:'. $this->letra_tamanho.';' ;
         // $this->html .='font-wight:'. $this->letra_tipo.';' ;
-        
-        $this->html .='">'. $texto.'</div>';
-        
+
+        $this->html .= '">' . $texto . '</div>';
     }
 }
