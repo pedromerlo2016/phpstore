@@ -59,7 +59,9 @@ class PDF
         // acrecentar uma nova página
         $this->html .= '<pagebreak>';
     }
-
+    //============================================================
+    // Posicionamneto e dimensionamento
+    //============================================================
     //============================================================
     public function set_x($x)
     {
@@ -72,7 +74,6 @@ class PDF
         $this->largura = $largura;
     }
 
-
     //============================================================
     public function set_altura($altura)
     {
@@ -84,7 +85,6 @@ class PDF
     {
         $this->y = $y;
     }
-
 
     //============================================================
     public function posicao($x, $y)
@@ -107,26 +107,57 @@ class PDF
         $this->dimensao($largura, $altura);
     }
 
-
+    //============================================================
+    // Cores e alinhamento de texto
+    //============================================================
     //============================================================
     public function set_cor($cor)
     {
-        $this->cor=$cor;
+        $this->cor = $cor;
     }
 
     //============================================================
     public function set_cor_fundo($cor)
     {
-        $this->fundo=$cor;
+        $this->fundo = $cor;
     }
 
-   
     //============================================================
     public function set_alinhamento($alinhamento)
     {
-        $this->alinhamento=$alinhamento;
+        $this->alinhamento = $alinhamento;
     }
 
+    //============================================================
+    // Fontes: familia, tamanho e peso
+    //============================================================
+    //============================================================
+    public function set_texto_familia($familia)
+    {
+        $familias_possiveis = [
+            'Arial',
+            'Courier New',
+            'Verdana',
+            'Times New Roman',
+            'Segoe UI',
+            'Lucida Sans',
+            'Trebuchet MS'
+        ];
+
+        if(!in_array($familia,$familias_possiveis)){
+            $this->letra_familia='Arial';
+        }else{
+            $this->letra_familia= $familias_possiveis;
+        }
+
+
+        $this->letra_familia =  $familia;
+    }
+
+    public function set_texto_tamanho($tamanho)
+    {
+        $this->letra_tamanho =  $tamanho;
+    }
 
 
     //============================================================
@@ -143,11 +174,11 @@ class PDF
         // alinhamento
         $this->html .= 'text-align: ' . $this->alinhamento . ';';
         // cores
-        $this->html .= 'color: ' . $this->cor.';';
-        $this->html .= 'background-color: ' . $this->fundo.';';
+        $this->html .= 'color: ' . $this->cor . ';';
+        $this->html .= 'background-color: ' . $this->fundo . ';';
         // // fonte
-        // $this->html .='font-family:'. $this->letra_familia.';' ;
-        // $this->html .='font-size:'. $this->letra_tamanho.';' ;
+        $this->html .= 'font-family:' . $this->letra_familia . ';';
+        $this->html .='font-size:'. $this->letra_tamanho.';' ;
         // $this->html .='font-wight:'. $this->letra_tipo.';' ;
 
         $this->html .= '">' . $texto . '</div>';
