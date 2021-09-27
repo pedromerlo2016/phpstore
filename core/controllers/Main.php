@@ -566,22 +566,26 @@ class Main
     {
         // usar os metodos do objeto pdf para construir HTM e fazer o output
         $pdf = new PDF();
+        // utilizar um template
+
+        $pdf->set_template(getcwd().'/assets/templates_pdf/template.pdf');
         //$pdf->posicao(200,200);
         //$pdf->dimensao(50,50);
-        $pdf->posicao_dimensao(200,200,400,200);
-        $pdf->set_texto_familia('Courier New');
-        $pdf->set_texto_tamanho('1em');
+        $pdf->posicao_dimensao(130,90,500,50);
+        $pdf->set_texto_familia('Arial');
+        $pdf->set_texto_tamanho('2em');
         $pdf->set_texto_tipo('bold');
-        $pdf->set_cor('blue');
+        $pdf->set_cor('green');
         //$pdf->set_cor_fundo('rgb(240,240,240)');
         $pdf->set_alinhamento('left');
 
         $pdf->escrever('Esta é a primeira frase no meu documento');
-        $pdf->posicao_dimensao(200,500,400,200);
+        $pdf->posicao_dimensao(130,195,500,50);
 
-        $pdf->set_texto_tamanho('2em');
-        $pdf->set_alinhamento('right');
-        $pdf->set_texto_tipo('100');
+        $pdf->set_texto_tamanho('16px');
+        $pdf->set_alinhamento('left');
+        $pdf->set_texto_tipo('300');
+        $pdf->set_cor('gray');
         $pdf->escrever('Esta é a segunda frase no meu documento');
         $pdf->apresentar_pdf();
     }

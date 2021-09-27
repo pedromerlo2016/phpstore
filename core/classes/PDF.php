@@ -42,6 +42,12 @@ class PDF
     }
 
     //============================================================
+    public function set_template($template)
+    {
+        $this->pdf->SetDocTemplate($template);
+    }
+
+    //============================================================
     public function iniciar_html()
     {
         // coloca o html vazio
@@ -187,8 +193,8 @@ class PDF
         // // fonte
         $this->html .= 'font-family: ' . $this->letra_familia . ';';
         $this->html .= 'font-size: ' . $this->letra_tamanho . ';';
-        $this->html .= 'font-weight: '. $this->letra_tipo. ';' ;
-        
+        $this->html .= 'font-weight: ' . $this->letra_tipo . ';';
+
         // mostrar controno da area
         if ($this->mostra_areas == true) {
             $this->html .= 'box-shadow: inset 0px 0px 0px 1px red';
