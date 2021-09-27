@@ -3,6 +3,7 @@
 namespace core\controllers;
 
 use core\classes\EnviarEmail;
+use core\classes\PDF;
 use core\classes\Store;
 use core\models\Admin as ModelsAdmin;
 use core\models\Database;
@@ -285,7 +286,7 @@ class Admin
         if (isset($_GET['c'])) {
             $id_cliente = Store::aesDesencriptar($_GET['c']);
             // verifica se id_cliente é valido
-            if(gettype($id_cliente)!="string"){
+            if (gettype($id_cliente) != "string") {
                 Store::redirect('inicio', true);
             };
         }
@@ -352,18 +353,50 @@ class Admin
         }
 
         // Redireciona para a pagina da proria encomenda
-        Store::redirect('detalhe_encomenda&e='.$id_encomenda,true);
+        Store::redirect('detalhe_encomenda&e=' . $id_encomenda, true);
     }
 
     //============================================================
     // Operações privadas após mudanças de status
     //============================================================
 
-    
+
     //============================================================
 
-    private function operacao_enviar_email_encomenda_enviada($id_encomenda){
+    private function operacao_enviar_email_encomenda_enviada($id_encomenda)
+    {
         // executar as operações para enviar e-mail ao cliente
 
+    }
+
+    //============================================================
+    public function criar_pdf_encomenda()
+    {
+        $id_encomenda = null;
+        if (!isset($_GET['e'])) {
+            Store::redirect('inicio', true);
+            return;
+        }
+        $id_encomenda = Store::aesDesencriptar($_GET['e']);
+        if (gettype($id_encomenda) != 'string') {
+            Store::redirect('inicio', true);
+            return;
+        }
+
+        // obter as informações da encomenda
+        $admin = new ModelsAdmin();
+        $encomenda = $admin->detalhe_encomenda($id_encomenda);
+        
+        // criar o pdf
+        $pdf =  new PDF();
+        $pdf->set_template(getcwd().'/assets/templates_pdf/encomenda_em_processamento.pdf');
+        // echo getcwd();
+
+        // apresentar pdf
+        $pdf->apresentar_pdf();
+        //Store::printData($encomenda);
+        // criar o pdf
+
+        
     }
 }
