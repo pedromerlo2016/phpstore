@@ -40,6 +40,9 @@ $rotas = [
     
     // pagamento
     'pagamento'=>'main@pagamento',
+
+    // temp
+    'pdf'=> 'main@criar_pdf',
 ];
 
 // define ação padrão

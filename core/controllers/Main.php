@@ -4,6 +4,7 @@ namespace core\controllers;
 
 use core\classes\Database;
 use core\classes\EnviarEmail;
+use core\classes\PDF;
 use core\classes\Store;
 use core\models\Clientes;
 use core\models\Produtos;
@@ -498,18 +499,18 @@ class Main
             return;
         }
         // verifica se  o id chegou
-        if(!isset($_GET['id']) ){
+        if (!isset($_GET['id'])) {
             Store::redirect();
             return;
         }
         // verifica se  o id encriptado tem 32 caracteres
-        if(strlen($_GET['id'])!= 32){
+        if (strlen($_GET['id']) != 32) {
             Store::redirect();
             return;
         }
         // id_encomenda desencriptado
         $id_encomenda = Store::aesDesencriptar($_GET['id']);
-        if(empty($id_encomenda)){
+        if (empty($id_encomenda)) {
             Store::redirect();
             return;
         }
@@ -519,14 +520,14 @@ class Main
         $encomendas = new Encomendas();
 
         $resultado = $encomendas->verifica_encomenda_cliente($_SESSION['cliente'], $id_encomenda);
-        if($resultado==0){
+        if ($resultado == 0) {
             Store::redirect();
             return;
         }
 
         // buscar detalhes da encomenda
         $dados_encomenda = $encomendas->detalhes_da_encomenda($id_encomenda);
-        
+
         $dados = [
             'dados_encomenda' => $dados_encomenda,
         ];
@@ -546,17 +547,28 @@ class Main
         // simulação do webhook do gateway de pagamento
 
         // verificar se vem o código da encomenda
-        $codigo_encomenda='';
-        if(!isset($_GET['cod'])){
+        $codigo_encomenda = '';
+        if (!isset($_GET['cod'])) {
             return;
-        }else{
+        } else {
             $codigo_encomenda = $_GET['cod'];
-        }     
+        }
 
         // verificar se a encomenda com o código indicado está pendente
         $encomenda  = new Encomendas();
         $resultado = $encomenda->efetuar_pagamento($codigo_encomenda);
         // alterar o status da encomenda de PENDENTE para EM PROCESSAMENTO
         echo (int)$resultado;
+    }
+
+    //============================================================
+    public function criar_pdf()
+    {
+        // usar os metodos do objeto pdf para construir HTM e fazer o output
+        $pdf = new PDF();
+        $pdf->escrever('Esta é a primeira frase no meu documento');
+        $pdf->nova_pagina();
+        $pdf->escrever('Esta é a segunda frase no meu documento');
+        $pdf->apresentar_pdf();
     }
 }
