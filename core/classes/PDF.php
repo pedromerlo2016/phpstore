@@ -23,7 +23,9 @@ class PDF
     private $fundo;         //backgroug-color
     private $letra_familia; // font-fanily
     private $letra_tamanho; // font-size
-    private $letra_tipo;    // font-wight
+    private $letra_tipo;    // font-weight
+
+    private $mostra_areas;  // mostra o contorno n area do texto
 
     //============================================================
     public function __construct($formato = 'A4', $orientacao = 'p', $modo = 'utf-8')
@@ -36,6 +38,7 @@ class PDF
         ]);
         // iniciar o html
         $this->iniciar_html();
+        $this->mostra_areas = false;
     }
 
     //============================================================
@@ -144,10 +147,10 @@ class PDF
             'Trebuchet MS'
         ];
 
-        if(!in_array($familia,$familias_possiveis)){
-            $this->letra_familia='Arial';
-        }else{
-            $this->letra_familia= $familias_possiveis;
+        if (!in_array($familia, $familias_possiveis)) {
+            $this->letra_familia = 'Arial';
+        } else {
+            $this->letra_familia = $familias_possiveis;
         }
 
 
@@ -157,6 +160,11 @@ class PDF
     public function set_texto_tamanho($tamanho)
     {
         $this->letra_tamanho =  $tamanho;
+    }
+
+    public function set_texto_tipo($tipo)
+    {
+        $this->letra_tipo =  $tipo;
     }
 
 
@@ -177,10 +185,14 @@ class PDF
         $this->html .= 'color: ' . $this->cor . ';';
         $this->html .= 'background-color: ' . $this->fundo . ';';
         // // fonte
-        $this->html .= 'font-family:' . $this->letra_familia . ';';
-        $this->html .='font-size:'. $this->letra_tamanho.';' ;
-        // $this->html .='font-wight:'. $this->letra_tipo.';' ;
-
+        $this->html .= 'font-family: ' . $this->letra_familia . ';';
+        $this->html .= 'font-size: ' . $this->letra_tamanho . ';';
+        $this->html .= 'font-weight: '. $this->letra_tipo. ';' ;
+        
+        // mostrar controno da area
+        if ($this->mostra_areas == true) {
+            $this->html .= 'box-shadow: inset 0px 0px 0px 1px red';
+        }
         $this->html .= '">' . $texto . '</div>';
     }
 }

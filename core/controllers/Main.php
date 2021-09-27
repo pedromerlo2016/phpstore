@@ -568,18 +568,20 @@ class Main
         $pdf = new PDF();
         //$pdf->posicao(200,200);
         //$pdf->dimensao(50,50);
-        $pdf->posicao_dimensao(200,200,400,100);
+        $pdf->posicao_dimensao(200,200,400,200);
         $pdf->set_texto_familia('Courier New');
-        $pdf->set_texto_tamanho('42px');
+        $pdf->set_texto_tamanho('1em');
+        $pdf->set_texto_tipo('bold');
         $pdf->set_cor('blue');
-        $pdf->set_cor_fundo('rgb(240,240,240)');
+        //$pdf->set_cor_fundo('rgb(240,240,240)');
         $pdf->set_alinhamento('left');
 
         $pdf->escrever('Esta é a primeira frase no meu documento');
-        $pdf->posicao_dimensao(200,235,400,100);
-        
-        $pdf->set_texto_tamanho('42px');
+        $pdf->posicao_dimensao(200,500,400,200);
+
+        $pdf->set_texto_tamanho('2em');
         $pdf->set_alinhamento('right');
+        $pdf->set_texto_tipo('100');
         $pdf->escrever('Esta é a segunda frase no meu documento');
         $pdf->apresentar_pdf();
     }
