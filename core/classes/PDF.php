@@ -38,7 +38,7 @@ class PDF
         ]);
         // iniciar o html
         $this->iniciar_html();
-        $this->mostra_areas = false;
+        //$this->mostra_areas = true;
     }
 
     //============================================================
