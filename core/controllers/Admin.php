@@ -387,11 +387,36 @@ class Admin
         $admin = new ModelsAdmin();
         $encomenda = $admin->detalhe_encomenda($id_encomenda);
         
+        // echo"<pre>";
+        //  var_dump ($encomenda['encomenda']->nome_completo);
+        // echo"</pre>";
+      
+        // die();
+        
         // criar o pdf
         $pdf =  new PDF();
         $pdf->set_template(getcwd().'/assets/templates_pdf/encomenda_em_processamento.pdf');
-        // echo getcwd();
+        // preparar as opções base
+        $pdf->set_texto_familia('Arial');
+        $pdf->set_texto_tamanho('16px');
+        $pdf->set_texto_tipo('bold');
 
+        // data da encomenda
+        $pdf->posicao_dimensao(305,244,120,24);
+        $pdf->escrever(date('d/m/Y' , strtotime($encomenda['encomenda']->data_encomenda)));
+        // codigo encomenda
+        $pdf->posicao_dimensao(600,244,120,24);
+        $pdf->escrever($encomenda['encomenda']->codigo_encomenda);
+        // nome completo
+        $pdf->posicao_dimensao(87,305,500,24);
+        $pdf->escrever($encomenda['encomenda']->nome_completo);
+        // Endereço - Cidade
+        $pdf->posicao_dimensao(87,330,400,24);
+        $pdf->escrever($encomenda['encomenda']->residencia ." - ". $encomenda['encomenda']->cidade) ;
+        // e-mail e telefone
+        $pdf->posicao_dimensao(87,355,400,24);
+        $pdf->escrever($encomenda['encomenda']->email . ($encomenda['encomenda']->telefone == null? '' :' - '. $encomenda['encomenda']->telefone ) );
+       
         // apresentar pdf
         $pdf->apresentar_pdf();
         //Store::printData($encomenda);
