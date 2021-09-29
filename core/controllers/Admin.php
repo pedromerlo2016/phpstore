@@ -465,12 +465,6 @@ class Admin
         $admin = new ModelsAdmin();
         $encomenda = $admin->detalhe_encomenda($id_encomenda);
 
-        // echo"<pre>";
-        //  var_dump ($encomenda['encomenda']->nome_completo);
-        // echo"</pre>";
-
-        // die();
-
         // criar o pdf
         $pdf =  new PDF();
         $pdf->set_template(getcwd() . '/assets/templates_pdf/encomenda_em_processamento.pdf');
@@ -520,6 +514,22 @@ class Admin
         $pdf->set_cor('white');
         $pdf->posicao_dimensao(87, 843, 660, 24);
         $pdf->escrever('Total da encomenda: R$ ' . number_format($total, 2, ',', '.'));
+        // configura permissões e proteção
+        $permissoes=[
+            //'copy',
+            'print',
+            //'modify',
+            //'annot_forms',
+            //'fill_forms',
+            //'extraxt',
+            //'assemble',
+            //'print-highres',
+
+        ];
+
+        
+        $pdf->set_permissoes($permissoes);
+        
         // guardar pdf
         $arquivo = $encomenda['encomenda']->codigo_encomenda . '_' . date('YmdHis') . '.pdf';
         $pdf->gravar_pdf($arquivo);
@@ -527,22 +537,13 @@ class Admin
         // enviar o email com o arquivo em anexo
         $enviarEmail =  new EnviarEmail;
         $reultado =  $enviarEmail->enviar_enviar_pdf_encomenda_para_cliente($encomenda['encomenda']->email, $arquivo);
-        echo"fim";
-        
-        // if ($reultado) {
-        //     // apresenta a pagina do cliente criado com sucesso
-        //     Store::Layout([
-        //         'layouts/html_header',
-        //         'header',
-        //         'criar_cliente_sucesso',
-        //         'footer',
-        //         'layouts/html_footer',
-        //     ]);
-        //     return;
-        // } else {
-        //     echo 'Ocorreu um erro';
-        // }
 
-
+        if ($reultado) {
+            unlink(PDF_PATH . $arquivo);
+            // retorn para a pagina do detalhe da encomenda
+            Store::redirect('detalhe_encomenda&e=' . $_GET['e'], true);
+        } else {
+            echo 'Ocorreu um erro';
+        }
     }
 }

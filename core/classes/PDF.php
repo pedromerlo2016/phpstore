@@ -182,6 +182,14 @@ class PDF
     }
 
     //============================================================
+    public function set_permissoes($permissoes=[], $password='')
+    {
+        // define permissões para o documento a ser criado 
+        $this->pdf->SetProtection($permissoes, $password);
+
+    }
+
+    //============================================================
     public function escrever($texto)
     {
         // escreve texto no documento
