@@ -440,9 +440,109 @@ class Admin
         $pdf->set_texto_tipo('bold');
         $pdf->set_alinhamento('right');
         $pdf->set_cor('white');
-        $pdf->posicao_dimensao(87, 840, 660, 24);
+        $pdf->posicao_dimensao(87, 843, 660, 24);
         $pdf->escrever('Total da encomenda: R$ ' . number_format($total, 2, ',', '.'));
         // apresentar pdf
+
         $pdf->apresentar_pdf();
+    }
+
+    //============================================================
+    public function enviar_pdf_encomenda()
+    {
+        $id_encomenda = null;
+        if (!isset($_GET['e'])) {
+            Store::redirect('inicio', true);
+            return;
+        }
+        $id_encomenda = Store::aesDesencriptar($_GET['e']);
+        if (gettype($id_encomenda) != 'string') {
+            Store::redirect('inicio', true);
+            return;
+        }
+
+        // obter as informações da encomenda
+        $admin = new ModelsAdmin();
+        $encomenda = $admin->detalhe_encomenda($id_encomenda);
+
+        // echo"<pre>";
+        //  var_dump ($encomenda['encomenda']->nome_completo);
+        // echo"</pre>";
+
+        // die();
+
+        // criar o pdf
+        $pdf =  new PDF();
+        $pdf->set_template(getcwd() . '/assets/templates_pdf/encomenda_em_processamento.pdf');
+        // preparar as opções base
+        $pdf->set_texto_familia('Arial');
+        $pdf->set_texto_tamanho('16px');
+        $pdf->set_texto_tipo('bold');
+
+        // data da encomenda
+        $pdf->posicao_dimensao(305, 244, 120, 24);
+        $pdf->escrever(date('d/m/Y', strtotime($encomenda['encomenda']->data_encomenda)));
+        // codigo encomenda
+        $pdf->posicao_dimensao(600, 244, 120, 24);
+        $pdf->escrever($encomenda['encomenda']->codigo_encomenda);
+        // nome completo
+        $pdf->posicao_dimensao(87, 305, 500, 24);
+        $pdf->escrever($encomenda['encomenda']->nome_completo);
+        // Endereço - Cidade
+        $pdf->posicao_dimensao(87, 330, 400, 24);
+        $pdf->escrever($encomenda['encomenda']->residencia . " - " . $encomenda['encomenda']->cidade);
+        // e-mail e telefone
+        $pdf->posicao_dimensao(87, 355, 400, 24);
+        $pdf->escrever($encomenda['encomenda']->email . ($encomenda['encomenda']->telefone == null ? '' : ' - ' . $encomenda['encomenda']->telefone));
+
+        // lista dos profutos encomendados
+        // quantidade x produtos ----- total
+        $y = 450; // incrementando por linha 25
+        $total = 0;
+        foreach ($encomenda['lista_produtos'] as $produto) :
+            $pdf->posicao_dimensao(87, $y, 500, 24);
+            $pdf->set_texto_tipo('normal');
+            $pdf->set_alinhamento('left');
+            $pdf->escrever($produto->quantidade . ' x ' . $produto->descricao_produto);
+            $pdf->posicao_dimensao(600, $y, 150, 24);
+            $pdf->set_alinhamento('right');
+            $pdf->escrever('R$ ' . number_format($produto->preco_unidade, 2, ',', '.'));
+            $y += 25;
+            $total += ($produto->preco_unidade * $produto->quantidade);
+        endforeach;
+
+        // Apresenta o total
+        // posiçãop y = 840
+        $pdf->posicao_dimensao(87, $y, 500, 24);
+        $pdf->set_texto_tamanho('20px');
+        $pdf->set_texto_tipo('bold');
+        $pdf->set_alinhamento('right');
+        $pdf->set_cor('white');
+        $pdf->posicao_dimensao(87, 843, 660, 24);
+        $pdf->escrever('Total da encomenda: R$ ' . number_format($total, 2, ',', '.'));
+        // guardar pdf
+        $arquivo = $encomenda['encomenda']->codigo_encomenda . '_' . date('YmdHis') . '.pdf';
+        $pdf->gravar_pdf($arquivo);
+
+        // enviar o email com o arquivo em anexo
+        $enviarEmail =  new EnviarEmail;
+        $reultado =  $enviarEmail->enviar_enviar_pdf_encomenda_para_cliente($encomenda['encomenda']->email, $arquivo);
+        echo"fim";
+        
+        // if ($reultado) {
+        //     // apresenta a pagina do cliente criado com sucesso
+        //     Store::Layout([
+        //         'layouts/html_header',
+        //         'header',
+        //         'criar_cliente_sucesso',
+        //         'footer',
+        //         'layouts/html_footer',
+        //     ]);
+        //     return;
+        // } else {
+        //     echo 'Ocorreu um erro';
+        // }
+
+
     }
 }

@@ -17,8 +17,9 @@
                         <?= $encomenda->status ?>
                     </div>
                     <?php if($encomenda->status=="EM_PROCESSAMENTO"):?>
-                        <div class="mt-2">
+                        <div class="m-1">
                            <a href="?a=criar_pdf_encomenda&e=<?= Store::aesEncriptar($encomenda->id_encomenda) ?>" class="btn btn-sm btn-info">PDF</a>
+                           <a href="?a=enviar_pdf_encomenda&e=<?= Store::aesEncriptar($encomenda->id_encomenda) ?>" class="btn btn-sm btn-info" >Enviar PDF</a>
                         </div>
                     <?php endif;?>
                 </div>

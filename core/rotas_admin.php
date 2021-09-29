@@ -22,6 +22,7 @@ $rotas = [
     'detalhe_encomenda'=>'admin@detalhe_encomenda',
     'encomenda_alterar_status'=>'admin@encomenda_alterar_status',
     'criar_pdf_encomenda'=> 'admin@criar_pdf_encomenda',
+    'enviar_pdf_encomenda'=>'admin@enviar_pdf_encomenda',
 ];
 
 // define ação padrão

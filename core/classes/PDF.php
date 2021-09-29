@@ -63,6 +63,14 @@ class PDF
     }
 
     //============================================================
+    public function gravar_pdf($nome_arquivo)
+    {
+        // grava o arquivo pdf
+        $this->pdf->WriteHTML($this->html);
+        $this->pdf->Output(PDF_PATH . $nome_arquivo);
+    }
+
+    //============================================================
     public function nova_pagina()
     {
         // acrecentar uma nova página
@@ -172,7 +180,6 @@ class PDF
     {
         $this->letra_tipo =  $tipo;
     }
-
 
     //============================================================
     public function escrever($texto)

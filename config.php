@@ -25,3 +25,6 @@ define('AES_IV','HFqxWH4xkDtpKWf4');
 
 // Status
 define('STATUS',            ['PENDENTE','EM_PROCESSAMENTO','ENVIADO','CANCELADO','CONCLUIDO']);
+
+// Localização dos arquivos pdfs
+define('PDF_PATH',           __DIR__.'/pdfs/');
