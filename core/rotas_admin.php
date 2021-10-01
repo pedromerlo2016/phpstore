@@ -23,6 +23,11 @@ $rotas = [
     'encomenda_alterar_status'=>'admin@encomenda_alterar_status',
     'criar_pdf_encomenda'=> 'admin@criar_pdf_encomenda',
     'enviar_pdf_encomenda'=>'admin@enviar_pdf_encomenda',
+
+    // Prudutos
+    'lista_produtos_estoque'=>'admin@lista_produtos_estoque',
+    'detalhe_produto_estoque'=>'admin@detalhe_produto_estoque',
+    'detalhe_produto_estoque_submit'=>'admin@detalhe_produto_estoque_submit',
 ];
 
 // define ação padrão

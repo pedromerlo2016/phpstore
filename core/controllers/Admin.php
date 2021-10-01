@@ -7,6 +7,7 @@ use core\classes\PDF;
 use core\classes\Store;
 use core\models\Admin as ModelsAdmin;
 use core\models\Database;
+use core\models\Produtos;
 
 class Admin
 {
@@ -515,7 +516,7 @@ class Admin
         $pdf->posicao_dimensao(87, 843, 660, 24);
         $pdf->escrever('Total da encomenda: R$ ' . number_format($total, 2, ',', '.'));
         // configura permissões e proteção
-        $permissoes=[
+        $permissoes = [
             //'copy',
             'print',
             //'modify',
@@ -527,9 +528,9 @@ class Admin
 
         ];
 
-        
+
         $pdf->set_permissoes($permissoes);
-        
+
         // guardar pdf
         $arquivo = $encomenda['encomenda']->codigo_encomenda . '_' . date('YmdHis') . '.pdf';
         $pdf->gravar_pdf($arquivo);
@@ -545,5 +546,109 @@ class Admin
         } else {
             echo 'Ocorreu um erro';
         }
+    }
+
+
+    //============================================================
+    // Operações com estoque 
+    //============================================================
+
+    //============================================================
+    public function lista_produtos_estoque()
+    {
+        // verifica se já exite um usuario logado
+        if (!Store::adminLogado()) {
+            Store::redirect('inicio', true);
+            return;
+        }
+
+        $produtos =  new Produtos();
+
+        $dados  = $produtos->lista_todo_estoque();
+
+        // apresenta a pagina das encomendas
+        Store::Layout_admin([
+            'admin/layouts/html_header',
+            'admin/header',
+            'admin/lista_estoque',
+            'admin/footer',
+            'admin/layouts/html_footer',
+        ], $dados);
+    }
+
+    //============================================================
+    public function detalhe_produto_estoque()
+    {
+        // verifica se já exite um usuario logado
+        if (!Store::adminLogado()) {
+            Store::redirect('inicio', true);
+            return;
+        }
+
+        // verifica se exite um item na query string
+        if (!isset($_GET['i'])) {
+            Store::redirect('inicio', true);
+            return;
+        }
+
+        $id_produto = Store::aesDesencriptar($_GET['i']);
+        if (gettype($id_produto) != 'string') {
+            Store::redirect('inicio', true);
+            return;
+        }
+
+        $produto =  new Produtos();
+
+        $dados = $produto->detalhe_item_estoque($id_produto)[0];
+
+        Store::Layout_admin([
+            'admin/layouts/html_header',
+            'admin/header',
+            'admin/detalhe_item_estoque',
+            'admin/footer',
+            'admin/layouts/html_footer',
+        ], $dados);
+    }
+
+    //============================================================
+    public function detalhe_produto_estoque_submit()
+    {
+       
+        // verifica se já exite um usuario logado
+        if (!Store::adminLogado()) {
+            Store::redirect('inicio', true);
+            return;
+        }
+        
+        // verifica se a origem da requisição foI um POST
+        if($_SERVER['REQUEST_METHOD'] !='POST'){
+            Store::redirect('inicio', true);
+            return;
+        }
+        
+        // verifica se a requisição POST possui informações
+        if(!isset($_POST)){
+            Store::redirect('inicio', true);
+            return;
+        }
+
+        $dados=[
+            'id_produto' => $_POST['text_id_produto'],
+            'categoria'=>$_POST['text_categoria'],
+            'nome'=>$_POST['text_nome'],
+            'descricao'=>$_POST['text_descricao'],
+            'preco'=>$_POST['text_preco'],
+            'stock'=>$_POST['text_stock'],
+            'visivel'=> isset($_POST['ckb_visivel'])? 1: 0,
+            'imagem'=>isset($_FILES['imagem']) ? $_FILES['imagem']['name'] : '',
+        ];
+
+
+        $produto_estoque  =  new Produtos();
+        $produto_estoque->altera_produto_estoque($dados);
+        $id_produto = Store::aesEncriptar($_POST['text_id_produto']);
+
+        $_SESSION['msg']='Item de estoque alterado com sucesso!';
+        Store::redirect("detalhe_produto_estoque&i=$id_produto", true);
     }
 }
