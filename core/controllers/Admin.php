@@ -123,6 +123,7 @@ class Admin
 
         unset($_SESSION['admin']);
         unset($_SESSION['admin_usuario']);
+        unset($_SESSION['usuario']);
         Store::redirect('inicio', true);
         return;
     }
@@ -329,9 +330,16 @@ class Admin
             Store::redirect('inicio', true);
             return;
         }
+
+    
+
+
         // Atualiza o status da encomenda
         $id_encomenda = Store::aesEncriptar($id_encomenda = $_GET['e']);
-        ModelsAdmin::altera_status_encomenda($id_encomenda, $status);
+        if(!ModelsAdmin::altera_status_encomenda($id_encomenda, $status)){
+            $_SESSION['erro']="Encomenda cancelada não pode ser modificada!" ;
+            Store::redirect('detalhe_encomenda&e=' . $id_encomenda, true);
+        }
 
         // executar ações após alteração do status
         switch ($status) {
@@ -345,8 +353,12 @@ class Admin
                 //  enviar e-mail com notificação 
                 $this->operacao_enviar_email_encomenda_enviada($id_encomenda);
                 break;
-            case 'CANCELADA':
-                // não exitem ações
+            case 'CANCELADO':
+                // CANCELADO para encomenda com devolução do estoque e bloqueio de nova alteração de status
+                $produtos = new Produtos();
+                $produtos->repoe_estoque_encomenda_cancelada($id_encomenda);
+                $email = new EnviarEmail();
+                $email->enviar_email_cancelamento_encomenda($id_encomenda);
                 break;
             case 'CONCLUIDA':
                 // não exitem ações

@@ -1,10 +1,10 @@
-<?php
-// print_r($_SESSION);
-?>
+
+
 <div class="container espaco-fundo">
     <div class="row">
+   
         <div class="div col-12 text-center my-5">
-            <a href="?a=loja&c=todos" class="btn btn-primary">Todos</a>
+            <a href="?a=loja&c=todos" class="btn btn-su">Todos</a>
             <?php foreach ($categorias as $categoria) : ?>
                 <a href="?a=loja&c=<?= $categoria ?>" class="btn btn-primary"><?= ucfirst(preg_replace("/\_/", " ", $categoria)) ?></a>
             <?php endforeach ?>
@@ -12,6 +12,7 @@
     </div>
     <!-- Produtos -->
     <div class="row">
+    <p id="msg" class="text-center h2 text-success"></p>
         <?php if (count($produtos) == 0) : ?>
             <div class="text-center my-5">
                 <h3>Não exitem produto disponíveis</h3>
@@ -24,6 +25,7 @@
                         <img src="assets/images/produtos/<?= $produto->imagem ?>" width="100" class="img-fluid">
                         <p><?= $produto->nome ?></p>
                         <p><?= 'R$ ' . $produto->preco ?></p>
+                        <p><?= 'Disponivel: '. $produto->stock ?></p>
                         <div>
                             <?php if($produto->stock > 0 ): ?>
                                 <button class="btn btn-primary btn-sm" onclick="adicionar_carrinho(<?=$produto->id_produto ?>)"><i class="fas fa-shopping-cart me-2"></i>Adicionar ao carrinho</button>
@@ -37,4 +39,5 @@
             <?php endforeach; ?>
         <?php endif ?>
     </div>
+   
 </div>

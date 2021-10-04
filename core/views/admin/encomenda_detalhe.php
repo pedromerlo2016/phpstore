@@ -9,6 +9,13 @@
         </div>
         <div class="col-md-10">
             <div class="row">
+                <?php if(isset($_SESSION['erro'])): ?>
+                    <div class="alert alert-danger text-center p-2">
+                        <?= $_SESSION['erro']?>
+                        <?php unset($_SESSION['erro']); ?>
+                    </div>
+                <?php endif; ?>
+                <div>Erro</div>
                 <div class="col">
                     <h4>Detalhe da encomenda</h4><span><small><?= $encomenda->codigo_encomenda ?></small></span>
                 </div>

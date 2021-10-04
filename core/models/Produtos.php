@@ -38,40 +38,57 @@ class Produtos
         $preco  = str_replace('.', '', $preco);
         $preco  = str_replace(',', '.', $preco);
         Store::printData($preco, false);
-       
-        $parametros=[];
-            
+
+        $parametros = [];
+
         $db = new Database();
-        $sql='';
-        if($dados['imagem']!='' ){
-            $parametros=[
-                ':id_produto'=> $dados['id_produto'],
-                ':categoria'=> $dados['categoria'],
-                ':nome'=> $dados['nome'],
-                ':descricao'=>$dados['descricao'],
-                ':preco'=> $preco,
-                ':stock'=>$dados['stock'],
-                ':visivel'=>$dados['visivel'],
-                ':imagem'=>$dados['imagem']
+        $sql = '';
+        if ($dados['imagem'] != '') {
+            $parametros = [
+                ':id_produto' => $dados['id_produto'],
+                ':categoria' => $dados['categoria'],
+                ':nome' => $dados['nome'],
+                ':descricao' => $dados['descricao'],
+                ':preco' => $preco,
+                ':stock' => $dados['stock'],
+                ':visivel' => $dados['visivel'],
+                ':imagem' => $dados['imagem']
             ];
-            $sql = "UPDATE produtos set categoria=:categoria, nome=:nome, descricao=:descricao , preco=:preco, stock=:stock, visivel =:visivel, imagem=:imagem WHERE id_produto =:id_produto" ;
-        }else{
-            $parametros=[
-                ':id_produto'=> $dados['id_produto'],
-                ':categoria'=> $dados['categoria'],
-                ':nome'=> $dados['nome'],
-                ':descricao'=>$dados['descricao'],
-                ':preco'=> $preco,
-                ':stock'=>$dados['stock'],
-                ':visivel'=>$dados['visivel']
+            $sql = "UPDATE produtos set categoria=:categoria, nome=:nome, descricao=:descricao , preco=:preco, stock=:stock, visivel =:visivel, imagem=:imagem WHERE id_produto =:id_produto";
+        } else {
+            $parametros = [
+                ':id_produto' => $dados['id_produto'],
+                ':categoria' => $dados['categoria'],
+                ':nome' => $dados['nome'],
+                ':descricao' => $dados['descricao'],
+                ':preco' => $preco,
+                ':stock' => $dados['stock'],
+                ':visivel' => $dados['visivel']
             ];
 
-            $sql = "UPDATE produtos set categoria=:categoria, nome=:nome, descricao=:descricao , preco=:preco, stock=:stock, visivel =:visivel WHERE id_produto =:id_produto" ;
+            $sql = "UPDATE produtos set categoria=:categoria, nome=:nome, descricao=:descricao , preco=:preco, stock=:stock, visivel =:visivel WHERE id_produto =:id_produto";
         }
-       
-        $retorno = $db->update($sql, $parametros);
 
+        $retorno = $db->update($sql, $parametros);
     }
+
+    //============================================================
+    public function reduz_produto_estoque($dados)
+    {
+        $db = new Database();
+        foreach ($dados as $key => $value) {
+            $estoque = $db->select("SELECT stock FROM produtos where id_produto=$key")[0];
+            $quantidade = $estoque->stock;
+            $quantidade -= $value;
+            if ($quantidade < 0) {
+                // TODO aborta o item 
+            } else {
+                $db->update("UPDATE produtos set stock = $quantidade WHERE id_produto=$key");
+            }
+        }
+        return true;
+    }
+
 
     //============================================================
     public function lista_produtos_disponiveis($categoria)
@@ -121,4 +138,25 @@ class Produtos
         $db = new Database();
         return $db->select("SELECT * FROM produtos WHERE id_produto IN($ids)");
     }
+
+    //============================================================
+    public function repoe_estoque_encomenda_cancelada($id_encomenda){
+        $id_encomenda=Store::aesDesencriptar($id_encomenda);
+        $db = new Database();
+        $produtos = $db->select("SELECT descricao_produto, quantidade FROM encomenda_produto WHERE id_encomenda = $id_encomenda");
+        $dados_produto=[];
+        foreach($produtos as $item){
+            array_push($dados_produto, $db->select("SELECT id_produto, stock FROM produtos WHERE nome = '$item->descricao_produto'"));
+        }
+        
+        for ($i=0; $i < sizeof($produtos); $i++){
+;
+            $item = $dados_produto[$i][0]->stock;
+            $quantidade = $produtos[$i]->quantidade;
+            $item -=$quantidade;
+            $db->update("UPDATE produtos SET stock = $item WHERE id_produto =".$dados_produto[$i][0]->id_produto);
+        }
+        return;
+    }
+
 }

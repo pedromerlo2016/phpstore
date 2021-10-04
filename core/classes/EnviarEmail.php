@@ -147,4 +147,48 @@ class EnviarEmail
             return false;
         }
     }
+    
+    //============================================================
+    public function enviar_email_cancelamento_encomenda($id_encomenda)
+    {
+        $id_encomenda=Store::aesDesencriptar($id_encomenda);
+        $db = new Database();
+        $dados = $db->select("SELECT * FROM encomendas WHERE id_encomenda =".$id_encomenda)[0];
+        
+        //Envia um e-mail para o cliente avisando do cancelamento 
+        $mail = new PHPMailer(true);
+        try {
+            //Opções do servidor
+            $mail->SMTPDebug = SMTP::DEBUG_OFF;
+            $mail->isSMTP();
+            $mail->Host       = EMAIL_HOST;
+            $mail->SMTPAuth   = true;
+            $mail->Username   = EMAIL_USER;
+            $mail->Password   = EMAIL_PASS;
+            $mail->Port       = EMAIL_PORT;
+            $mail->CharSet    = 'UTF-8';
+
+            //Emissor e receptor
+            $mail->setFrom(EMAIL_FROM, APP_NAME);
+            $mail->addAddress($dados->email);
+
+            //Assunto
+            $mail->isHTML(true);
+            $mail->Subject = APP_NAME . ' - Notificação de cancelamento de encomenda.';
+            //Mensagens
+            $html= "<p>Prezado cliente: </p>";
+            $html.= "<p>Informamos que sua encomenda código $dados->codigo_encomenda foi cancelada.</p>";
+            $html.= "<p>Se for de seu interesse, solicitamos que retorne à loja e refaça seu pedido</p>";
+            $html.= '<p><i><small>' . APP_NAME . '</small></i></p>';
+            $mail->Body    = $html;
+            //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+          
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
 }

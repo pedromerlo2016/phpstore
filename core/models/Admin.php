@@ -201,12 +201,24 @@ class Admin
     public static function altera_status_encomenda($id_encomenda, $status){
         $db = new Database();
         $id_encomenda= Store::aesDesencriptar($id_encomenda);
+        // Veirfica status atual da encomenda 
+        $parametros=[
+            ':id_encomenda'=>$id_encomenda
+        ];
+        $sql=("SELECT status from  encomendas WHERE id_encomenda = :id_encomenda");
+        $statusAtual = $db->select ($sql, $parametros)[0];
+
+      
+        if ($statusAtual->status == 'CANCELADO'){
+           return false;
+        }
+
         $parametros=[
             ':status'=>$status,
             ':id_encomenda'=>$id_encomenda
         ];
         $sql=("UPDATE encomendas SET status=:status WHERE id_encomenda = :id_encomenda");
         $db->update($sql, $parametros);
-        return;
+        return true;
     }
 }

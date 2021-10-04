@@ -243,6 +243,7 @@ class Carrinho
             }
         }
 
+
         // calcula o total da encomenda
         $total_da_compra = 0;
         foreach ($dados_tmp as $item) {
@@ -304,6 +305,12 @@ class Carrinho
         foreach ($_SESSION['carrinho'] as $id_produto => $quatidade) {
             array_push($ids, $id_produto);
         }
+
+       
+
+
+
+
         // Store::printData($_SESSION);
         $dados_encomenda['nome_cliente'] = $_SESSION['nome_cliente'];
         //transforma o array em string
@@ -333,11 +340,11 @@ class Carrinho
 
 
         // enviar email para o cliente com os dados da encomenda e pagamento
-        if(EMAIL_ENVIAR==true){
+        if (EMAIL_ENVIAR == false) {
             $email = new EnviarEmail();
             $resultado = $email->enviar_email_confirmacao_encomenda($_SESSION['usuario'], $dados_encomenda);
         }
-        
+
         // - Lista de produtos + quantidade  + preço/inid 
         //   2 x [nome do produto] - repco/unid
         //   1 x [nome do produto] - repco/unid
@@ -382,8 +389,11 @@ class Carrinho
         $dados_encomenda['status'] = 'PENDENTE';
         $dados_encomenda['mensagem'] = '';
 
-       
-        //Store::printData($_SESSION);
+        // Reduz a quantidade de produtos no estoque 
+        $produtos->reduz_produto_estoque($_SESSION['carrinho']);
+
+
+
         // Dados dos produtos
         $dados_produtos = [];
         foreach ($produtos_da_encomenda as $produto) {
@@ -391,16 +401,15 @@ class Carrinho
                 'designacao_produto' => $produto->nome,
                 'preco_unidade' => $produto->preco,
                 'quantidade' => $_SESSION['carrinho'][$produto->id_produto],
-
             ];
         }
 
-         // Limpar todos os dados da encomenda que estão no carrinho
-         unset($_SESSION['carrinho']);
-         unset($_SESSION['valor_total']);
-         unset($_SESSION['codigo_encomenda']);
-         unset($_SESSION['dados_alternativos']);
- 
+        // Limpar todos os dados da encomenda que estão no carrinho
+        unset($_SESSION['carrinho']);
+        unset($_SESSION['valor_total']);
+        unset($_SESSION['codigo_encomenda']);
+        unset($_SESSION['dados_alternativos']);
+
 
         $encomenda = new Encomendas();
         $encomenda->guardar_encomenda($dados_encomenda, $dados_produtos);
