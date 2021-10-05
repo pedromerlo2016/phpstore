@@ -9,6 +9,7 @@ include(__DIR__ . '/layouts/admin_menu.php') ?>
         </div>
         <div class="col-md-10">
             <h3>Lista de produtos no estoque</h3>
+            <a href="?a=cadastrar_novo_produto_estoque" class="btn btn-sm btn-primary">Adicionar novo produto ao estoque <span class="fas fa-plus-circle" ></span>  </a>
             <table class='table table-sm table-striped' id="tabela-estoque">
                 <thead class='table-dark'>
                     <tr>

@@ -79,7 +79,7 @@ class Carrinho
             $total_produtos += $produto_quantidade;
         }
 
-
+        // porque esta função foi acionada por um javascript
         echo $total_produtos;
     }
     //============================================================
@@ -119,6 +119,9 @@ class Carrinho
             // Criar uma coleção de dados para a página
             // imagem | titulo | quantidade | preço | eliminar |mudar a quantidade 
 
+            $carrinho = [];
+            $carrinho= $_SESSION['carrinho'];
+
             $dados_tmp = [];
             foreach ($_SESSION['carrinho'] as $id_produto => $quantidade_carrinho) {
                 // imagem
@@ -127,7 +130,15 @@ class Carrinho
                         $id_produto = $produto->id_produto;
                         $imagem = $produto->imagem;
                         $titulo = $produto->nome;
-                        $quantidade = $quantidade_carrinho;
+                        // Verifica se há peças no estoque para atender a demanda. Se não houver, coloca o total do estoque
+                        if ($quantidade_carrinho > $produto->stock) {
+                            $quantidade = $produto->stock;
+                            if (key_exists($id_produto, $carrinho)){
+                                $carrinho[$id_produto]=$quantidade;
+                            }
+                        } else {
+                            $quantidade = $quantidade_carrinho;
+                        }
                         $preco = $produto->preco * $quantidade;
                         // colocar o produto na coleção $dados_temp
                         array_push($dados_tmp, [
@@ -139,18 +150,22 @@ class Carrinho
                         ]);
                         break;
                     }
+                    
                 }
             }
             $total_da_compra = 0;
-            foreach ($dados_tmp as $item) {
+             foreach ($dados_tmp as $item) {
                 $total_da_compra  += $item['preco'];
             }
             array_push($dados_tmp, $total_da_compra);
             $dados = [
-                'carrinho' => $dados_tmp
+                'carrinho' => $dados_tmp,
             ];
         }
 
+       
+       $_SESSION['carrinho'] = $carrinho;
+        // Atualizar o carrinho com o numero de itens disponíveis baseado no $_SESSION
         // apresenta a pagina do carrinho
         Store::Layout([
             'layouts/html_header',
@@ -220,6 +235,9 @@ class Carrinho
         // Criar uma coleção de dados para a página
         // imagem | titulo | quantidade | preço | eliminar |mudar a quantidade 
 
+        $carrinho = [];
+        $carrinho= $_SESSION['carrinho'];
+
         $dados_tmp = [];
         foreach ($_SESSION['carrinho'] as $id_produto => $quantidade_carrinho) {
             // imagem
@@ -228,7 +246,15 @@ class Carrinho
                     $id_produto = $produto->id_produto;
                     $imagem = $produto->imagem;
                     $titulo = $produto->nome;
-                    $quantidade = $quantidade_carrinho;
+                    // Verifica se há peças no estoque para atender a demanda. Se não houver, coloca o total do estoque
+                    if ($quantidade_carrinho > $produto->stock) {
+                        $quantidade = $produto->stock;
+                        if (key_exists($id_produto, $carrinho)){
+                            $carrinho[$id_produto]=$quantidade;
+                        }
+                    } else {
+                        $quantidade = $quantidade_carrinho;
+                    }
                     $preco = $produto->preco * $quantidade;
                     // colocar o produto na coleção $dados_temp
                     array_push($dados_tmp, [
@@ -243,7 +269,8 @@ class Carrinho
             }
         }
 
-
+        $_SESSION['carrinho'] = $carrinho;
+        // Atualizar o carrinho com o numero de itens disponíveis baseado no $_SESSION
         // calcula o total da encomenda
         $total_da_compra = 0;
         foreach ($dados_tmp as $item) {
@@ -306,7 +333,7 @@ class Carrinho
             array_push($ids, $id_produto);
         }
 
-       
+
 
 
 
@@ -340,7 +367,7 @@ class Carrinho
 
 
         // enviar email para o cliente com os dados da encomenda e pagamento
-        if (EMAIL_ENVIAR == false) {
+        if (EMAIL_ENVIAR == true) {
             $email = new EnviarEmail();
             $resultado = $email->enviar_email_confirmacao_encomenda($_SESSION['usuario'], $dados_encomenda);
         }

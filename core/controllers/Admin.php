@@ -271,7 +271,7 @@ class Admin
         $filtros = [
             'pendente' => 'PENDENTE',
             'em_processamento' => 'EM_PROCESSAMENTO',
-            'cancelada' => 'CANCELADA',
+            'cancelada' => 'CANCELADO',
             'enviada' => 'ENVIADA',
             'concluida' => 'CONCLUIDA',
         ];
@@ -331,13 +331,13 @@ class Admin
             return;
         }
 
-    
+
 
 
         // Atualiza o status da encomenda
         $id_encomenda = Store::aesEncriptar($id_encomenda = $_GET['e']);
-        if(!ModelsAdmin::altera_status_encomenda($id_encomenda, $status)){
-            $_SESSION['erro']="Encomenda cancelada não pode ser modificada!" ;
+        if (!ModelsAdmin::altera_status_encomenda($id_encomenda, $status)) {
+            $_SESSION['erro'] = "Encomenda cancelada não pode ser modificada!";
             Store::redirect('detalhe_encomenda&e=' . $id_encomenda, true);
         }
 
@@ -351,14 +351,20 @@ class Admin
                 break;
             case 'ENVIADA':
                 //  enviar e-mail com notificação 
-                $this->operacao_enviar_email_encomenda_enviada($id_encomenda);
+                if (EMAIL_ENVIAR == true) {
+                    $this->operacao_enviar_email_encomenda_enviada($id_encomenda);
+                }
+
                 break;
             case 'CANCELADO':
                 // CANCELADO para encomenda com devolução do estoque e bloqueio de nova alteração de status
                 $produtos = new Produtos();
                 $produtos->repoe_estoque_encomenda_cancelada($id_encomenda);
-                $email = new EnviarEmail();
-                $email->enviar_email_cancelamento_encomenda($id_encomenda);
+                if (EMAIL_ENVIAR == true) {
+                    $email = new EnviarEmail();
+                    $email->enviar_email_cancelamento_encomenda($id_encomenda);
+                }
+
                 break;
             case 'CONCLUIDA':
                 // não exitem ações
@@ -625,34 +631,34 @@ class Admin
     //============================================================
     public function detalhe_produto_estoque_submit()
     {
-       
+
         // verifica se já exite um usuario logado
         if (!Store::adminLogado()) {
             Store::redirect('inicio', true);
             return;
         }
-        
+
         // verifica se a origem da requisição foI um POST
-        if($_SERVER['REQUEST_METHOD'] !='POST'){
-            Store::redirect('inicio', true);
-            return;
-        }
-        
-        // verifica se a requisição POST possui informações
-        if(!isset($_POST)){
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             Store::redirect('inicio', true);
             return;
         }
 
-        $dados=[
+        // verifica se a requisição POST possui informações
+        if (!isset($_POST)) {
+            Store::redirect('inicio', true);
+            return;
+        }
+
+        $dados = [
             'id_produto' => $_POST['text_id_produto'],
-            'categoria'=>$_POST['text_categoria'],
-            'nome'=>$_POST['text_nome'],
-            'descricao'=>$_POST['text_descricao'],
-            'preco'=>$_POST['text_preco'],
-            'stock'=>$_POST['text_stock'],
-            'visivel'=> isset($_POST['ckb_visivel'])? 1: 0,
-            'imagem'=>isset($_FILES['imagem']) ? $_FILES['imagem']['name'] : '',
+            'categoria' => $_POST['text_categoria'],
+            'nome' => $_POST['text_nome'],
+            'descricao' => $_POST['text_descricao'],
+            'preco' => $_POST['text_preco'],
+            'stock' => $_POST['text_stock'],
+            'visivel' => isset($_POST['ckb_visivel']) ? 1 : 0,
+            'imagem' => isset($_FILES['imagem']) ? $_FILES['imagem']['name'] : '',
         ];
 
 
@@ -660,7 +666,76 @@ class Admin
         $produto_estoque->altera_produto_estoque($dados);
         $id_produto = Store::aesEncriptar($_POST['text_id_produto']);
 
-        $_SESSION['msg']='Item de estoque alterado com sucesso!';
+        $_SESSION['msg'] = 'Item de estoque alterado com sucesso!';
         Store::redirect("detalhe_produto_estoque&i=$id_produto", true);
+    }
+
+    //============================================================
+    public function cadastrar_novo_produto_estoque()
+    {
+        //TODO Cadastro de novo produto no estoque
+        // verifica se já exite um usuario logado
+        if (!Store::adminLogado()) {
+            Store::redirect('inicio', true);
+            return;
+        }
+        Store::Layout_admin([
+            'admin/layouts/html_header',
+            'admin/header',
+            'admin/cadastrar_novo_produto_estoque',
+            'admin/footer',
+            'admin/layouts/html_footer',
+        ]);
+    }
+    //============================================================
+    public function cadastrar_novo_produto_estoque_submit()
+    {
+        //TODO Cadastro de novo produto no estoque
+        // verifica se já exite um usuario logado
+        if (!Store::adminLogado()) {
+            Store::redirect('inicio', true);
+            return;
+        }
+
+         // verifica se a origem da requisição foI um POST
+         if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+            Store::redirect('inicio', true);
+            return;
+        }
+
+        //verifica se exite informação no $_POST
+
+        // verifica se a requisição POST possui informações
+        if (!isset($_POST)) {
+            Store::redirect('inicio', true);
+            return;
+        }
+
+        $dados = [
+            'id_produto' => 0,
+            'categoria' => $_POST['text_categoria'],
+            'nome' => $_POST['text_nome'],
+            'descricao' => $_POST['text_descricao'],
+            'preco' => $_POST['text_preco'],
+            'stock' => $_POST['text_stock'],
+            'visivel' => isset($_POST['ckb_visivel']) ? 1 : 0,
+            'imagem' => isset($_FILES['imagem']) ? $_FILES['imagem']['name'] : '',
+        ];
+
+       // Store::printData($dados);
+
+        $produto_estoque  =  new Produtos();
+        $produto_estoque->cadastra_produto_estoque($dados);
+
+        Store::redirect('lista_produtos_estoque',true);
+       
+        // Store::Layout_admin([
+        //     'admin/layouts/html_header',
+        //     'admin/header',
+        //     'admin/lista_produtos_estoque',
+        //     'admin/footer',
+        //     'admin/layouts/html_footer',
+        // ]);
+
     }
 }

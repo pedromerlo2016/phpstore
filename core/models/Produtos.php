@@ -30,6 +30,48 @@ class Produtos
         return $item;
     }
 
+
+    //============================================================
+    public function cadastra_produto_estoque($dados)
+    {
+        //Store::printData($dados);
+        $preco  = str_replace('R$ ', '', $dados['preco']);
+        $preco  = str_replace('.', '', $preco);
+        $preco  = str_replace(',', '.', $preco);
+        $preco = (float)$preco;
+        //Store::printData($preco, false);
+
+        $parametros = [];
+
+        $db = new Database();
+        $sql = '';
+        if ($dados['imagem'] != '') {
+            $parametros = [
+                ':categoria' => $dados['categoria'],
+                ':nome' => $dados['nome'],
+                ':descricao' => $dados['descricao'],
+                ':preco' => $preco,
+                ':stock' => (integer)$dados['stock'],
+                ':visivel' => $dados['visivel'],
+                ':imagem' => $dados['imagem']
+            ];
+            //// $sql = "INSERT INTO produtos (categoria, nome, descricao, preco, stock, visivel, imagem) VALUES (:categoria, :nome, :descricao , :preco, :stock, :visivel, :imagem)";
+            $sql = "INSERT INTO produtos (categoria, nome, descricao, preco, stock, visivel, imagem) VALUES (:categoria, :nome, :descricao , :preco, :stock, :visivel, :imagem)";
+        } else {
+            $parametros = [
+                ':categoria' => $dados['categoria'],
+                ':nome' => $dados['nome'],
+                ':descricao' => $dados['descricao'],
+                ':preco' => $preco,
+                ':stock' => (integer)$dados['stock'],
+                ':visivel' => $dados['visivel']
+            ];
+            $sql = "INSERT INTO produtos (categoria, nome, descricao, preco, stock, visivel) VALUES (:categoria, :nome, :descricao , :preco, :stock, :visivel)";
+        }
+
+        $retorno = $db->insert($sql, $parametros);
+    }
+
     //============================================================
     public function altera_produto_estoque($dados)
     {
@@ -80,9 +122,7 @@ class Produtos
             $estoque = $db->select("SELECT stock FROM produtos where id_produto=$key")[0];
             $quantidade = $estoque->stock;
             $quantidade -= $value;
-            if ($quantidade < 0) {
-                // TODO aborta o item 
-            } else {
+            if ($quantidade >= 0) {
                 $db->update("UPDATE produtos set stock = $quantidade WHERE id_produto=$key");
             }
         }
@@ -140,23 +180,23 @@ class Produtos
     }
 
     //============================================================
-    public function repoe_estoque_encomenda_cancelada($id_encomenda){
-        $id_encomenda=Store::aesDesencriptar($id_encomenda);
+    public function repoe_estoque_encomenda_cancelada($id_encomenda)
+    {
+        $id_encomenda = Store::aesDesencriptar($id_encomenda);
         $db = new Database();
         $produtos = $db->select("SELECT descricao_produto, quantidade FROM encomenda_produto WHERE id_encomenda = $id_encomenda");
-        $dados_produto=[];
-        foreach($produtos as $item){
+        $dados_produto = [];
+        foreach ($produtos as $item) {
             array_push($dados_produto, $db->select("SELECT id_produto, stock FROM produtos WHERE nome = '$item->descricao_produto'"));
         }
-        
-        for ($i=0; $i < sizeof($produtos); $i++){
-;
+
+        for ($i = 0; $i < sizeof($produtos); $i++) {
+
             $item = $dados_produto[$i][0]->stock;
             $quantidade = $produtos[$i]->quantidade;
-            $item -=$quantidade;
-            $db->update("UPDATE produtos SET stock = $item WHERE id_produto =".$dados_produto[$i][0]->id_produto);
+            $item += $quantidade;
+            $db->update("UPDATE produtos SET stock = $item WHERE id_produto =" . $dados_produto[$i][0]->id_produto);
         }
         return;
     }
-
 }
