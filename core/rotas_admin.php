@@ -15,6 +15,9 @@ $rotas = [
     // clientes
     'lista_clientes'=>'admin@lista_clientes',
     'detalhe_cliente'=>'admin@detalhe_cliente',
+    'cliente_alterar_status_ativar'=>'admin@cliente_alterar_status_ativar',
+    'cliente_alterar_status_desativar'=>'admin@cliente_alterar_status_desativar',
+    'cliente_excluir'=>'admin@cliente_excluir',
     'cliente_historico_encomendas'=>'admin@cliente_historico_encomendas',
   
     // encomendas

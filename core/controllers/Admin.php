@@ -129,6 +129,10 @@ class Admin
     }
 
     //============================================================
+    // Cleintes
+    //============================================================
+
+    //============================================================
     public function lista_clientes()
     {
 
@@ -193,6 +197,72 @@ class Admin
             'admin/layouts/html_footer',
         ], $dados);
     }
+
+    //============================================================
+    public function cliente_alterar_status_ativar()
+    {
+        // verifica se já exite um usuario logado
+        if (!Store::adminLogado()) {
+            Store::redirect('inicio', 1);
+            return;
+        }
+        // verifica se exite um id de cliente 
+        if (!isset($_GET['c'])) {
+            Store::redirect('inicio', true);
+            return;
+        };
+
+        $id_cliente = Store::aesDesencriptar($_GET['c']);
+
+        ModelsAdmin::altera_status_cliente(true,  $id_cliente);
+
+        return Store::redirect('detalhe_cliente&c='.$_GET['c'], true);
+
+    }
+
+     //============================================================
+     public function cliente_alterar_status_desativar()
+     {
+         // verifica se já exite um usuario logado
+         if (!Store::adminLogado()) {
+             Store::redirect('inicio', true);
+             return;
+         }
+         // verifica se exite um id de cliente 
+         if (!isset($_GET['c'])) {
+             Store::redirect('inicio', true);
+             return;
+         };
+ 
+         $id_cliente = Store::aesDesencriptar($_GET['c']);
+ 
+         ModelsAdmin::altera_status_cliente(0,  $id_cliente);
+         return Store::redirect('detalhe_cliente&c='.$_GET['c'], true);
+     }
+
+      //============================================================
+      public function cliente_excluir()
+      {
+          // verifica se já exite um usuario logado
+          if (!Store::adminLogado()) {
+              Store::redirect('inicio', true);
+              return;
+          }
+          // verifica se exite um id de cliente 
+          if (!isset($_GET['c'])) {
+              Store::redirect('inicio', true);
+              return;
+          };
+  
+          $id_cliente = Store::aesDesencriptar($_GET['c']);
+  
+          ModelsAdmin::cliente_excluir( $id_cliente);
+          return Store::redirect('detalhe_cliente&c='.$_GET['c'], true);
+      }
+
+    //============================================================
+    // Encomendas
+    //============================================================
 
     //============================================================
     public function cliente_historico_encomendas()
@@ -673,7 +743,7 @@ class Admin
     //============================================================
     public function cadastrar_novo_produto_estoque()
     {
-        //TODO Cadastro de novo produto no estoque
+        // Cadastro de novo produto no estoque
         // verifica se já exite um usuario logado
         if (!Store::adminLogado()) {
             Store::redirect('inicio', true);
@@ -690,15 +760,15 @@ class Admin
     //============================================================
     public function cadastrar_novo_produto_estoque_submit()
     {
-        //TODO Cadastro de novo produto no estoque
+        // Cadastro de novo produto no estoque
         // verifica se já exite um usuario logado
         if (!Store::adminLogado()) {
             Store::redirect('inicio', true);
             return;
         }
 
-         // verifica se a origem da requisição foI um POST
-         if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+        // verifica se a origem da requisição foI um POST
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             Store::redirect('inicio', true);
             return;
         }
@@ -722,13 +792,13 @@ class Admin
             'imagem' => isset($_FILES['imagem']) ? $_FILES['imagem']['name'] : '',
         ];
 
-       // Store::printData($dados);
+        // Store::printData($dados);
 
         $produto_estoque  =  new Produtos();
         $produto_estoque->cadastra_produto_estoque($dados);
 
-        Store::redirect('lista_produtos_estoque',true);
-       
+        Store::redirect('lista_produtos_estoque', true);
+
         // Store::Layout_admin([
         //     'admin/layouts/html_header',
         //     'admin/header',

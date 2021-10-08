@@ -33,6 +33,11 @@ include(__DIR__ . '/layouts/admin_menu.php') ?>
                 <!-- created_at-->
                 <div class="col-3 text-end">Cliente desde: </div>
                 <div class="col-9 fw-bold"><?= date('d/m/Y', strtotime($cliente_detalhe->created_at))  ?></div>
+                <!-- deleted_at -->
+                <?php if($cliente_detalhe->deleted_at != null): ?>
+                    <div class="col-3 text-end">Excluído em: </div>
+                    <div class="col-9 fw-bold"><?= date('d/m/Y', strtotime($cliente_detalhe->deleted_at))  ?></div>
+                <?php endif;?>
             </div>
             <div class="row mt-3">
                 <div class="col-9 offset-3">
@@ -42,8 +47,19 @@ include(__DIR__ . '/layouts/admin_menu.php') ?>
                             <p>Não exitem encomendas deste clientes</p>
                         <?php else : ?>
                             <!-- Exite(m) encomenda(s) -->
-                            <a href="?a=cliente_historico_encomendas&c=<?= Store::aesEncriptar($cliente_detalhe->id_cliente) ?>" class="btn btn-primary">Ver histórico de encomendas...</a>
+                            <a href="?a=cliente_historico_encomendas&c=<?= Store::aesEncriptar($cliente_detalhe->id_cliente) ?>" class="btn btn-sm btn-primary">Ver histórico de encomendas...</a>
                         <?php endif ?>
+                        <?php if ($cliente_detalhe->deleted_at == null) : ?>
+                            <?php if ($cliente_detalhe->ativo == 0) : ?>
+                                <a href="?a=cliente_alterar_status_ativar&c=<?= Store::aesEncriptar($cliente_detalhe->id_cliente) ?> " class="btn btn-sm btn-info">Ativar</a>
+                            <?php else : ?>
+                                <a href="?a=cliente_alterar_status_desativar&c=<?= Store::aesEncriptar($cliente_detalhe->id_cliente) ?>" class="btn btn-sm btn-warning">Desativar</a>
+                            <?php endif; ?>
+                        <?php endif;?>    
+                        
+                        <?php if ($cliente_detalhe->deleted_at == null) : ?>
+                            <a href="?a=cliente_excluir&c=<?= Store::aesEncriptar($cliente_detalhe->id_cliente) ?>" class="btn btn-sm btn-danger">Excluir</a>
+                        <?php endif;?>
                     </div>
                 </div>
 

@@ -132,7 +132,7 @@ class Encomendas
         }
 
         // efetua a alteração de status para EM PROCESSAMENTO
-        $db->update("UPDATE encomendas SET status='EM PROCESSAMENTO', updated_at = NOW() WHERE codigo_encomenda = :codigo_encomenda", $paramentros);
+        $db->update("UPDATE encomendas SET status='EM_PROCESSAMENTO', updated_at = NOW() WHERE codigo_encomenda = :codigo_encomenda", $paramentros);
         return true;
 
 
