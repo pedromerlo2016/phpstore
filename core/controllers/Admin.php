@@ -401,9 +401,6 @@ class Admin
             return;
         }
 
-
-
-
         // Atualiza o status da encomenda
         $id_encomenda = Store::aesEncriptar($id_encomenda = $_GET['e']);
         if (!ModelsAdmin::altera_status_encomenda($id_encomenda, $status)) {

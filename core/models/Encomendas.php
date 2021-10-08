@@ -3,6 +3,7 @@
 namespace core\models;
 
 use core\classes\Database;
+use core\classes\EnviarEmail;
 use core\classes\Store;
 
 class Encomendas
@@ -124,15 +125,22 @@ class Encomendas
             ':codigo_encomenda' =>$encomenda,
         ];
         $db =  new Database();
-        $resultado = $db->select("SELECT * FROM encomendas WHERE status='PENDENTE' and codigo_encomenda = :codigo_encomenda", $paramentros );
+        $resultado = $db->select("SELECT * FROM encomendas WHERE status='PENDENTE' and codigo_encomenda = :codigo_encomenda", $paramentros)[0];
         //Store::printData($resultado);
         
-        if (count($resultado) == 0) {
+        if ($resultado == null) {
             return false;
         }
+       // Store::printData($resultado);
+        $totalEncomenda = $db->select("SELECT SUM(preco_unidade * quantidade) AS totalEncomenda
+        FROM encomenda_produto WHERE id_encomenda=$resultado->id_encomenda")[0];
 
         // efetua a alteração de status para EM PROCESSAMENTO
         $db->update("UPDATE encomendas SET status='EM_PROCESSAMENTO', updated_at = NOW() WHERE codigo_encomenda = :codigo_encomenda", $paramentros);
+
+        // envia e-mail comunicando a confirmação do pagamento recebido
+        $mail= new EnviarEmail();
+        $mail->envia_email_confirmando_pagamento($resultado, $totalEncomenda );
         return true;
 
 

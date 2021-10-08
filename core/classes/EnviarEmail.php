@@ -109,6 +109,60 @@ class EnviarEmail
     }
 
     //============================================================
+    public function envia_email_confirmando_pagamento($encomenda, $totalEncomenda ){
+         //============================================================
+        //Envia um e-mail para confirmar pagamento 
+        $mail = new PHPMailer(true);
+
+        //Store::printData($encomenda);
+
+        try {
+            //Opções do servidor
+            $mail->SMTPDebug = SMTP::DEBUG_OFF;
+            $mail->isSMTP();
+            $mail->Host       = EMAIL_HOST;
+            $mail->SMTPAuth   = true;
+            $mail->Username   = EMAIL_USER;
+            $mail->Password   = EMAIL_PASS;
+            $mail->Port       = EMAIL_PORT;
+            $mail->CharSet    = 'UTF-8';
+
+            //Emissor e receptor
+            $mail->setFrom(EMAIL_FROM, APP_NAME);
+            $mail->addAddress($encomenda->email);
+            //$mail->addAddress($resulatdo->);
+
+            //Assunto
+            $mail->isHTML(true);
+            $mail->Subject = APP_NAME . ' - Confirmação de pagamento ';
+
+            $html = 'TESTE';
+            //Mensagens
+            $html = '<p>Prezado(a) Cliente. </p>';
+            $html .= '<p>Este e-mail serve para confirmar o pagamento de sua encomenda.</p>';
+            //Store::printData($encomenda);
+            $html .= "<p>Código: <strong> $encomenda->codigo_encomenda</strong></p>";
+            $valor = number_format($totalEncomenda->totalEncomenda,2,',','.');
+            $html .= "<p>Valor: <strong>R$ $valor </strong></p>";
+            
+            // dados do pagamento
+            $html .= '<hr>';
+            $html .= '<p>Sua encomenda já está em processamento e, em breve, enviaremos os dados do envio.</p>';
+            $html .= '<p>Desde já agradecemos a preferência.</p>' ;
+
+            $mail->Body    = $html;
+            //Store::printData($totalEncomenda->totalEncomenda);
+            //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+
+    }
+
+    //============================================================
     public function enviar_enviar_pdf_encomenda_para_cliente($email_cliente, $arquivo)
     {
         //Envia um e-mail paa o novo cliente confirma 
